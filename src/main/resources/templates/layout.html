@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang = "en" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Layout page</title>
+        <link href = "/css/adminlte.min.css" rel = "stylesheet">
+        <link href = "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=swap" rel = "stylesheet">
+        <link href = "/css/OverlayScrollbars.min.css" rel = "stylesheet">
+        <script crossorigin = "anonymous" defer integrity = "sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" src = "https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+    </head>
+    <body class = "hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+        <header th:replace = "~{fragments/navbar :: navbar}"></header>
+        <div th:replace = "~{fragments/sidebar :: sidebar}"></div>
+        <section layout:fragment = "content"></section>
+        <footer th:replace = "~{fragments/footer :: footer}"></footer>
+        <script src = "/js/jquery.min.js"></script>
+        <script src = "/js/bootstrap.bundle.min.js"></script>
+        <script src = "/js/jquery.overlayScrollbars.min.js"></script>
+        <script src = "/js/adminlte.js"></script>
+    </body>
+</html>
