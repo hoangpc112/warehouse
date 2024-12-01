@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title>Đăng nhập</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            // code trong
+            <section>
+                <div class = "container-fluid h-custom">
+                    <div class = "row d-flex justify-content-center align-items-center h-100">
+                        <div class = "col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                            <form method = "post" th:action = "@{/login}">
+                                <div class = "text-center">
+                                    <h1>Đăng nhập</h1>
+                                    <br>
+                                </div>
+                                <div class = "alert alert-error" style = "padding-bottom: 0" th:if = "${param.error}">
+                                    <p style = "color: red">Tài khoản và mật khẩu không hợp lệ.</p>
+                                </div>
+
+                                <!-- Username input -->
+                                <div class = "form-outline mb-4" data-mdb-input-init>
+                                    <input class = "form-control form-control-lg" name = "username" placeholder = "Nhập tên người dùng" required type = "text"/>
+                                </div>
+
+                                <!-- Password input -->
+                                <div class = "form-outline mb-4" data-mdb-input-init>
+                                    <input class = "form-control form-control-lg" name = "password" placeholder = "Nhập mật khẩu" required type = "password"/>
+                                </div>
+
+                                <div class = "d-flex justify-content-between align-items-center">
+                                    <!-- Checkbox -->
+                                    <div class = "form-check mb-0">
+                                        <input class = "form-check-input me-2" id = "form2Example3" type = "checkbox" value = ""/>
+                                        <label class = "form-check-label" for = "form2Example3">
+                                            Nhớ tài khoản của tôi
+                                        </label>
+                                    </div>
+                                    <a class = "text-body" href = "/forgot-password">Quên mật khẩu</a>
+                                </div>
+
+                                <div class = "text-center text-lg-start mt-4 pt-2 mb-5">
+                                    <button class = "btn btn-primary btn-lg" data-mdb-button-init data-mdb-ripple-init style = "padding-left: 2.5rem; padding-right: 2.5rem;" type = "submit">Đăng
+                                        nhập
+                                    </button>
+                                    <p class = "small fw-bold mt-2 pt-1 mb-0">Chưa có tài khoản?
+                                        <a class = "link-danger" href = "/register">Đăng ký</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </body>
+</html>
