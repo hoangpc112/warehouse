@@ -1,73 +1,64 @@
-<div th:fragment = "sidebar">
-    <aside class = "main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a class = "brand-link" href = "/">
-            <img alt = "AdminLTE Logo" class = "brand-image img-circle elevation-3" src = "/images/AdminLTELogo.png" style = "opacity: .8">
-            <span class = "brand-text font-weight-light">Warehouse</span>
-        </a>
-
-        <!-- Sidebar -->
-        <div class = "sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class = "user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class = "image">
-                    <img alt = "User Image" class = "img-circle elevation-2" src = "/images/user2-160x160.jpg">
-                </div>
-                <div class = "info">
-                    <a class = "d-block" href = "#">NTT e-MOI</a>
-                </div>
+<aside class = "main-sidebar sidebar-dark-primary elevation-4" th:fragment = "sidebar">
+    <!-- Sidebar -->
+    <div class = "sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class = "user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class = "info">
+                <a class = "d-block" href = "/user">
+                    [[${#authentication.name}]]
+                </a>
             </div>
-
-            <!-- SidebarSearch Form -->
-            <div class = "form-inline">
-                <div class = "input-group" data-widget = "sidebar-search">
-                    <input aria-label = "Search" class = "form-control form-control-sidebar" placeholder = "Search" type = "search">
-                    <div class = "input-group-append">
-                        <button class = "btn btn-sidebar">
-                            <i class = "fas fa-search fa-fw"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar Menu -->
-            <nav class = "mt-2">
-                <ul class = "nav nav-pills nav-sidebar flex-column" data-accordion = "false" data-widget = "treeview" role = "menu">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class = "nav-item menu-open">
-                        <a class = "nav-link active" href = "#">
-                            <i class = "nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Hệ thống
-                                <i class = "right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class = "nav nav-treeview">
-                            <li class = "nav-item">
-                                <a class = "nav-link active" href = "#">
-                                    <i class = "far fa-circle nav-icon"></i>
-                                    <p>Quản lý user</p>
-                                </a>
-                            </li>
-                            <li class = "nav-item">
-                                <a class = "nav-link" href = "#">
-                                    <i class = "far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
-                                </a>
-                            </li>
-                            <li class = "nav-item">
-                                <a class = "nav-link" href = "#">
-                                    <i class = "far fa-circle nav-icon"></i>
-                                    <p>Dashboard v3</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
         </div>
-        <!-- /.sidebar -->
-    </aside>
-</div>
+
+        <!-- SidebarSearch Form -->
+        <div class = "form-inline">
+            <div class = "input-group" data-widget = "sidebar-search">
+                <input aria-label = "Search" class = "form-control form-control-sidebar" placeholder = "Search" type = "search">
+                <div class = "input-group-append">
+                    <button class = "btn btn-sidebar">
+                        <i class = "fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class = "mt-2">
+            <ul class = "nav nav-pills nav-sidebar flex-column" data-accordion = "false" data-widget = "treeview" role = "menu">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class = "nav-item menu-open">
+                    <a class = "nav-link active" href = "/">
+                        <i class = "nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                            <i class = "right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class = "nav nav-treeview">
+                        <li class = "nav-item">
+                            <a class = "nav-link active" href = "#">
+                                <i class = "far fa-circle nav-icon"></i>
+                                <p>Dashboard v1</p>
+                            </a>
+                        </li>
+                        <li class = "nav-item">
+                            <a class = "nav-link" href = "#">
+                                <i class = "far fa-circle nav-icon"></i>
+                                <p>Dashboard v2</p>
+                            </a>
+                        </li>
+                        <li class = "nav-item">
+                            <a class = "nav-link" href = "#">
+                                <i class = "far fa-circle nav-icon"></i>
+                                <p>Dashboard v3</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
