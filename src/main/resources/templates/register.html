@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
-        <title>Đăng ký</title>
+        <title>Register</title>
     </head>
     <body>
         <section layout:fragment = "content">
-            // code trong đây
-            <section>
-                <div class = "container-fluid h-custom">
-                    <div class = "row d-flex justify-content-center align-items-center h-100">
-                        <div class = "col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                            <div class = "text-center">
-                                <h1>Đăng ký</h1>
-                                <br>
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Register</h1>
                             </div>
-
-                            <div class = "alert alert-success alert-dismissible fade show" role = "alert" th:if = "${success}">
-                                <strong>Tạo tài khoản thành công!</strong>
-                                <a class = "ms-2" href = "/login">Đăng nhập</a>
-                                <button aria-label = "Close" class = "btn-close" data-bs-dismiss = "alert" type = "button"></button>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-sm-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item active">Register</li>
+                                </ol>
                             </div>
-
-                            <form method = "post" th:object = "${UserDTO}">
-                                <input th:name = "${_csrf.parameterName}" th:value = "${_csrf.token}" type = "hidden"/>
-                                <!-- Username input -->
-                                <div class = "form-outline mb-4" data-mdb-input-init>
-                                    <input class = "form-control" placeholder = "Nhập tên người dùng" th:field = "${UserDTO.username}" type = "text"/>
-                                    <p th:errorclass = "text-danger" th:errors = "${UserDTO.username}" th:if = "${#fields.hasErrors('username')}"></p>
-                                </div>
-
-                                <!-- Password input -->
-                                <div class = "form-outline mb-4" data-mdb-input-init>
-                                    <input class = "form-control" placeholder = "Nhập mật khẩu" th:field = "${UserDTO.password}" type = "password"/>
-                                    <p th:errorclass = "text-danger" th:errors = "${UserDTO.password}" th:if = "${#fields.hasErrors('password')}"></p>
-                                </div>
-
-                                <!-- Confirm password input -->
-                                <div class = "form-outline mb-4" data-mdb-input-init>
-                                    <input class = "form-control" placeholder = "Xác nhận lại mật khẩu" th:field = "${UserDTO.confirmPassword}" type = "password"/>
-                                    <p th:errorclass = "text-danger" th:errors = "${UserDTO.confirmPassword}" th:if = "${#fields.hasErrors('confirmPassword')}"></p>
-                                </div>
-
-                                <div class = "text-center text-lg-start mt-4 pt-2">
-                                    <button class = "btn btn-primary btn-lg" data-mdb-button-init data-mdb-ripple-init style = "padding-left: 2.5rem; padding-right: 2.5rem;" type = "submit">Đăng
-                                        ký
-                                    </button>
-                                    <p class = "small fw-bold mt-2 pt-1 mb-5">Đã có tài khoản?
-                                        <a class = "link-danger" href = "/login">Đăng nhập</a></p>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
-            </section>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div class = "row">
+                            <div class = "col-md-12">
+                                <div class = "card card-primary">
+                                    <div class = "card-header">
+                                        <h3 class = "card-title">Register</h3>
+                                    </div>
+                                    <form id = "quickForm" method = "post" th:object = "${UserDTO}">
+                                        <input th:name = "${_csrf.parameterName}" th:value = "${_csrf.token}" type = "hidden"/>
+                                        <div class = "card-body">
+                                            <div class = "form-group">
+                                                <label for = "username">Username</label>
+                                                <input class = "form-control" id = "username" placeholder = "Enter username" required th:field = "${UserDTO.username}" type = "text">
+                                                <p th:errorclass = "text-danger" th:errors = "${UserDTO.username}" th:if = "${#fields.hasErrors('username')}"></p>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "password">Password</label>
+                                                <input class = "form-control" id = "password" placeholder = "Enter password" required th:field = "${UserDTO.password}" type = "password">
+                                                <p th:errorclass = "text-danger" th:errors = "${UserDTO.password}" th:if = "${#fields.hasErrors('password')}"></p>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "confirmPassword">Confirm password</label>
+                                                <input class = "form-control" id = "confirmPassword" placeholder = "Enter password" required th:field = "${UserDTO.confirmPassword}" type = "password">
+                                                <p th:errorclass = "text-danger" th:errors = "${UserDTO.confirmPassword}" th:if = "${#fields.hasErrors('confirmPassword')}"></p>
+                                            </div>
+                                            <div class = "form-group mb-0">
+                                                <div class = "custom-control custom-checkbox">
+                                                    <input class = "custom-control-input" id = "exampleCheck1" name = "terms" type = "checkbox">
+                                                    <label class = "custom-control-label" for = "exampleCheck1">I agree to the
+                                                        <a href = "#">terms of service</a>.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class = "card-footer">
+                                            <button class = "btn btn-primary" type = "submit">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </section>
     </body>
 </html>
