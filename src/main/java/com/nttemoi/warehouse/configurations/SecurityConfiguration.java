@@ -19,6 +19,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/logout").permitAll()
+                        .requestMatchers("/dist/**").permitAll()
+                        .requestMatchers("/plugins/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .formLogin(form -> form

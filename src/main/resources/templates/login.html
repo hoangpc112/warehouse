@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
-
     <head>
         <title>Đăng nhập</title>
     </head>
-
     <body>
         <section layout:fragment = "content">
             <div class = "content-wrapper">
-                <br>
-                <!-- Main content -->
                 <section class = "content">
                     <div class = "container-fluid">
                         <div class = "row">
-                            <!-- left column -->
                             <div class = "col-md-12">
-                                <!-- jquery validation -->
                                 <div class = "card card-primary">
                                     <div class = "card-header">
                                         <h3 class = "card-title">Login</h3>
                                     </div>
-                                    <!-- /.card-header -->
-                                    <!-- form start -->
                                     <form id = "quickForm" method = "post" th:action = "@{/login}">
                                         <div class = "card-body">
                                             <div class = "form-group">
@@ -40,28 +32,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.card-body -->
                                         <div class = "card-footer">
                                             <button class = "btn btn-primary" type = "submit">Submit</button>
                                         </div>
                                     </form>
                                     <a href = "/register">Register</a>
                                 </div>
-                                <!-- /.card -->
                             </div>
-                            <!--/.col (left) -->
-                            <!-- right column -->
-                            <div class = "col-md-6">
-
-                            </div>
-                            <!--/.col (right) -->
                         </div>
-                        <!-- /.row -->
-                    </div><!-- /.container-fluid -->
+                    </div>
                 </section>
-                <!-- /.content -->
             </div>
         </section>
     </body>
-
 </html>

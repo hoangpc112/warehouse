@@ -2,7 +2,7 @@ package com.nttemoi.warehouse.controlllers;
 
 import com.nttemoi.warehouse.dtos.UserDTO;
 import com.nttemoi.warehouse.entities.User;
-import com.nttemoi.warehouse.repositories.UserRepository;
+import com.nttemoi.warehouse.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class HomeController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping ("/register")
     public String register (Model model) {
@@ -33,7 +33,7 @@ public class HomeController {
             bindingResult.addError(new FieldError("UserDTO", "confirmPassword", "Mật khẩu và mật khẩu xác nhận lại không giống nhau."));
         }
 
-        User User = userRepository.findByUsername(UserDTO.getUsername());
+        User User = userService.findByUsername(UserDTO.getUsername());
         if (User != null) {
             bindingResult.addError(new FieldError("UserDTO", "username", "Username đã có người sử dụng"));
         }
@@ -49,7 +49,7 @@ public class HomeController {
             user.setUsername(UserDTO.getUsername());
             user.setPassword(bCryptEncoder.encode(UserDTO.getPassword()));
 
-            userRepository.save(user);
+            userService.save(user);
 
             model.addAttribute("UserDTO", new UserDTO());
             model.addAttribute("success", true);

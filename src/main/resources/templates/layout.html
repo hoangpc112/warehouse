@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html lang = "en" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec xmlns:th = "https://www.thymeleaf.org">
+<html lang = "en" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
     <head>
-        <title>Layout page</title>
-        <link crossorigin = "anonymous" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity = "sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" referrerpolicy = "no-referrer" rel = "stylesheet"/>
-        <link href = "https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css" rel = "stylesheet">
+        <meta charset = "utf-8">
+        <meta content = "width=device-width, initial-scale=1" name = "viewport">
+        <title layout:title-pattern = "$CONTENT_TITLE"></title>
+        <link href = "/plugins/fontawesome-free/css/all.min.css" rel = "stylesheet">
+        <link href = "/dist/css/adminlte.min.css" rel = "stylesheet">
     </head>
     <body class = "hold-transition sidebar-mini layout-fixed">
         <header th:replace = "~{fragments/navbar :: navbar}"></header>
         <aside th:replace = "~{fragments/sidebar :: sidebar}"></aside>
         <section layout:fragment = "content"></section>
         <footer th:replace = "~{fragments/footer :: footer}"></footer>
-        <script src = "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-        <script src = "https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+        <script src = "/plugins/jquery/jquery.min.js"></script>
+        <script src = "/dist/js/adminlte.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var currentPath = window.location.pathname;
+                var links = document.querySelectorAll('.nav-link');
+
+                links.forEach(function (link) {
+                    if (link.getAttribute('href') === currentPath) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
