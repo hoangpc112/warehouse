@@ -1,31 +1,15 @@
 package com.nttemoi.warehouse.services;
 
 import com.nttemoi.warehouse.entities.Warehouse;
-import com.nttemoi.warehouse.repositories.WarehouseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class WarehouseService {
+public interface WarehouseService {
+    List <Warehouse> findAll ();
 
-    @Autowired
-    private WarehouseRepository warehouseRepository;
+    Warehouse findById (Long id);
 
-    public List <Warehouse> findAll () {
-        return warehouseRepository.findAll();
-    }
+    void save (Warehouse warehouse);
 
-    public Warehouse findById (long id) {
-        return warehouseRepository.findById(id).orElse(null);
-    }
-
-    public void save (Warehouse warehouse) {
-        warehouseRepository.save(warehouse);
-    }
-
-    public void deleteById (Long id) {
-        warehouseRepository.deleteById(id);
-    }
+    void deleteById (Long id);
 }

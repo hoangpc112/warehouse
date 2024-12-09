@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title>Add inbound</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Tutorials - Tổng: [[${totalItems}]]</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-sm-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item active">Tutorials</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <div class = "mb-3">
+                                            <form id = "searchForm" th:action = "@{/tutorials}">
+                                                <div class = "row d-flex">
+                                                    <div class = "col-md-10 mt-2">
+                                                        <div class = "search">
+                                                            <input class = "form-control" id = "keyword" name = "keyword" placeholder = "Enter keyword" required th:value = "${keyword}" type = "search">
+                                                        </div>
+                                                    </div>
+                                                    <div class = "col-md-2 mt-2">
+                                                        <button class = "btn btn-primary mr-1" type = "submit">Tìm kiếm</button>
+                                                        <a class = "btn btn-success" href = "/tutorials/new">Thêm mới</a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class = "table-responsive" th:if = "${tutorials.size() > 0}">
+                                            <table class = "table table-hover table-bordered">
+                                                <thead class = "thead-light">
+                                                <tr>
+                                                    <th scope = "col">STT</th>
+                                                    <th scope = "col">Title</th>
+                                                    <th scope = "col">Description</th>
+                                                    <th scope = "col">Level</th>
+                                                    <th scope = "col">Published</th>
+                                                    <th scope = "col">Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each = "tutorial, iterStat : ${tutorials}">
+                                                    <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                    <td>[[${tutorial.title}]]</td>
+                                                    <td>[[${tutorial.description}]]</td>
+                                                    <td>[[${tutorial.level}]]</td>
+                                                    <td>
+                                                        <a class = "btn btn-secondary" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/false'}" th:if = "${tutorial.published == true}" title = "Disable this tutorial">Disable</a>
+                                                        <a class = "btn btn-success" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/true'}" th:if = "${tutorial.published == false}" title = "Enable this tutorial">Enable</a>
+                                                    </td>
+                                                    <td>
+                                                        <a class = "btn btn-primary" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "Edit this tutorial">Edit</a> &nbsp;
+                                                        <a class = "btn-delete btn btn-danger" id = "btnDelete" th:href = "@{'/tutorials/delete/' + ${tutorial.id}}" th:tutorialTitle = "${tutorial.title}" title = "Delete this tutorial">Delete</a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div th:unless = "${tutorials.size() > 0}">
+                                            <span>No tutorials found!</span>
+                                        </div>
+
+                                        <nav aria-label = "Pagination" th:if = "${totalPages > 0}">
+                                            <div class = "d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <label for = "pageSize">Hiển thị </label>
+                                                    <select class = "form-select me-1" form = "searchForm" id = "pageSize" name = "size" onchange = "changePageSize()" th:value = "${pageSize}">
+                                                        <option th:each = "s : ${ {10, 25, 50, 75, 100} }" th:selected = "${s == pageSize}" th:text = "${s}" th:value = "${s}"></option>
+                                                    </select>
+                                                    <label for = "pageSize"> kết quả 1 trang</label>
+                                                </div>
+                                                <ul class = "pagination mb-0">
+                                                    <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
+                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(1, '<<', 'First Page')}"></a>
+                                                    </li>
+                                                    <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
+                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')}"></a>
+                                                    </li>
+                                                    <li class = "page-item disabled" th:if = "${currentPage - 2 > 1}">
+                                                        <a class = "page-link" href = "#">...</a>
+                                                    </li>
+                                                    <li class = "page-item" th:classappend = "${page == currentPage} ? 'active'" th:each = "page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})}"></a>
+                                                    </li>
+                                                    <li class = "page-item disabled" th:if = "${currentPage + 2 < totalPages}">
+                                                        <a class = "page-link" href = "#">...</a>
+                                                    </li>
+                                                    <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
+                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')}"></a>
+                                                    </li>
+                                                    <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
+                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${totalPages}, '>>', 'Last Page')}"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "modal fade text-center" id = "confirmModal">
+                        <div class = "modal-dialog">
+                            <div class = "modal-content">
+                                <div class = "modal-header">
+                                    <h5 class = "modal-title">Delete Confirmation</h5>
+                                    <button class = "close" data-dismiss = "modal" type = "button">
+                                        <span aria-hidden = "true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class = "modal-body">
+                                    <span id = "confirmText"></span>
+                                </div>
+
+                                <div class = "modal-footer">
+                                    <a class = "btn btn-danger" id = "yesBtn" type = "button">Yes</a>
+                                    <button class = "btn btn-secondary" data-dismiss = "modal" type = "button">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <script type = "text/javascript">
+                $(document).ready(function () {
+                    $(".btn-delete").on("click", function (e) {
+                        e.preventDefault();
+                        link = $(this);
+
+                        tutorialTitle = link.attr("tutorialTitle");
+                        $("#yesBtn").attr("href", link.attr("href"));
+                        $("#confirmText").html("Do you want to delete the Tutorial \<strong\>" + tutorialTitle + "\<\/strong\>?");
+                        $("#confirmModal").modal();
+                    });
+
+                    $("#btnClear").on("click", function (e) {
+                        e.preventDefault();
+                        $("#keyword").text("");
+                        window.location = "[[@{/tutorials}]]";
+                    });
+                });
+
+                function changePageSize() {
+                    $("#searchForm").submit();
+                }
+            </script>
+        </section>
+    </body>
+</html>
