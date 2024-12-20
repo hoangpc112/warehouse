@@ -28,11 +28,11 @@
                                 <div class = "card">
                                     <div class = "card-body">
                                         <div class = "mb-3">
-                                            <form id = "searchForm" th:action = "@{/tutorials}">
+                                            <form id = "searchForm" onsubmit = "trimInput()" th:action = "@{/tutorials}">
                                                 <div class = "row d-flex">
                                                     <div class = "col-md-10 mt-2">
                                                         <div class = "search">
-                                                            <input class = "form-control" id = "keyword" name = "keyword" placeholder = "Enter keyword" required th:value = "${keyword}" type = "search">
+                                                            <input class = "form-control" id = "keyword" name = "keyword" placeholder = "Enter keyword" type = "search">
                                                         </div>
                                                     </div>
                                                     <div class = "col-md-2 mt-2">
@@ -162,6 +162,11 @@
 
                 function changePageSize() {
                     $("#searchForm").submit();
+                }
+
+                function trimInput() {
+                    var input = document.getElementById('keyword');
+                    input.value = input.value.trim();
                 }
             </script>
         </section>

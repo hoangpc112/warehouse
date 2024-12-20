@@ -26,8 +26,8 @@ public class Tutorial {
     private String description;
 
     @Column (nullable = false)
-    private int level;
+    private String level;
 
-    @Column
+    @Column (nullable = false)
     private boolean published;
 }

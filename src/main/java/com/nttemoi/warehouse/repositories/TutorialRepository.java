@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Transactional
 public interface TutorialRepository extends JpaRepository <Tutorial, Long> {
-    Page <Tutorial> findByTitleContainingIgnoreCase (String keyword, Pageable pageable);
+    Page <Tutorial> findByTitleLikeOrLevelLike (String title, String level, Pageable pageable);
 
     @Query ("UPDATE Tutorial t SET t.published = :published WHERE t.id = :id")
     @Modifying

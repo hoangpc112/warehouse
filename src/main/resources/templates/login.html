@@ -1,63 +1,40 @@
 <!DOCTYPE html>
-<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang = "en" xmlns:th = "https://www.thymeleaf.org">
     <head>
+        <meta charset = "utf-8">
+        <meta content = "width=device-width, initial-scale=1" name = "viewport">
         <title>Login</title>
+        <link crossorigin = "anonymous" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity = "sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" referrerpolicy = "no-referrer" rel = "stylesheet"/>
+        <link href = "/css/adminlte.min.css" rel = "stylesheet">
     </head>
     <body>
-        <section layout:fragment = "content">
-            <div class = "content-wrapper">
-                <div class = "content-header">
-                    <div class = "container-fluid">
-                        <div class = "row mb-2">
-                            <div class = "col-sm-6">
-                                <h1 class = "m-0">Login</h1>
-                            </div>
-                            <div class = "col-sm-6">
-                                <ol class = "breadcrumb float-sm-right">
-                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
-                                    <li class = "breadcrumb-item active">Login</li>
-                                </ol>
-                            </div>
-                        </div>
+        <nav class = "navbar navbar-light bg-light">
+            <a class = "navbar-brand" href = "/">
+                <img alt = "" class = "d-inline-block align-top" height = "30" src = "/images/NTTeMOILogo.png" width = "30">
+                NTT e-MOI
+            </a>
+        </nav>
+        <div class = "card card-info">
+            <div class = "card-header">
+                <h3 class = "card-title">Đăng nhập</h3>
+            </div>
+            <form class = "form-horizontal" method = "post" th:action = "@{/login}">
+                <div class = "card-body">
+                    <div class = "form-group row">
+                        <input class = "form-control" name = "username" placeholder = "Tên tài khoản" required type = "text">
+                    </div>
+                    <div class = "form-group row mb-0">
+                        <input class = "form-control" name = "password" placeholder = "Mật khẩu" required type = "password">
                     </div>
                 </div>
-                <section class = "content">
-                    <div class = "container-fluid">
-                        <div class = "row">
-                            <div class = "col-md-12">
-                                <div class = "card card-primary">
-                                    <div class = "card-header">
-                                        <h3 class = "card-title">Login</h3>
-                                    </div>
-                                    <form id = "quickForm" method = "post" th:action = "@{/login}">
-                                        <div class = "card-body">
-                                            <div class = "form-group">
-                                                <label for = "exampleInputEmail1">Username</label>
-                                                <input class = "form-control" id = "exampleInputEmail1" name = "username" placeholder = "Enter username" required>
-                                            </div>
-                                            <div class = "form-group">
-                                                <label for = "exampleInputPassword1">Password</label>
-                                                <input class = "form-control" id = "exampleInputPassword1" name = "password" placeholder = "Password" required type = "password">
-                                            </div>
-                                            <div class = "form-group mb-0">
-                                                <div class = "custom-control custom-checkbox">
-                                                    <input class = "custom-control-input" id = "exampleCheck1" name = "terms" type = "checkbox">
-                                                    <label class = "custom-control-label" for = "exampleCheck1">I agree to the
-                                                        <a href = "#">terms of service</a>.</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class = "card-footer">
-                                            <button class = "btn btn-primary" type = "submit">Submit</button>
-                                        </div>
-                                    </form>
-                                    <a href = "/register">Register</a>
-                                </div>
-                            </div>
-                        </div>
+                <div class = "card-footer">
+                    <div class = "float-left">
+                        Chưa có tài khoản ?
+                        <a class = "text-decoration-none" href = "/register">Đăng ký</a>
                     </div>
-                </section>
-            </div>
-        </section>
+                    <button class = "btn btn-info float-right" type = "submit">Đăng nhập</button>
+                </div>
+            </form>
+        </div>
     </body>
 </html>

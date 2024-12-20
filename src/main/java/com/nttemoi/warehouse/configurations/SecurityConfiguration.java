@@ -19,17 +19,17 @@ public class SecurityConfiguration {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/logout").permitAll()
-                        .requestMatchers("/dist/**").permitAll()
-                        .requestMatchers("/plugins/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/", true))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout=true")
+                        .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .build();

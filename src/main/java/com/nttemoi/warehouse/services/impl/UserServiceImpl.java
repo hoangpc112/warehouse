@@ -3,9 +3,6 @@ package com.nttemoi.warehouse.services.impl;
 import com.nttemoi.warehouse.entities.User;
 import com.nttemoi.warehouse.repositories.UserRepository;
 import com.nttemoi.warehouse.services.UserService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,24 +10,12 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
     public UserServiceImpl (UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-
-        if (user != null) {
-            return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).build();
-        }
-        else {
-            throw new UsernameNotFoundException(username);
-        }
     }
 
     @Override
