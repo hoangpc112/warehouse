@@ -55,7 +55,7 @@
                                                     <td>
                                                         <a class = "btn btn-primary fa-solid fa-info" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "More details"></a>
                                                         <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "Edit this tutorial"></a> &nbsp;
-                                                        <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" id = "btnDelete" th:href = "@{'/tutorials/delete/' + ${tutorial.id}}" th:tutorialTitle = "${tutorial.title}" title = "Delete this tutorial"></a>
+                                                        <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/tutorials/delete/' + ${tutorial.id}}" title = "Delete this tutorial"></a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -73,50 +73,10 @@
                         </div>
                     </div>
 
-                    <div class = "modal fade text-center" id = "confirmModal">
-                        <div class = "modal-dialog">
-                            <div class = "modal-content">
-                                <div class = "modal-header">
-                                    <h5 class = "modal-title">Delete Confirmation</h5>
-                                    <button aria-label = "Close" class = "btn-close" data-bs-dismiss = "modal" type = "button"></button>
-                                </div>
-
-                                <div class = "modal-body">
-                                    <span id = "confirmText">Really?</span>
-                                </div>
-
-                                <div class = "modal-footer">
-                                    <a class = "btn btn-danger" id = "yesBtn" type = "button">Yes</a>
-                                    <button class = "btn btn-secondary" data-dismiss = "modal" type = "button">No</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div th:replace = "~{fragments/deleteModal :: deleteModal}"></div>
                 </section>
             </div>
-            <script type = "text/javascript">
-                $(document).ready(function () {
-                    $(".btn-delete").on("click", function (e) {
-                        e.preventDefault();
-                        link = $(this);
-
-                        tutorialTitle = link.attr("tutorialTitle");
-                        $("#yesBtn").attr("href", link.attr("href"));
-                        $("#confirmText").html("Do you want to delete the Tutorial \<strong\>" + tutorialTitle + "\<\/strong\>?");
-                        $("#confirmModal").modal();
-                    });
-
-                    $("#btnClear").on("click", function (e) {
-                        e.preventDefault();
-                        $("#keyword").text("");
-                        window.location = "[[@{/tutorials}]]";
-                    });
-                });
-
-                function changePageSize() {
-                    $("#searchForm").submit();
-                }
-            </script>
+            <script src = "/js/common.js"></script>
         </section>
     </body>
 </html>
