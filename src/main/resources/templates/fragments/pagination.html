@@ -1,0 +1,43 @@
+<nav aria-label = "Pagination" th:fragment = "pagination(url)" th:if = "${totalPages > 0}">
+    <div class = "d-flex justify-content-between align-items-center">
+        <div>
+            <label for = "pageSize">Items per page: </label>
+            <select class = "form-select border-0 me-1" form = "searchForm" id = "pageSize" name = "size" onchange = "changePageSize()" th:value = "${pageSize}">
+                <option th:each = "s : ${ {10, 25, 50, 75, 100} }" th:selected = "${s == pageSize}" th:text = "${s}" th:value = "${s}"></option>
+            </select>
+        </div>
+        <ul class = "pagination mb-0">
+            <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + 1 + '&size=' + ${pageSize}}" title = "First page">
+                    <<
+                </a>
+            </li>
+            <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}" title = "Previous page">
+                    Prev
+                </a>
+            </li>
+            <li class = "page-item disabled" th:if = "${currentPage - 2 > 1}">
+                <a class = "page-link" href = "#">...</a>
+            </li>
+            <li class = "page-item" th:classappend = "${page == currentPage} ? 'active'" th:each = "page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}" th:title = "'Page ' + ${page}">
+                    [[${page}]]
+                </a>
+            </li>
+            <li class = "page-item disabled" th:if = "${currentPage + 2 < totalPages}">
+                <a class = "page-link" href = "#">...</a>
+            </li>
+            <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}" title = "Next page">
+                    Next
+                </a>
+            </li>
+            <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?'+ ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}" title = "Last page">
+                    >>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
-        <title>Add inbound</title>
+        <title>Tutorials</title>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -10,10 +10,10 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Tutorials - Tổng: [[${totalItems}]]</h1>
+                                <h1 class = "m-0">Tutorials</h1>
                             </div>
                             <div class = "col-sm-6">
-                                <ol class = "breadcrumb float-sm-right">
+                                <ol class = "breadcrumb float-right">
                                     <li class = "breadcrumb-item"><a href = "/">Home</a></li>
                                     <li class = "breadcrumb-item active">Tutorials</li>
                                 </ol>
@@ -23,31 +23,18 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        <div class = "mb-3">
-                                            <form id = "searchForm" onsubmit = "trimInput()" th:action = "@{/tutorials}">
-                                                <div class = "row d-flex">
-                                                    <div class = "col-md-10 mt-2">
-                                                        <div class = "search">
-                                                            <input class = "form-control" id = "keyword" name = "keyword" placeholder = "Enter keyword" type = "search">
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-md-2 mt-2">
-                                                        <button class = "btn btn-primary mr-1" type = "submit">Tìm kiếm</button>
-                                                        <a class = "btn btn-success" href = "/tutorials/new">Thêm mới</a>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                        <div th:replace = "~{fragments/searchForm :: searchForm('tutorials')}"></div>
 
                                         <div class = "table-responsive" th:if = "${tutorials.size() > 0}">
                                             <table class = "table table-hover table-bordered">
                                                 <thead class = "thead-light">
                                                 <tr>
-                                                    <th scope = "col">STT</th>
+                                                    <th scope = "col">#</th>
                                                     <th scope = "col">Title</th>
                                                     <th scope = "col">Description</th>
                                                     <th scope = "col">Level</th>
@@ -62,12 +49,13 @@
                                                     <td>[[${tutorial.description}]]</td>
                                                     <td>[[${tutorial.level}]]</td>
                                                     <td>
-                                                        <a class = "btn btn-secondary" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/false'}" th:if = "${tutorial.published == true}" title = "Disable this tutorial">Disable</a>
-                                                        <a class = "btn btn-success" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/true'}" th:if = "${tutorial.published == false}" title = "Enable this tutorial">Enable</a>
+                                                        <a class = "btn btn-secondary fa-regular fa-square-check" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/false'}" th:if = "${tutorial.published == true}" title = "Disable this tutorial"></a>
+                                                        <a class = "btn btn-success fa-regular fa-square" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/true'}" th:if = "${tutorial.published == false}" title = "Enable this tutorial"></a>
                                                     </td>
                                                     <td>
-                                                        <a class = "btn btn-primary" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "Edit this tutorial">Edit</a> &nbsp;
-                                                        <a class = "btn-delete btn btn-danger" id = "btnDelete" th:href = "@{'/tutorials/delete/' + ${tutorial.id}}" th:tutorialTitle = "${tutorial.title}" title = "Delete this tutorial">Delete</a>
+                                                        <a class = "btn btn-primary fa-solid fa-info" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "More details"></a>
+                                                        <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "Edit this tutorial"></a> &nbsp;
+                                                        <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" id = "btnDelete" th:href = "@{'/tutorials/delete/' + ${tutorial.id}}" th:tutorialTitle = "${tutorial.title}" title = "Delete this tutorial"></a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -78,40 +66,7 @@
                                             <span>No tutorials found!</span>
                                         </div>
 
-                                        <nav aria-label = "Pagination" th:if = "${totalPages > 0}">
-                                            <div class = "d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <label for = "pageSize">Hiển thị </label>
-                                                    <select class = "form-select me-1" form = "searchForm" id = "pageSize" name = "size" onchange = "changePageSize()" th:value = "${pageSize}">
-                                                        <option th:each = "s : ${ {10, 25, 50, 75, 100} }" th:selected = "${s == pageSize}" th:text = "${s}" th:value = "${s}"></option>
-                                                    </select>
-                                                    <label for = "pageSize"> kết quả 1 trang</label>
-                                                </div>
-                                                <ul class = "pagination mb-0">
-                                                    <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
-                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(1, '<<', 'First Page')}"></a>
-                                                    </li>
-                                                    <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
-                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')}"></a>
-                                                    </li>
-                                                    <li class = "page-item disabled" th:if = "${currentPage - 2 > 1}">
-                                                        <a class = "page-link" href = "#">...</a>
-                                                    </li>
-                                                    <li class = "page-item" th:classappend = "${page == currentPage} ? 'active'" th:each = "page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
-                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})}"></a>
-                                                    </li>
-                                                    <li class = "page-item disabled" th:if = "${currentPage + 2 < totalPages}">
-                                                        <a class = "page-link" href = "#">...</a>
-                                                    </li>
-                                                    <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
-                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')}"></a>
-                                                    </li>
-                                                    <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
-                                                        <a class = "page-link" th:replace = "~{fragments/paging :: paging(${totalPages}, '>>', 'Last Page')}"></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </nav>
+                                        <nav th:replace = "~{fragments/pagination :: pagination('tutorials')}"></nav>
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +78,11 @@
                             <div class = "modal-content">
                                 <div class = "modal-header">
                                     <h5 class = "modal-title">Delete Confirmation</h5>
-                                    <button class = "close" data-dismiss = "modal" type = "button">
-                                        <span aria-hidden = "true">&times;</span>
-                                    </button>
+                                    <button aria-label = "Close" class = "btn-close" data-bs-dismiss = "modal" type = "button"></button>
                                 </div>
 
                                 <div class = "modal-body">
-                                    <span id = "confirmText"></span>
+                                    <span id = "confirmText">Really?</span>
                                 </div>
 
                                 <div class = "modal-footer">
@@ -162,11 +115,6 @@
 
                 function changePageSize() {
                     $("#searchForm").submit();
-                }
-
-                function trimInput() {
-                    var input = document.getElementById('keyword');
-                    input.value = input.value.trim();
                 }
             </script>
         </section>

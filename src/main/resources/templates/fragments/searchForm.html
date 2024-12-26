@@ -1,0 +1,16 @@
+<div class = "mb-3" th:fragment = "searchForm(target)">
+    <form id = "searchForm" th:action = "@{'/' + ${target}}">
+        <div class = "row d-flex">
+            <div class = "col-md-10 mt-2">
+                <div class = "search">
+                    <input class = "form-control" id = "keyword" name = "keyword" placeholder = "Enter keyword" type = "search">
+                </div>
+            </div>
+            <div class = "col-md-2 mt-2">
+                <button class = "btn btn-primary" type = "submit">Search</button>
+                <a class = "btn btn-secondary" th:href = "@{'/' + ${target}}">Cancel</a>
+                <a class = "btn btn-success" th:href = "@{'/' + ${target} + '/new'}">Add</a>
+            </div>
+        </div>
+    </form>
+</div>

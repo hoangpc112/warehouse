@@ -18,30 +18,25 @@ public class TutorialController {
         this.tutorialService = tutorialService;
     }
 
-    @GetMapping ("/")
+    @GetMapping
     public String getAll (Model model,
                           @RequestParam (required = false) String keyword,
                           @RequestParam (defaultValue = "1") int page,
                           @RequestParam (defaultValue = "10") int size) {
-        try {
-            Page <Tutorial> pageTuts;
-
-            if (keyword == null) {
-                pageTuts = tutorialService.findAll(page - 1, size);
-            }
-            else {
-                pageTuts = tutorialService.findByTitleOrLevel(keyword, page - 1, size);
-                model.addAttribute("keyword", keyword);
-            }
-
-            model.addAttribute("tutorials", pageTuts.getContent());
-            model.addAttribute("currentPage", pageTuts.getNumber() + 1);
-            model.addAttribute("totalItems", pageTuts.getTotalElements());
-            model.addAttribute("totalPages", pageTuts.getTotalPages());
-            model.addAttribute("pageSize", size);
-        } catch (Exception e) {
-            model.addAttribute("message", e.getMessage());
+        Page <Tutorial> pageTuts;
+        if (keyword == null) {
+            pageTuts = tutorialService.findAll(page - 1, size);
         }
+        else {
+            pageTuts = tutorialService.findByTitleOrLevel(keyword, page - 1, size);
+            model.addAttribute("keyword", keyword);
+        }
+
+        model.addAttribute("tutorials", pageTuts.getContent());
+        model.addAttribute("currentPage", pageTuts.getNumber() + 1);
+        model.addAttribute("totalItems", pageTuts.getTotalElements());
+        model.addAttribute("totalPages", pageTuts.getTotalPages());
+        model.addAttribute("pageSize", size);
 
         return "tutorials";
     }
@@ -59,33 +54,22 @@ public class TutorialController {
     @PostMapping ("/save")
     public String saveTutorial (Tutorial tutorial,
                                 RedirectAttributes redirectAttributes) {
-        try {
-            tutorialService.save(tutorial);
+        tutorialService.save(tutorial);
 
-            redirectAttributes.addFlashAttribute("message", "The Tutorial has been saved successfully!");
-        } catch (Exception e) {
-            redirectAttributes.addAttribute("message", e.getMessage());
-        }
+        redirectAttributes.addFlashAttribute("message", "The Tutorial has been saved successfully!");
 
         return "redirect:/tutorials";
     }
 
     @GetMapping ("/{id}")
     public String editTutorial (@PathVariable ("id") Long id,
-                                Model model,
-                                RedirectAttributes redirectAttributes) {
-        try {
-            Tutorial tutorial = tutorialService.findById(id);
+                                Model model) {
+        Tutorial tutorial = tutorialService.findById(id);
 
-            model.addAttribute("tutorial", tutorial);
-            model.addAttribute("pageTitle", "Edit Tutorial (ID: " + id + ")");
+        model.addAttribute("tutorial", tutorial);
+        model.addAttribute("pageTitle", "Edit Tutorial (ID: " + id + ")");
 
-            return "tutorial_form";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-
-            return "redirect:/tutorials";
-        }
+        return "tutorial_form";
     }
 
     @GetMapping ("/delete/{id}")
