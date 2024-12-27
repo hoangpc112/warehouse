@@ -4,8 +4,8 @@
         <meta charset = "utf-8">
         <meta content = "width=device-width, initial-scale=1" name = "viewport">
         <title>Register</title>
-        <link crossorigin = "anonymous" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity = "sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" referrerpolicy = "no-referrer" rel = "stylesheet"/>
-        <link href = "/css/adminlte.min.css" rel = "stylesheet">
+        <link href = "https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css" rel = "stylesheet">
+        <link crossorigin = "anonymous" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity = "sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" referrerpolicy = "no-referrer" rel = "stylesheet"/>
     </head>
     <body>
         <nav class = "navbar navbar-light bg-light">
@@ -14,34 +14,36 @@
                 NTT e-MOI
             </a>
         </nav>
-        <div class = "card card-primary">
-            <div class = "card-header">
-                <h3 class = "card-title">Đăng ký</h3>
+        <div class = "container d-flex justify-content-center">
+            <div class = "card card-primary" style = "margin-top: 20px; min-width: 50vw">
+                <div class = "card-header">
+                    <h3 class = "card-title">Đăng ký</h3>
+                </div>
+                <form method = "post" th:object = "${UserDTO}">
+                    <input th:name = "${_csrf.parameterName}" th:value = "${_csrf.token}" type = "hidden"/>
+                    <div class = "card-body">
+                        <div class = "form-group">
+                            <input class = "form-control" placeholder = "Nhập tên tài khoản" required th:field = "${UserDTO.username}" type = "text">
+                            <p th:errorclass = "text-danger" th:errors = "${UserDTO.username}" th:if = "${#fields.hasErrors('username')}"></p>
+                        </div>
+                        <div class = "form-group">
+                            <input class = "form-control" placeholder = "Nhập mật khẩu" required th:field = "${UserDTO.password}" type = "password">
+                            <p th:errorclass = "text-danger" th:errors = "${UserDTO.password}" th:if = "${#fields.hasErrors('password')}"></p>
+                        </div>
+                        <div class = "form-group mb-0">
+                            <input class = "form-control" placeholder = "Nhập lại mật khẩu" required th:field = "${UserDTO.confirmPassword}" type = "password">
+                            <p th:errorclass = "text-danger" th:errors = "${UserDTO.confirmPassword}" th:if = "${#fields.hasErrors('confirmPassword')}"></p>
+                        </div>
+                    </div>
+                    <div class = "card-footer">
+                        <div class = "float-left">
+                            Đã có tài khoản ?
+                            <a class = "text-decoration-none" href = "/login">Đăng nhập</a>
+                        </div>
+                        <button class = "btn btn-primary float-right" type = "submit">Đăng ký</button>
+                    </div>
+                </form>
             </div>
-            <form method = "post" th:object = "${UserDTO}">
-                <input th:name = "${_csrf.parameterName}" th:value = "${_csrf.token}" type = "hidden"/>
-                <div class = "card-body">
-                    <div class = "form-group">
-                        <input class = "form-control" placeholder = "Nhập tên tài khoản" required th:field = "${UserDTO.username}" type = "text">
-                        <p th:errorclass = "text-danger" th:errors = "${UserDTO.username}" th:if = "${#fields.hasErrors('username')}"></p>
-                    </div>
-                    <div class = "form-group">
-                        <input class = "form-control" placeholder = "Nhập mật khẩu" required th:field = "${UserDTO.password}" type = "password">
-                        <p th:errorclass = "text-danger" th:errors = "${UserDTO.password}" th:if = "${#fields.hasErrors('password')}"></p>
-                    </div>
-                    <div class = "form-group mb-0">
-                        <input class = "form-control" placeholder = "Nhập lại mật khẩu" required th:field = "${UserDTO.confirmPassword}" type = "password">
-                        <p th:errorclass = "text-danger" th:errors = "${UserDTO.confirmPassword}" th:if = "${#fields.hasErrors('confirmPassword')}"></p>
-                    </div>
-                </div>
-                <div class = "card-footer">
-                    <div class = "float-left">
-                        Đã có tài khoản ?
-                        <a class = "text-decoration-none" href = "/login">Đăng nhập</a>
-                    </div>
-                    <button class = "btn btn-primary float-right" type = "submit">Đăng ký</button>
-                </div>
-            </form>
         </div>
     </body>
 </html>

@@ -34,11 +34,19 @@
                                             <table class = "table table-hover table-bordered">
                                                 <thead class = "thead-light">
                                                 <tr>
-                                                    <th scope = "col">#</th>
-                                                    <th scope = "col">Title</th>
-                                                    <th scope = "col">Description</th>
-                                                    <th scope = "col">Level</th>
-                                                    <th scope = "col">Published</th>
+                                                    <th scope = "col">No.</th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Title', ${orderBy})}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Description', ${orderBy})}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Level', ${orderBy})}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Published', ${orderBy})}"></div>
+                                                    </th>
                                                     <th scope = "col">Actions</th>
                                                 </tr>
                                                 </thead>
@@ -49,12 +57,12 @@
                                                     <td>[[${tutorial.description}]]</td>
                                                     <td>[[${tutorial.level}]]</td>
                                                     <td>
-                                                        <a class = "btn btn-secondary fa-regular fa-square-check" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/false'}" th:if = "${tutorial.published == true}" title = "Disable this tutorial"></a>
-                                                        <a class = "btn btn-success fa-regular fa-square" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/true'}" th:if = "${tutorial.published == false}" title = "Enable this tutorial"></a>
+                                                        <a class = "btn btn-success fa-regular fa-square-check" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/false'}" th:if = "${tutorial.published == true}" title = "Disable this tutorial"></a>
+                                                        <a class = "btn btn-danger fa-regular fa-square" th:href = "@{'/tutorials/' + ${tutorial.id} + '/published/true'}" th:if = "${tutorial.published == false}" title = "Enable this tutorial"></a>
                                                     </td>
                                                     <td>
                                                         <a class = "btn btn-primary fa-solid fa-info" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "More details"></a>
-                                                        <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "Edit this tutorial"></a> &nbsp;
+                                                        <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/tutorials/' + ${tutorial.id}}" title = "Edit this tutorial"></a>
                                                         <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/tutorials/delete/' + ${tutorial.id}}" title = "Delete this tutorial"></a>
                                                     </td>
                                                 </tr>

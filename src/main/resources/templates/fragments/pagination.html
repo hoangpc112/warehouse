@@ -8,12 +8,12 @@
         </div>
         <ul class = "pagination mb-0">
             <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
-                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + 1 + '&size=' + ${pageSize}}" title = "First page">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + 1 + '&size=' + ${pageSize} + ${order != '' && order != null ? '&order=' + order + '&orderBy=' + orderBy : ''}}" title = "First page">
                     <<
                 </a>
             </li>
             <li class = "page-item" th:classappend = "${currentPage == 1} ? 'disabled'">
-                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize}}" title = "Previous page">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage - 1} + '&size=' + ${pageSize} + ${order != '' && order != null ? '&order=' + order + '&orderBy=' + orderBy : ''}}" title = "Previous page">
                     Prev
                 </a>
             </li>
@@ -21,7 +21,7 @@
                 <a class = "page-link" href = "#">...</a>
             </li>
             <li class = "page-item" th:classappend = "${page == currentPage} ? 'active'" th:each = "page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
-                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize}}" th:title = "'Page ' + ${page}">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${page} + '&size=' + ${pageSize} + ${order != '' && order != null ? '&order=' + order + '&orderBy=' + orderBy : ''}}" th:title = "'Page ' + ${page}">
                     [[${page}]]
                 </a>
             </li>
@@ -29,12 +29,12 @@
                 <a class = "page-link" href = "#">...</a>
             </li>
             <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
-                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize}}" title = "Next page">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage + 1} + '&size=' + ${pageSize} + ${order != '' && order != null ? '&order=' + order + '&orderBy=' + orderBy : ''}}" title = "Next page">
                     Next
                 </a>
             </li>
             <li class = "page-item" th:classappend = "${currentPage == totalPages} ? 'disabled'">
-                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?'+ ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize}}" title = "Last page">
+                <a class = "page-link" rel = "tooltip" th:href = "@{'/' + ${url} + '?'+ ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${totalPages} + '&size=' + ${pageSize} + ${order != '' && order != null ? '&order=' + order + '&orderBy=' + orderBy : ''}}" title = "Last page">
                     >>
                 </a>
             </li>

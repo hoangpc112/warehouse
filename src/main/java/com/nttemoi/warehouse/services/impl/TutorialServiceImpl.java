@@ -5,9 +5,8 @@ import com.nttemoi.warehouse.repositories.TutorialRepository;
 import com.nttemoi.warehouse.services.TutorialService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TutorialServiceImpl implements TutorialService {
@@ -19,17 +18,12 @@ public class TutorialServiceImpl implements TutorialService {
     }
 
     @Override
-    public List <Tutorial> findAll () {
-        return tutorialRepository.findAll();
-    }
-
-    @Override
     public Page <Tutorial> findAll (int page, int size) {
         return tutorialRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
-    public Page <Tutorial> findByTitleOrLevel (String keyword, int page, int size) {
+    public Page <Tutorial> findByKeyword (String keyword, int page, int size) {
         return tutorialRepository.findByTitleLikeOrLevelLike("%" + keyword + "%", "%" + keyword + "%", PageRequest.of(page, size));
     }
 
@@ -51,5 +45,25 @@ public class TutorialServiceImpl implements TutorialService {
     @Override
     public void deleteById (Long id) {
         tutorialRepository.deleteById(id);
+    }
+
+    @Override
+    public Page <Tutorial> findAllAndSort (int page, int size, String order, String orderBy) {
+        if (order.equals("asc")) {
+            return tutorialRepository.findAll(PageRequest.of(page, size, Sort.by(orderBy).ascending()));
+        }
+        else {
+            return tutorialRepository.findAll(PageRequest.of(page, size, Sort.by(orderBy).descending()));
+        }
+    }
+
+    @Override
+    public Page <Tutorial> findByKeywordAndSort (String keyword, int page, int size, String order, String orderBy) {
+        if (order.equals("asc")) {
+            return tutorialRepository.findByTitleLikeOrLevelLike("%" + keyword + "%", "%" + keyword + "%", PageRequest.of(page, size, Sort.by(orderBy).ascending()));
+        }
+        else {
+            return tutorialRepository.findByTitleLikeOrLevelLike("%" + keyword + "%", "%" + keyword + "%", PageRequest.of(page, size, Sort.by(orderBy).descending()));
+        }
     }
 }

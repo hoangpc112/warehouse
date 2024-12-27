@@ -22,14 +22,31 @@ public class TutorialController {
     public String getAll (Model model,
                           @RequestParam (required = false) String keyword,
                           @RequestParam (defaultValue = "1") int page,
-                          @RequestParam (defaultValue = "10") int size) {
+                          @RequestParam (defaultValue = "10") int size,
+                          @RequestParam (required = false) String order,
+                          @RequestParam (required = false) String orderBy) {
         Page <Tutorial> pageTuts;
+
         if (keyword == null) {
-            pageTuts = tutorialService.findAll(page - 1, size);
+            if (order != null) {
+                pageTuts = tutorialService.findAllAndSort(page - 1, size, order, orderBy);
+            }
+            else {
+                pageTuts = tutorialService.findAll(page - 1, size);
+            }
         }
         else {
-            pageTuts = tutorialService.findByTitleOrLevel(keyword, page - 1, size);
+            if (order != null) {
+                pageTuts = tutorialService.findByKeywordAndSort(keyword, page - 1, size, order, orderBy);
+            }
+            else {
+                pageTuts = tutorialService.findByKeyword(keyword, page - 1, size);
+            }
             model.addAttribute("keyword", keyword);
+        }
+        if (order != null) {
+            model.addAttribute("order", order);
+            model.addAttribute("orderBy", orderBy);
         }
 
         model.addAttribute("tutorials", pageTuts.getContent());
