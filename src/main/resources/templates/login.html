@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/">
+        <img alt="" class="d-inline-block align-top" height="30" src="/images/NTTeMOILogo.png" width="30">
+        NTT e-MOI
+    </a>
+</nav>
+<div class="container d-flex justify-content-center">
+    <div class="card card-info" style="margin-top: 20px; min-width: 50vw">
+        <div class="card-header">
+            <h3 class="card-title">Đăng nhập</h3>
+        </div>
+        <form class="form-horizontal" method="post" th:action="@{/login}">
+            <div class="card-body">
+                <div class="form-group row">
+                    <input class="form-control" name="username" placeholder="Tên tài khoản" required type="text">
+                </div>
+                <div class="form-group row mb-0">
+                    <input class="form-control" name="password" placeholder="Mật khẩu" required type="password">
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="float-left">
+                    Chưa có tài khoản ?
+                    <a class="text-decoration-none" href="/register">Đăng ký</a>
+                </div>
+                <button class="btn btn-info float-right" type="submit">Đăng nhập</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

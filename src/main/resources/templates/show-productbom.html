@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Productbom</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Productbom</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Productbom</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div th:replace="~{fragments/message :: message}"></div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div th:replace="~{fragments/searchForm :: searchForm('product/detail/' + ${id})}"></div>
+                                <div class="table-responsive" th:if="${productboms.size() > 0}">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('product/detail/' + ${id}, ${order != '' && order != null ? order : ''}, 'Name', ${orderBy},NULL)}"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('product/detail/' + ${id}, ${order != '' && order != null ? order : ''}, 'Quantity', ${orderBy},NULL)}"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('product/detail/' + ${id}, ${order != '' && order != null ? order : ''}, 'Unit', ${orderBy},NULL)}"></div>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="productBom, iterStat : ${productboms}">
+                                            <th scope="row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                            <td>[[${productBom.name}]]</td>
+                                            <td>[[${productBom.quantity}]]</td>
+                                            <td>[[${productBom.unit}]]</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div th:unless="${productboms.size() > 0}">
+                                    <span>No productbom found!</span>
+                                </div>
+                                <nav th:replace="~{fragments/pagination :: pagination('product/detail/' + ${id})}"></nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="~{fragments/deleteModal :: deleteModal}"></div>
+        </section>
+    </div>
+    <script src="/js/common.js"></script>
+</section>
+</body>
+</html>

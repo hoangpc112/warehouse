@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Supplier</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Supplier</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Supplier</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div th:replace="~{fragments/message :: message}"></div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div th:replace="~{fragments/searchForm :: searchForm('supplier')}"></div>
+
+                                <div class="table-responsive" th:if="${suppliers.size() > 0}">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('supplier', ${order != '' && order != null ? order : ''}, 'Name', ${orderBy},NULL)}"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('supplier', ${order != '' && order != null ? order : ''}, 'Address', ${orderBy},NULL)}"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('supplier', ${order != '' && order != null ? order : ''}, 'Phone', ${orderBy},'Phone number')}"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('supplier', ${order != '' && order != null ? order : ''}, 'Email', ${orderBy},NULL)}"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div th:replace="~{fragments/sortBtn :: sortBtn('supplier', ${order != '' && order != null ? order : ''}, 'Published', ${orderBy},'Active')}"></div>
+                                            </th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="supplier, iterStat : ${suppliers}">
+                                            <th scope="row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                            <td>[[${supplier.name}]]</td>
+                                            <td>[[${supplier.address}]]</td>
+                                            <td>[[${supplier.phone}]]</td>
+                                            <td>[[${supplier.email}]]</td>
+                                            <td>
+                                                <a class="btn btn-success fa-regular fa-square-check"
+                                                   th:href="@{'/supplier/' + ${supplier.id} + '/published/false'}"
+                                                   th:if="${supplier.published == true}"
+                                                   title="Disable this supplier"></a>
+                                                <a class="btn btn-danger fa-regular fa-square"
+                                                   th:href="@{'/supplier/' + ${supplier.id} + '/published/true'}"
+                                                   th:if="${supplier.published == false}"
+                                                   title="Enable this supplier"></a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary fa-solid fa-info"
+                                                   th:href="@{'/supplier/' + ${supplier.id}}" title="More details"></a>
+                                                <a class="btn btn-primary fa-regular fa-pen-to-square icon-dark"
+                                                   th:href="@{'/supplier/' + ${supplier.id}}"
+                                                   title="Edit this supplier"></a>
+                                                <a class="btn btn-danger fa-regular fa-trash-can icon-dark"
+                                                   data-bs-target="#deleteModal" data-bs-toggle="modal"
+                                                   onclick="openDeleteModal(event, this.href)"
+                                                   th:href="@{'/supplier/delete/' + ${supplier.id}}"
+                                                   title="Delete this supplier"></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div th:unless="${suppliers.size() > 0}">
+                                    <span>No suppliers found!</span>
+                                </div>
+
+                                <nav th:replace="~{fragments/pagination :: pagination('supplier')}"></nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="~{fragments/deleteModal :: deleteModal}"></div>
+        </section>
+    </div>
+    <script src="/js/common.js"></script>
+</section>
+</body>
+</html>

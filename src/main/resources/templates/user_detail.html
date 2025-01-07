@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Chi tiết User</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Chi tiết user</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/user">User</a></li>
+                            <li class="breadcrumb-item active">Chi tiết</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form enctype="multipart/form-data" id="customForm" method="post" style="margin: 0 auto"
+                                      th:object="${user}">
+                                    <input th:field="*{id}" type="hidden">
+                                    <input th:field="*{password}" type="hidden">
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Username:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{username}">
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Phone Number:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{phoneNumber}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Email:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{email}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Address:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{address}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Warehouse Address:</label>
+                                        <div class="col-sm-14" style="align-content: center"
+                                             th:if="${user.warehouse!=null}" th:text="*{warehouse.address}">
+                                        </div>
+                                        <div class="col-sm-14" style="align-content: center"
+                                             th:if="${user.warehouse==null}" th:text="NONE">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Created At:</label>
+                                        <div class="col-sm-14" style="align-content: center"
+                                             th:text="*{{#temporals.format(createdAt, 'dd/MM/yyyy - HH:mm:ss')}}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Updated At:</label>
+                                        <div class="col-sm-14" style="align-content: center"
+                                             th:text="*{{#temporals.format(updatedAt, 'dd/MM/yyyy - HH:mm:ss')}}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label" for="roles">Roles:</label>
+                                        <div class="col-sm-11">
+                                            <th:block th:each="role: ${userRoleList}">
+                                                <input class="m-2" disabled id="roles" th:field="*{roles}"
+                                                       th:text="${role.name}" th:value="${role.id}" type="checkbox"/>
+                                            </th:block>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+</body>
+</html>

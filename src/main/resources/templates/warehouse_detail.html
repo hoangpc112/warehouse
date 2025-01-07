@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Chi tiết Warehouse</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Chi tiết warehouse</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/warehouse">Warehouse</a></li>
+                            <li class="breadcrumb-item active">Chi tiết</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form enctype="multipart/form-data" id="customForm" method="post" style="margin: 0 auto"
+                                      th:object="${warehouse}">
+                                    <input th:field="*{id}" type="hidden">
+                                    <input th:field="*{stockBalances}" type="hidden">
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Address:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{address}">
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Phone Number:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{phoneNumber}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Capacity:</label>
+                                        <div class="col-sm-14" style="align-content: center" th:text="*{capacity}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Created At:</label>
+                                        <div class="col-sm-14" style="align-content: center"
+                                             th:text="*{{#temporals.format(createdAt, 'dd/MM/yyyy - HH:mm:ss')}}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-1 col-form-label">Updated At:</label>
+                                        <div class="col-sm-14" style="align-content: center"
+                                             th:text="*{{#temporals.format(updatedAt, 'dd/MM/yyyy - HH:mm:ss')}}">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" th:if="${warehouse.getUsers().size()!=0}">
+                                        <label class="col-sm-1 col-form-label">user</label>
+                                        <div class="col-sm-14" style="align-content: center">
+                                            <span th:each="user : ${warehouse.getUsers()}"
+                                                  th:text="${user.getUsername().toString()+' '}"></span>
+
+                                        </div>
+                                    </div>
+
+
+                                </form>
+
+                                <div class="container-fluid">
+                                    <!--                                    <div th:replace="~{fragments/searchForm :: searchForm('warehouse/detail/'+${warehouse.address})}"></div>-->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="table-responsive" th:if="${stockBalancePage.size()>0}">
+                                                    <table class="table table-hover table-bordered">
+                                                        <thead class="thead-light">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Total quantity</th>
+                                                            <th scope="col">Max quantity</th>
+                                                            <th scope="col">Updated At</th>
+
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="stockBalance,iterStat : ${stockBalancePage}">
+                                                            <th scope="row">
+                                                                [[${(currentPage-1)*pageSize+iterStat.count}]]
+                                                            </th>
+                                                            <td>[[${stockBalance.product.getName()}]]</td>
+                                                            <td>[[${stockBalance.totalQuantity}]]</td>
+                                                            <td>[[${stockBalance.maxQuantity}]]</td>
+                                                            <td>[[${#temporals.format(stockBalance.updatedAt,
+                                                                'dd/MM/yyyy -
+                                                                HH:mm:ss')}]]
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div th:unless="${stockBalancePage.size() > 0}">
+                                                    <span>No stock found!</span>
+                                                </div>
+                                                <nav th:replace="~{fragments/pagination :: pagination('warehouse/detail/'+${warehouse.address})}"></nav>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+</body>
+</html>
