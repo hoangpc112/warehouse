@@ -2,6 +2,15 @@
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
         <title>Tutorials</title>
+        <style>
+            .table {
+                table-layout: fixed;
+            }
+
+            table th, table td {
+                vertical-align: middle !important;
+            }
+        </style>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -31,23 +40,23 @@
                                         <div th:replace = "~{fragments/searchForm :: searchForm('tutorials')}"></div>
 
                                         <div class = "table-responsive" th:if = "${tutorials.size() > 0}">
-                                            <table class = "table table-hover table-bordered">
+                                            <table class = "table table-hover table-bordered text-center">
                                                 <thead class = "thead-light">
                                                 <tr>
-                                                    <th scope = "col">No.</th>
+                                                    <th class = "col-1" scope = "col">No.</th>
                                                     <th scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Title', ${orderBy})}"></div>
                                                     </th>
                                                     <th scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Description', ${orderBy})}"></div>
                                                     </th>
-                                                    <th scope = "col">
+                                                    <th class = "col-1" scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Level', ${orderBy})}"></div>
                                                     </th>
-                                                    <th scope = "col">
+                                                    <th class = "col-1" scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('tutorials', ${order != '' && order != null ? order : ''}, 'Published', ${orderBy})}"></div>
                                                     </th>
-                                                    <th scope = "col">Actions</th>
+                                                    <th class = "col-2" scope = "col">Actions</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>

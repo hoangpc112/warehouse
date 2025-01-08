@@ -2,11 +2,14 @@ package com.nttemoi.warehouse.controlllers;
 
 import com.nttemoi.warehouse.entities.Tutorial;
 import com.nttemoi.warehouse.services.impl.TutorialServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping ("/tutorials")
@@ -70,12 +73,13 @@ public class TutorialController {
 
     @PostMapping ("/save")
     public String saveTutorial (Tutorial tutorial,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                HttpServletRequest request) {
         tutorialService.save(tutorial);
 
         redirectAttributes.addFlashAttribute("message", "The Tutorial has been saved successfully!");
 
-        return "redirect:/tutorials";
+        return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl).orElse("/tutorials");
     }
 
     @GetMapping ("/{id}")
@@ -106,7 +110,8 @@ public class TutorialController {
     @GetMapping ("/{id}/published/{status}")
     public String updateTutorialPublishedStatus (@PathVariable ("id") Long id,
                                                  @PathVariable ("status") boolean published,
-                                                 RedirectAttributes redirectAttributes) {
+                                                 RedirectAttributes redirectAttributes,
+                                                 HttpServletRequest request) {
         try {
             tutorialService.updatePublishedStatus(id, published);
 
@@ -118,6 +123,6 @@ public class TutorialController {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
 
-        return "redirect:/tutorials";
+        return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl).orElse("/tutorials");
     }
 }

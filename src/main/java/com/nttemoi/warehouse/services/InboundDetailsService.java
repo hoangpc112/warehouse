@@ -1,0 +1,17 @@
+package com.nttemoi.warehouse.services;
+
+import com.nttemoi.warehouse.entities.InboundDetails;
+import org.springframework.data.domain.Page;
+
+public interface InboundDetailsService {
+
+    InboundDetails findById (Long id);
+
+    void save (InboundDetails inboundDetails);
+
+    void deleteById (Long id);
+
+    Page <InboundDetails> findAll (Long inboundId, int page, int size, String order, String orderBy);
+
+    Page <InboundDetails> findAllByKeyword (Long inboundId, String keyword, int page, int size, String order, String orderBy);
+}

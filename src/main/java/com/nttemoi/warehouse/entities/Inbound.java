@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +19,28 @@ import lombok.Setter;
 @Entity
 @Table (name = "inbounds")
 public class Inbound {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
+    @CreationTimestamp
+    @Column (updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    private String status;
+
+    @OneToMany (mappedBy = "inbound", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List <InboundDetails> inboundDetails;
+
+    @ManyToOne
+    @JoinColumn (name = "supplier_id", referencedColumnName = "id")
+    private Supplier supplier;
+
+    @ManyToOne
+    @JoinColumn (name = "user_id", referencedColumnName = "id")
+    private User user;
 }

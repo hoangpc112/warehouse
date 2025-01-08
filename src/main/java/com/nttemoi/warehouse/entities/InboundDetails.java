@@ -1,6 +1,5 @@
 package com.nttemoi.warehouse.entities;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,11 +16,24 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table (name = "outbounds")
-public class Outbound {
+@Table (name = "inbound_details")
+public class InboundDetails {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "product_id", nullable = false)
+    private Product product;
+
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "warehouse_id", nullable = false)
+    private Warehouse warehouse;
+
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "inbound_id", nullable = false)
+    private Inbound inbound;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -30,6 +41,6 @@ public class Outbound {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany (mappedBy = "outbound", fetch = FetchType.LAZY)
-    private List <OutboundDetails> outboundDetails;
+    private int quantity;
+    private int damaged;
 }

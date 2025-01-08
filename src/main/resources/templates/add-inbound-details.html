@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title>Add inbound details</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Add inbound details</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-sm-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item"><a href = "/inbound">Inbound</a></li>
+                                    <li class = "breadcrumb-item active">Details</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <form method = "post" th:action = "@{'/inbound/' + ${inboundDetailsDTO.inboundId} + '/details/save'}" th:object = "${inboundDetailsDTO}">
+                                            <input th:field = "*{id}" type = "hidden">
+                                            <input th:field = "*{inboundId}" type = "hidden">
+                                            <div class = "form-group">
+                                                <label for = "productSelect">Product</label>
+                                                <select class = "form-control" id = "productSelect" required th:field = "*{productId}">
+                                                    <option selected value = "">Select a product</option>
+                                                    <option th:each = "product : ${products}" th:text = "${product.name}" th:value = "${product.id}"></option>
+                                                </select>
+                                                <div th:errors = "*{productId}" th:if = "${#fields.hasErrors('productId')}"></div>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "warehouseSelect">Warehouse</label>
+                                                <select class = "form-control" id = "warehouseSelect" required th:field = "*{warehouseId}">
+                                                    <option selected value = "">Select a warehouse</option>
+                                                    <option th:each = "warehouse : ${warehouses}" th:text = "${warehouse}" th:value = "${warehouse.id}"></option>
+                                                </select>
+                                                <div th:errors = "*{warehouseId}" th:if = "${#fields.hasErrors('warehouseId')}"></div>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "quantity">Quantity</label>
+                                                <input class = "form-control" id = "quantity" min = "1" required th:field = "*{quantity}" type = "number">
+                                                <div th:errors = "*{quantity}" th:if = "${#fields.hasErrors('quantity')}"></div>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "damagedQuantity">Damaged Quantity</label>
+                                                <input class = "form-control" id = "damagedQuantity" min = "0" required th:field = "*{damaged}" type = "number">
+                                                <div th:errors = "*{damaged}" th:if = "${#fields.hasErrors('damaged')}"></div>
+                                            </div>
+                                            <div class = "text-center mt-4">
+                                                <button class = "btn btn-primary" type = "submit">Save</button>
+                                                <a class = "btn btn-secondary" th:href = "@{'/inbound/' + ${inboundDetailsDTO.inboundId}}">Cancel</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

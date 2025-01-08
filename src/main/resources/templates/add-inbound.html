@@ -24,18 +24,97 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <form method = "post" th:action = "@{/inbound/save}" th:object = "${inboundDTO}">
+                                            <input th:field = "*{id}" type = "hidden">
+                                            <div class = "form-group">
+                                                <label for = "supplierSelect">Supplier</label>
+                                                <select class = "form-control" id = "supplierSelect" required th:field = "*{supplierId}">
+                                                    <option selected value = "">Select a supplier</option>
+                                                    <option th:each = "supplier : ${suppliers}" th:text = "${supplier.name}" th:value = "${supplier.id}"></option>
+                                                </select>
+                                                <div class = "text-danger" th:errors = "*{supplierId}" th:if = "${#fields.hasErrors('supplierId')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "userSelect">User</label>
+                                                <select class = "form-control" id = "userSelect" required th:field = "*{userId}">
+                                                    <option selected value = "">Select a user</option>
+                                                    <option th:each = "user : ${users}" th:text = "${user.username}" th:value = "${user.id}"></option>
+                                                </select>
+                                                <div class = "text-danger" th:errors = "*{userId}" th:if = "${#fields.hasErrors('userId')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "statusSelect">Status</label>
+                                                <select class = "form-control" id = "statusSelect" required th:field = "*{status}">
+                                                    <option value = "Active">Active</option>
+                                                    <option value = "Inactive">Inactive</option>
+                                                </select>
+                                                <div class = "text-danger" th:errors = "*{status}" th:if = "${#fields.hasErrors('status')}"></div>
+                                            </div>
+
+                                            <div class = "text-center">
+                                                <a class = "btn btn-primary" th:href = "@{'/inbound/' + ${id} + '/details/new'}" th:if = "${inboundDTO.id != null}">Add new product</a>
+                                                <button class = "btn btn-success" type = "submit">Save</button>
+                                                <a class = "btn btn-danger" href = "/inbound">Cancel</a>
+                                            </div>
+                                        </form>
+
+                                        <div th:if = "${inboundDetails != null && !inboundDetails.isEmpty() && inboundDTO.id != null}">
+                                            <div th:replace = "~{fragments/searchForm :: searchForm('/inbound/' + ${inboundDTO.id})}"></div>
+
+                                            <div class = "table-responsive">
+                                                <table class = "table table-hover table-bordered text-center">
+                                                    <thead class = "thead-light">
+                                                    <tr>
+                                                        <th class = "col-1" scope = "col">No.</th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Product', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Warehouse', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Quantity', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Damaged', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th class = "col-1" scope = "col">Actions</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each = "inboundDetail, iterStat : ${inboundDetails}">
+                                                        <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                        <td th:text = "${inboundDetail.product.name}"></td>
+                                                        <td th:text = "${inboundDetail.warehouse}"></td>
+                                                        <td th:text = "${inboundDetail.quantity}"></td>
+                                                        <td th:text = "${inboundDetail.damaged}"></td>
+                                                        <td>
+                                                            <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/inbound/' + ${inboundDTO.id} + '/details/' + ${inboundDetail.id}}" title = "Edit"></a>
+                                                            <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/inbound/' + ${inboundDTO.id} + '/details/delete/' + ${inboundDetail.id}}" title = "Delete"></a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <nav th:replace = "~{fragments/pagination :: pagination('/inbound/' + ${inboundDTO.id})}"></nav>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div th:replace = "~{fragments/deleteModal :: deleteModal}"></div>
                 </section>
             </div>
+            <script src = "/js/common.js"></script>
         </section>
     </body>
 </html>

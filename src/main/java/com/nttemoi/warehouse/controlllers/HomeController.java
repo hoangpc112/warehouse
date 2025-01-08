@@ -55,11 +55,12 @@ public class HomeController {
 
             model.addAttribute("UserDTO", new UserDTO());
             model.addAttribute("success", true);
+
+            return "redirect:/login";
         } catch (Exception e) {
             bindingResult.addError(new FieldError("UserDTO", "username", e.getMessage()));
+            return "register";
         }
-
-        return "redirect:/login";
     }
 
     @GetMapping ("/login")

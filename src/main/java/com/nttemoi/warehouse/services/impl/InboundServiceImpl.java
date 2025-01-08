@@ -3,9 +3,10 @@ package com.nttemoi.warehouse.services.impl;
 import com.nttemoi.warehouse.entities.Inbound;
 import com.nttemoi.warehouse.repositories.InboundRepository;
 import com.nttemoi.warehouse.services.InboundService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class InboundServiceImpl implements InboundService {
@@ -17,13 +18,8 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
-    public List <Inbound> findAll () {
-        return inboundRepository.findAll();
-    }
-
-    @Override
     public Inbound findById (Long id) {
-        return inboundRepository.findById(id).orElse(null);
+        return inboundRepository.findById(id).orElseThrow(() -> new RuntimeException("Inbound not found"));
     }
 
     @Override
@@ -33,6 +29,24 @@ public class InboundServiceImpl implements InboundService {
 
     @Override
     public void deleteById (Long id) {
-        inboundRepository.deleteById(id);
+        inboundRepository.delete(findById(id));
+    }
+
+    @Override
+    public void updateStatus (Long id, String status) {
+        Inbound inbound = findById(id);
+        inbound.setStatus(status);
+        inboundRepository.save(inbound);
+    }
+
+    @Override
+    public Page <Inbound> findAll (int page, int size, String order, String orderBy) {
+        return inboundRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
+    }
+
+
+    @Override
+    public Page <Inbound> findAllByKeyword (String keyword, int page, int size, String order, String orderBy) {
+        return null;
     }
 }
