@@ -89,10 +89,19 @@
                                                         <thead class="thead-light">
                                                         <tr>
                                                             <th scope="col">#</th>
-                                                            <th scope="col">Name</th>
-                                                            <th scope="col">Total quantity</th>
-                                                            <th scope="col">Max quantity</th>
-                                                            <th scope="col">Updated At</th>
+                                                            <th scope="col">
+                                                                <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy},'name')}"></div>
+                                                            </th>
+                                                            <th scope="col">
+                                                                <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'totalQuantity', ${orderBy},'Total quantity')}"></div>
+
+                                                            </th>
+                                                            <th scope="col">
+                                                                <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'maxQuantity', ${orderBy},'Max quantity')}"></div>
+                                                            </th>
+                                                            <th scope="col">
+                                                                <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'updatedAt', ${orderBy},'Updated at')}"></div>
+                                                            </th>
 
                                                         </tr>
                                                         </thead>

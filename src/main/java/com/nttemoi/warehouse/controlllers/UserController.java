@@ -1,18 +1,21 @@
 package com.nttemoi.warehouse.controlllers;
 
+import com.nttemoi.warehouse.dtos.EditUserDTO;
+import com.nttemoi.warehouse.dtos.UserDTO;
 import com.nttemoi.warehouse.entities.Role;
 import com.nttemoi.warehouse.entities.User;
 import com.nttemoi.warehouse.entities.Warehouse;
 import com.nttemoi.warehouse.services.impl.UserServiceImpl;
 import com.nttemoi.warehouse.services.impl.WarehouseServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -77,13 +80,20 @@ public class UserController {
                            RedirectAttributes redirectAttributes) {
         try {
             User user = userService.findByUsername(name);
-
+            EditUserDTO editUserDTO = new EditUserDTO();
+            editUserDTO.setId(user.getId());
+            editUserDTO.setEmail(user.getEmail());
+            editUserDTO.setAddress(user.getAddress());
+            editUserDTO.setRoles(user.getRoles());
+            editUserDTO.setPhoneNumber(user.getPhoneNumber());
+            editUserDTO.setWarehouse(user.getWarehouse());
+            editUserDTO.setUsername(user.getUsername());
             List<Warehouse> warehouses = warehouseService.findAll();
             if (user.getWarehouse() != null) {
                 warehouses.remove(user.getWarehouse());
             }
             List<Role> userRoleList = userService.findAllRoles();
-            model.addAttribute("user", user);
+            model.addAttribute("user", editUserDTO);
             model.addAttribute("userRoleList", userRoleList);
             model.addAttribute("warehouses", warehouses);
             model.addAttribute("pageTitle", "Edit User (Name: " + name + ")");
@@ -95,13 +105,60 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @GetMapping("/user/new")
+    public String newUser(Model model) {
+        List<Role> userRoleList = userService.findAllRoles();
+        model.addAttribute("userRoleList", userRoleList);
+        model.addAttribute("UserDTO", new UserDTO());
+        model.addAttribute("success", false);
+        return "add-user";
+    }
+
+    @PostMapping("/user/new/save")
+    public String saveUser(@Valid @ModelAttribute("UserDTO") UserDTO UserDTO, BindingResult bindingResult, Model model) {
+        if (!UserDTO.getPassword().equals(UserDTO.getConfirmPassword())) {
+            bindingResult.addError(new FieldError("UserDTO", "confirmPassword", "Password and confirm password does not match."));
+        }
+
+
+        User User = userService.findByUsername(UserDTO.getUsername());
+        if (User != null) {
+            bindingResult.addError(new FieldError("UserDTO", "username", "Username is already in used."));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "add-user";
+        }
+
+        try {
+            var bCryptEncoder = new BCryptPasswordEncoder();
+
+            User user = new User();
+            if (!UserDTO.getRoles().isEmpty()) {
+                user.setRoles(UserDTO.getRoles());
+            }
+            user.setWarehouse(new Warehouse());
+            user.setUsername(UserDTO.getUsername());
+            user.setPassword(bCryptEncoder.encode(UserDTO.getPassword()));
+
+            userService.save(user);
+            userService.registerUser(user);
+            model.addAttribute("UserDTO", new UserDTO());
+            model.addAttribute("success", true);
+        } catch (Exception e) {
+            bindingResult.addError(new FieldError("UserDTO", "username", e.getMessage()));
+        }
+        return "redirect:/user";
+    }
+
+
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable long id,
                              RedirectAttributes redirectAttributes) {
 
 
         try {
-            userService.deleteById(id);
+            userService.deleteUser(id);
 
             redirectAttributes.addFlashAttribute("message", "User with id=" + id + " has been deleted successfully!");
         } catch (Exception e) {
@@ -111,18 +168,30 @@ public class UserController {
     }
 
     @PostMapping("/user/save")
-    public String saveUser(User user,
+    public String saveUser(EditUserDTO user,
                            @RequestParam(required = false) Long warehouseId,
                            RedirectAttributes redirectAttributes) {
         try {
             System.out.println(warehouseId);
-            Warehouse warehouse = warehouseService.findById(warehouseId);
-            user.setWarehouse(warehouse);
-            userService.save(user);
+            User user1 = userService.findById(user.getId());
+            user1.setWarehouse(warehouseService.findById(warehouseId));
+            user1.setUsername(user.getUsername());
+            user1.setEmail(user.getEmail());
+            user1.setAddress(user.getAddress());
+            user1.setRoles(user.getRoles());
+            user1.setPhoneNumber(user.getPhoneNumber());
+
+            userService.save(user1);
 
             redirectAttributes.addFlashAttribute("message", "User has been saved successfully!");
         } catch (Exception e) {
-            userService.save(user);
+            User user1 = userService.findById(user.getId());
+            user1.setUsername(user.getUsername());
+            user1.setEmail(user.getEmail());
+            user1.setAddress(user.getAddress());
+            user1.setRoles(user.getRoles());
+            user1.setPhoneNumber(user.getPhoneNumber());
+            userService.save(user1);
             redirectAttributes.addAttribute("message", e.getMessage());
         }
         return "redirect:/user";

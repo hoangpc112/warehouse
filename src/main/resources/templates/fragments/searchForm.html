@@ -1,17 +1,21 @@
-<html xmlns:th="https://www.thymeleaf.org">
-<div class="mb-3" th:fragment="searchForm(url)">
+<div class="mb-4" th:fragment="searchForm(url)">
     <form id="searchForm" th:action="@{'/' + ${url}}">
-        <div class="row d-flex">
-            <div class="col-md-10 mt-2">
-                <div class="search">
-                    <input class="form-control" id="keyword" name="keyword" placeholder="Enter keyword" type="search">
+        <div class="row align-items-center">
+            <div class="col-md-11">
+                <div class="input-group">
+                    <input aria-label="Search" class="form-control" id="keyword" name="keyword"
+                           placeholder="Enter keyword" type="search">
+                    <div class="input-group-append">
+                        <button aria-label="Search" class="btn btn-primary" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-2 mt-2">
-                <button class="btn btn-primary" type="submit">Search</button>
-                <a class="btn btn-secondary" th:href="@{'/' + ${url}}">Cancel</a>
-                <a class="btn btn-success" th:href="@{'/' + ${url} + '/new'}" th:if="${url!='user'}">Add</a>
+            <div class="col-md-1 text-right">
+                <a aria-label="Add New" class="btn btn-success" th:href="@{'/' + ${url} + '/new'}">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
             </div>
         </div>
     </form>

@@ -1,5 +1,7 @@
 package com.nttemoi.warehouse.controlllers;
 
+import com.nttemoi.warehouse.dtos.AddWarehouseDTO;
+import com.nttemoi.warehouse.dtos.EditWarehouseDTO;
 import com.nttemoi.warehouse.entities.StockBalance;
 import com.nttemoi.warehouse.entities.Warehouse;
 import com.nttemoi.warehouse.services.impl.StockBalanceServiceImpl;
@@ -68,16 +70,21 @@ public class WarehouseController {
     }
 
     @PostMapping("/save")
-    public String save(Warehouse warehouse,
+    public String save(EditWarehouseDTO warehouse,
                        RedirectAttributes redirectAttributes) {
         try {
-            warehouseService.save(warehouse);
+            Warehouse updatedWarehouse = warehouseService.findById(warehouse.getId());
+            updatedWarehouse.setAddress(warehouse.getAddress());
+            updatedWarehouse.setPhoneNumber(warehouse.getPhoneNumber());
+            updatedWarehouse.setCapacity(warehouse.getCapacity());
+            warehouseService.save(updatedWarehouse);
             redirectAttributes.addFlashAttribute("message", "Warehouse has been saved successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/warehouse";
     }
+
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id,
@@ -96,9 +103,27 @@ public class WarehouseController {
 
     @GetMapping("/new")
     public String newWarehouse(Model model) {
-        Warehouse warehouse = new Warehouse();
-        model.addAttribute("warehouse", warehouse);
+        //  Warehouse warehouse = new Warehouse();
+        AddWarehouseDTO addWarehouseDTO = new AddWarehouseDTO();
+        model.addAttribute("warehouse", addWarehouseDTO);
         return "add-warehouse";
+    }
+
+    @PostMapping("/new/save")
+    public String saveNew(AddWarehouseDTO warehouse,
+                          RedirectAttributes redirectAttributes) {
+        try {
+            Warehouse newWarehouse = new Warehouse();
+            newWarehouse.setCapacity(warehouse.getWarehouseCapacity());
+            newWarehouse.setAddress(warehouse.getWarehouseAddress());
+            newWarehouse.setPhoneNumber(warehouse.getWarehousePhoneNumber());
+            newWarehouse.setActive(warehouse.isWarehouseActive());
+            warehouseService.save(newWarehouse);
+            redirectAttributes.addFlashAttribute("message", "Warehouse has been saved successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+        return "redirect:/warehouse";
     }
 
     @GetMapping("/{id}/active/{status}")
@@ -122,13 +147,24 @@ public class WarehouseController {
 
                                   @RequestParam(defaultValue = "1") int page,
                                   @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(required = false) String order,
+                                  @RequestParam(required = false) String orderBy,
                                   RedirectAttributes redirectAttributes) {
         try {
             Warehouse warehouse = warehouseService.findByAddress(address);
+            Page<StockBalance> stockBalancePage;
+            if (order != null) {
 
+                stockBalancePage = stockBalanceService.findByWarehouseIdAndSort(warehouse.getId(), page - 1, size, order, orderBy);
+            } else {
+                stockBalancePage = stockBalanceService.findByWarehouseId(warehouse.getId(), page - 1, size);
+            }
+            if (order != null) {
+                model.addAttribute("order", order);
+                model.addAttribute("orderBy", orderBy);
+            }
 //
 //            Page<StockBalance> stockBalancePage = new PageImpl<>(stockBalanceList);
-            Page<StockBalance> stockBalancePage = stockBalanceService.findByWarehouseId(warehouse.getId(), page - 1, size);
 //            for (StockBalance stockBalance : stockBalancePage.getContent()) {
 //                System.out.println(stockBalance.getProduct().getName());
 //
@@ -158,7 +194,13 @@ public class WarehouseController {
                                 RedirectAttributes redirectAttributes) {
         try {
             Warehouse warehouse = warehouseService.findByAddress(address);
-            model.addAttribute("warehouse", warehouse);
+            EditWarehouseDTO editWarehouseDTO = new EditWarehouseDTO();
+
+            editWarehouseDTO.setCapacity(warehouse.getCapacity());
+            editWarehouseDTO.setAddress(warehouse.getAddress());
+            editWarehouseDTO.setPhoneNumber(warehouse.getPhoneNumber());
+            editWarehouseDTO.setId(warehouse.getId());
+            model.addAttribute("warehouse", editWarehouseDTO);
             model.addAttribute("pageTitle", "Edit Warehouse (address: " + address + ")");
             return "warehouse-form";
         } catch (Exception e) {

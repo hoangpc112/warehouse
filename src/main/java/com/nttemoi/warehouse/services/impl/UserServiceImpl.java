@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService, RoleService {
 
     @Override
     public Page<User> findAll(int page, int size) {
-        return userRepository.findAll(PageRequest.of(page, size, Sort.by("username")));
+        return userRepository.findAll(PageRequest.of(page, size, Sort.by("id")));
     }
 
     @Override
@@ -84,9 +85,15 @@ public class UserServiceImpl implements UserService, RoleService {
     }
 
 
-    @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.getWarehouse().getUsers().remove(user);
+            user.getRoles().clear();  // Xóa các bản ghi tham chiếu trong bảng users_roles
+            userRepository.save(user);
+            userRepository.deleteById(userId);
+        }
     }
 
     @Override

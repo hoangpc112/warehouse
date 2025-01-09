@@ -1,5 +1,6 @@
 package com.nttemoi.warehouse.services.impl;
 
+import com.nttemoi.warehouse.entities.User;
 import com.nttemoi.warehouse.entities.Warehouse;
 import com.nttemoi.warehouse.repositories.WarehouseRepository;
 import com.nttemoi.warehouse.services.WarehouseService;
@@ -28,7 +29,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public Page<Warehouse> findAll(int page, int size) {
-        return warehouseRepository.findAll(PageRequest.of(page, size, Sort.by("address")));
+        return warehouseRepository.findAll(PageRequest.of(page, size, Sort.by("id")));
     }
 
     @Override
@@ -43,7 +44,16 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public void deleteById(Long id) {
-        warehouseRepository.deleteById(id);
+
+        Warehouse warehouse = warehouseRepository.findById(id).orElse(null);
+        if (warehouse != null) {
+            for (User user : warehouse.getUsers()) {
+                user.setWarehouse(null);
+            }
+            warehouseRepository.deleteById(id);
+        }
+
+
     }
 
     @Override

@@ -24,7 +24,7 @@ public interface UserService {
 
     void updateUserStatus(Long id, boolean status);
 
-    void deleteById(Long id);
+    //  void deleteById(Long id);
 
     void registerUser(User user);
 

@@ -33,7 +33,7 @@ public class Warehouse {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "warehouse")
     private Set<User> users;
 
     @Column
@@ -47,7 +47,7 @@ public class Warehouse {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "warehouse")
     private List<StockBalance> stockBalances;
 
 }

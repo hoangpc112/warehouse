@@ -16,10 +16,13 @@ public interface StockBalanceService {
 
     void deleteById(Long id);
 
+    Page<StockBalance> findAllAndSort(int page, int size, String order, String orderBy);
 
     Page<StockBalance> findByProductId(Long productId, int page, int size);
 
+
     Page<StockBalance> findByWarehouseId(Long warehouseId, int page, int size);
 
+    Page<StockBalance> findByWarehouseIdAndSort(Long warehouseId, int page, int size, String order, String orderBy);
 
 }

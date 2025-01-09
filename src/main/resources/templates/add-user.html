@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Add tutorial</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Add user</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/user">user</a></li>
+                            <li class="breadcrumb-item active">Add</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="post" th:action="@{/user/new/save}" th:object="${UserDTO}">
+                                    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Nhập tên tài khoản" required
+                                                   th:field="${UserDTO.username}"
+                                                   type="text">
+                                            <p th:errorclass="text-danger" th:errors="${UserDTO.username}"
+                                               th:if="${#fields.hasErrors('username')}"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Nhập mật khẩu" required
+                                                   th:field="${UserDTO.password}"
+                                                   type="password">
+                                            <p th:errorclass="text-danger" th:errors="${UserDTO.password}"
+                                               th:if="${#fields.hasErrors('password')}"></p>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <input class="form-control" placeholder="Nhập lại mật khẩu" required
+                                                   th:field="${UserDTO.confirmPassword}" type="password">
+                                            <p th:errorclass="text-danger" th:errors="${UserDTO.confirmPassword}"
+                                               th:if="${#fields.hasErrors('confirmPassword')}"></p>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-1 col-form-label" for="roles">Roles</label>
+                                            <div class="col-sm-11" style="align-content: center">
+                                                <th:block th:each="role: ${userRoleList}">
+                                                    <input class="m-2" id="roles" th:field="*{roles}"
+                                                           th:text="${role.name}" th:value="${role.id}"
+                                                           type="checkbox"/>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary float-middle" type="submit">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+</body>
+</html>
