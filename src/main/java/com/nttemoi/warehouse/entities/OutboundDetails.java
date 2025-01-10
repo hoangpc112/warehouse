@@ -35,16 +35,13 @@ public class OutboundDetails {
     @JoinColumn (name = "outbound_id", nullable = false)
     private Outbound outbound;
 
-    @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "user_id", nullable = false)
-    private User user;
-
     @CreationTimestamp
+    @Column (updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private int quantity;
-    private boolean status;
+    private Long quantity;
+    private String status;
 }

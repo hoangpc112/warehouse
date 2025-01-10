@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,7 +47,7 @@ public class InboundController {
         Page <Inbound> inboundPage;
 
         if (keyword.isPresent()) {
-            inboundPage = inboundService.findAllByKeyword(keyword.get(), page - 1, size, order, orderBy);
+            inboundPage = inboundService.findAllByKeyword("%" + keyword.get() + "%", page - 1, size, order, orderBy);
             model.addAttribute("keyword", keyword.get());
         }
         else {
@@ -93,10 +94,12 @@ public class InboundController {
 
             if (Optional.ofNullable(inboundDTO.getId()).isPresent()) {
                 inbound.setId(inboundDTO.getId());
+                inbound.setInboundDetails(inboundService.findById(inboundDTO.getId()).getInboundDetails());
             }
             inbound.setSupplier(supplierService.findById(inboundDTO.getSupplierId()));
             inbound.setUser(userService.findById(inboundDTO.getUserId()));
             inbound.setStatus(inboundDTO.getStatus());
+            inbound.setDescription(inboundDTO.getDescription());
 
             inboundService.save(inbound);
             redirectAttributes.addFlashAttribute("message", "Inbound has been saved successfully!");
@@ -124,7 +127,7 @@ public class InboundController {
             Page <InboundDetails> inboundDetailsPage;
 
             if (keyword.isPresent()) {
-                inboundDetailsPage = inboundDetailsService.findAllByKeyword(id, keyword.get(), page - 1, size, order, orderBy);
+                inboundDetailsPage = inboundDetailsService.findAllByKeyword(id, "%" + keyword.get() + "%", page - 1, size, order, orderBy);
                 model.addAttribute("keyword", keyword.get());
             }
             else {
@@ -136,6 +139,7 @@ public class InboundController {
             inboundDTO.setSupplierId(inbound.getSupplier().getId());
             inboundDTO.setUserId(inbound.getUser().getId());
             inboundDTO.setStatus(inbound.getStatus());
+            inboundDTO.setDescription(inbound.getDescription());
 
             if (!orderBy.equals("id")) {
                 model.addAttribute("order", order);
@@ -226,19 +230,29 @@ public class InboundController {
             return "add-inbound-details";
         }
 
+        if (inboundDetailsDTO.getQuantity() < inboundDetailsDTO.getDamaged()) {
+            bindingResult.addError(new FieldError("inboundDetailsDTO", "damaged", "Damaged quantity cannot be greater than quantity"));
+            model.addAttribute("warehouses", warehouseService.findAll());
+            model.addAttribute("products", productService.findAll());
+            return "add-inbound-details";
+        }
+
         try {
             InboundDetails inboundDetails = new InboundDetails();
+            Inbound inbound = inboundService.findById(id);
 
             if (Optional.ofNullable(inboundDetailsDTO.getId()).isPresent()) {
                 inboundDetails.setId(inboundDetailsDTO.getId());
             }
-            inboundDetails.setInbound(inboundService.findById(id));
+            inboundDetails.setInbound(inbound);
             inboundDetails.setProduct(productService.findById(inboundDetailsDTO.getProductId()));
             inboundDetails.setWarehouse(warehouseService.findById(inboundDetailsDTO.getWarehouseId()));
             inboundDetails.setQuantity(inboundDetailsDTO.getQuantity());
             inboundDetails.setDamaged(inboundDetailsDTO.getDamaged());
 
-            inboundDetailsService.save(inboundDetails);
+            inbound.getInboundDetails().add(inboundDetails);
+
+            inboundService.save(inbound);
             redirectAttributes.addFlashAttribute("message", "Inbound details saved successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());

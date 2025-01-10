@@ -25,11 +25,20 @@ public class Outbound {
     private Long id;
 
     @CreationTimestamp
+    @Column (updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany (mappedBy = "outbound", fetch = FetchType.LAZY)
+    private long totalQuantity;
+    private String status;
+    private String description;
+
+    @ManyToOne
+    @JoinColumn (name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @OneToMany (mappedBy = "outbound", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List <OutboundDetails> outboundDetails;
 }

@@ -3,7 +3,10 @@ package com.nttemoi.warehouse.services;
 import com.nttemoi.warehouse.entities.InboundDetails;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface InboundDetailsService {
+    List <InboundDetails> findAll ();
 
     InboundDetails findById (Long id);
 

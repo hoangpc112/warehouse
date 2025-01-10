@@ -1,5 +1,6 @@
 package com.nttemoi.warehouse.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,13 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class OutboundDTO {
+    private Long id;
 
-    private String sth;
+    @NotNull (message = "User is required")
+    private Long userId;
+
+    @NotNull (message = "Status is required")
+    private String status;
+
+    private String description;
 }

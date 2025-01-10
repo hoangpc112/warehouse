@@ -10,7 +10,7 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Outbound</h1>
+                                <h1 class = "m-0">Outbound - [[${totalItems}]] results</h1>
                             </div>
                             <div class = "col-sm-6">
                                 <ol class = "breadcrumb float-sm-right">
@@ -23,18 +23,63 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <div th:replace = "~{fragments/searchForm :: searchForm('outbound')}"></div>
+                                        <div th:if = "${outbounds.size() > 0}">
+                                            <div class = "table-responsive">
+                                                <table class = "table table-hover table-bordered text-center">
+                                                    <thead class = "thead-light">
+                                                    <tr>
+                                                        <th class = "col-1" scope = "col">No.</th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'User', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'CreatedAt', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'Status', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'TotalQuantity', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th class = "col-1" scope = "col">Actions</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each = "outbound, iterStat : ${outbounds}">
+                                                        <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                        <td th:text = "${outbound.user.username}"></td>
+                                                        <td th:text = "${#temporals.format(outbound.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                                                        <td th:text = "${outbound.status}"></td>
+                                                        <td th:text = "${outbound.totalQuantity}"></td>
+                                                        <td>
+                                                            <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/outbound/' + ${outbound.id}}" title = "Edit"></a>
+                                                            <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/outbound/delete/' + ${outbound.id}}" title = "Delete"></a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <nav th:replace = "~{fragments/pagination :: pagination('/outbound')}"></nav>
+                                        </div>
+                                        <div th:unless = "${outbounds.size() > 0}">
+                                            <span>No outbounds found!</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div th:replace = "~{fragments/deleteModal :: deleteModal}"></div>
                 </section>
             </div>
+            <script src = "/js/common.js"></script>
         </section>
     </body>
 </html>

@@ -24,18 +24,60 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <form method = "post" th:action = "@{/supplier/save}" th:object = "${supplierDTO}">
+                                            <input th:field = "*{id}" type = "hidden">
+                                            <div class = "form-group">
+                                                <label for = "name">Name</label>
+                                                <input class = "form-control" id = "name" th:field = "*{name}" type = "text">
+                                                <div class = "text-danger" th:errors = "*{name}" th:if = "${#fields.hasErrors('name')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "address">Address</label>
+                                                <input class = "form-control" id = "address" th:field = "*{address}" type = "text">
+                                                <div class = "text-danger" th:errors = "*{address}" th:if = "${#fields.hasErrors('address')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "phone">Phone</label>
+                                                <input class = "form-control" id = "phone" th:field = "*{phone}" type = "text">
+                                                <div class = "text-danger" th:errors = "*{phone}" th:if = "${#fields.hasErrors('phone')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "email">Email</label>
+                                                <input class = "form-control" id = "email" th:field = "*{email}" type = "email">
+                                                <div class = "text-danger" th:errors = "*{email}" th:if = "${#fields.hasErrors('email')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "statusSelect">Status</label>
+                                                <select class = "form-control" id = "statusSelect" required th:field = "*{status}">
+                                                    <option value = "Active">Active</option>
+                                                    <option value = "Inactive">Inactive</option>
+                                                </select>
+                                                <div class = "text-danger" th:errors = "*{status}" th:if = "${#fields.hasErrors('status')}"></div>
+                                            </div>
+
+                                            <div class = "text-center">
+                                                <button class = "btn btn-success" type = "submit">Save</button>
+                                                <a class = "btn btn-danger" href = "/supplier">Cancel</a>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div th:replace = "~{fragments/deleteModal :: deleteModal}"></div>
                 </section>
             </div>
+            <script src = "/js/common.js"></script>
         </section>
     </body>
 </html>

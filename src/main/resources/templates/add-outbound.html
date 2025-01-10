@@ -24,18 +24,90 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <form method = "post" th:action = "@{/outbound/save}" th:object = "${outboundDTO}">
+                                            <input th:field = "*{id}" type = "hidden">
+
+                                            <div class = "form-group">
+                                                <label for = "userSelect">User</label>
+                                                <select class = "form-control" id = "userSelect" required th:field = "*{userId}">
+                                                    <option selected value = "">Select a user</option>
+                                                    <option th:each = "user : ${users}" th:text = "${user.username}" th:value = "${user.id}"></option>
+                                                </select>
+                                                <div class = "text-danger" th:errors = "*{userId}" th:if = "${#fields.hasErrors('userId')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "statusSelect">Status</label>
+                                                <select class = "form-control" id = "statusSelect" required th:field = "*{status}">
+                                                    <option value = "Active">Active</option>
+                                                    <option value = "Inactive">Inactive</option>
+                                                </select>
+                                                <div class = "text-danger" th:errors = "*{status}" th:if = "${#fields.hasErrors('status')}"></div>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "description">Description</label>
+                                                <textarea class = "form-control" id = "description" placeholder = "Enter your description here..." rows = "4" th:field = "*{description}"></textarea>
+                                            </div>
+
+                                            <div class = "text-center">
+                                                <a class = "btn btn-primary" th:href = "@{'/outbound/' + ${id} + '/details/new'}" th:if = "${outboundDTO.id != null}">Add new product</a>
+                                                <button class = "btn btn-success" type = "submit">Save</button>
+                                                <a class = "btn btn-danger" href = "/outbound">Cancel</a>
+                                            </div>
+                                        </form>
+
+                                        <div th:if = "${outboundDetails != null && !outboundDetails.isEmpty() && outboundDTO.id != null}">
+                                            <div th:replace = "~{fragments/searchForm :: searchForm('/outbound/' + ${outboundDTO.id})}"></div>
+
+                                            <div class = "table-responsive">
+                                                <table class = "table table-hover table-bordered text-center">
+                                                    <thead class = "thead-light">
+                                                    <tr>
+                                                        <th class = "col-1" scope = "col">No.</th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Product', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Warehouse', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Quantity', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th class = "col-1" scope = "col">Actions</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each = "outboundDetail, iterStat : ${outboundDetails}">
+                                                        <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                        <td th:text = "${outboundDetail.product.name}"></td>
+                                                        <td th:text = "${outboundDetail.warehouse}"></td>
+                                                        <td th:text = "${outboundDetail.quantity}"></td>
+                                                        <td>
+                                                            <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/outbound/' + ${outboundDTO.id} + '/details/' + ${outboundDetail.id}}" title = "Edit"></a>
+                                                            <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/outbound/' + ${outboundDTO.id} + '/details/delete/' + ${outboundDetail.id}}" title = "Delete"></a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <nav th:replace = "~{fragments/pagination :: pagination('/outbound/' + ${outboundDTO.id})}"></nav>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div th:replace = "~{fragments/deleteModal :: deleteModal}"></div>
                 </section>
             </div>
+            <script src = "/js/common.js"></script>
         </section>
     </body>
 </html>

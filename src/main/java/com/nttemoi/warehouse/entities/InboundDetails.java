@@ -36,11 +36,13 @@ public class InboundDetails {
     private Inbound inbound;
 
     @CreationTimestamp
+    @Column (updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private int quantity;
-    private int damaged;
+    private Long quantity;
+    private Long damaged;
+    private String status;
 }

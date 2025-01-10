@@ -3,6 +3,9 @@ package com.nttemoi.warehouse.services.impl;
 import com.nttemoi.warehouse.entities.Supplier;
 import com.nttemoi.warehouse.repositories.SupplierRepository;
 import com.nttemoi.warehouse.services.SupplierService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +26,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier findById (Long id) {
-        return supplierRepository.findById(id).orElse(null);
+        return supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
     @Override
@@ -33,6 +36,16 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public void deleteById (Long id) {
-        supplierRepository.deleteById(id);
+        supplierRepository.delete(findById(id));
+    }
+
+    @Override
+    public Page <Supplier> findAll (int page, int size, String order, String orderBy) {
+        return supplierRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
+    }
+
+    @Override
+    public Page <Supplier> findAllByKeyword (String keyword, int page, int size, String order, String orderBy) {
+        return supplierRepository.findByNameLikeOrPhoneLike(keyword, keyword, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
     <head>
-        <title>Add product</title>
+        <title>Add Product</title>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -10,10 +10,10 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Add product</h1>
+                                <h1 class = "m-0">Add Product</h1>
                             </div>
                             <div class = "col-sm-6">
-                                <ol class = "breadcrumb float-sm-right">
+                                <ol class = "breadcrumb float-right">
                                     <li class = "breadcrumb-item"><a href = "/">Home</a></li>
                                     <li class = "breadcrumb-item"><a href = "/product">Product</a></li>
                                     <li class = "breadcrumb-item active">Add</li>
@@ -24,11 +24,115 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <form enctype = "multipart/form-data" id = "customForm" method = "post" style = "margin: 0 auto" th:action = "@{/product/save}" th:object = "${productDTO}">
+                                            <input th:field = "*{id}" type = "hidden">
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "name">Name</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "name" maxlength = "1000" minlength = "2" required th:field = "*{name}" type = "text"/>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{name}" th:if = "${#fields.hasErrors('name')}"></div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "type">Type</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "type" maxlength = "1000" minlength = "2" required th:field = "*{type}" type = "text"/>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{type}" th:if = "${#fields.hasErrors('type')}"></div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "unit">Unit</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "unit" maxlength = "1000" minlength = "2" required th:field = "*{unit}" type = "text"/>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{unit}" th:if = "${#fields.hasErrors('unit')}"></div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "weight">Weight</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "weight" maxlength = "1000" required th:field = "*{weight}" type = "text"/>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{weight}" th:if = "${#fields.hasErrors('weight')}"></div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "size">Size</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "size" maxlength = "1000" required th:field = "*{size}" type = "text"/>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{size}" th:if = "${#fields.hasErrors('size')}"></div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "supplier">Supplier</label>
+                                                <div class = "col-sm-11">
+                                                    <select class = "form-control" id = "supplier" required th:field = "*{supplierId}">
+                                                        <option selected value = "">Choose a Supplier</option>
+                                                        <option th:each = "supplier : ${suppliers}" th:text = "${supplier.name}" th:value = "${supplier.id}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{supplierId}" th:if = "${#fields.hasErrors('supplierId')}"></div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-check-label" for = "status">Status</label>
+                                                <div class = "col-sm-11">
+                                                    <select class = "form-control" id = "status" required th:field = "*{status}">
+                                                        <option value = "'Active'">Active</option>
+                                                        <option value = "'Inactive'">Inactive</option>
+                                                    </select>
+                                                </div>
+                                                <div class = "text-danger" th:errors = "*{status}" th:if = "${#fields.hasErrors('status')}"></div>
+                                            </div>
+
+                                            <h3>Product BOM</h3>
+                                            <table class = "table table-hover table-bordered text-center" id = "table-bom">
+                                                <thead class = "thead-light">
+                                                <tr>
+                                                    <th>Select</th>
+                                                    <th>Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id = "product-bom-table">
+                                                <tr th:each = "productbom, iterStat : ${productDTO.productbomlist}">
+                                                    <input th:field = "*{productbomlist[__${iterStat.index}__].id}" type = "hidden">
+                                                    <td>
+                                                        <input class = "btn-check" type = "checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class = "form-control" th:field = "*{productbomlist[__${iterStat.index}__].name}" type = "text"/>
+                                                    </td>
+                                                    <td>
+                                                        <input class = "form-control" th:field = "*{productbomlist[__${iterStat.index}__].quantity}" type = "number"/>
+                                                    </td>
+                                                    <td>
+                                                        <input class = "form-control" th:field = "*{productbomlist[__${iterStat.index}__].unit}" type = "text"/>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <div class = "actions">
+                                                <button class = "btn btn-secondary" id = "add-new-btn" type = "button">Add product bom</button>
+                                                <button class = "btn btn-danger" id = "delete-btn" type = "button">Delete</button>
+                                            </div>
+
+                                            <div class = "text-center">
+                                                <input class = "btn btn-primary" type = "submit" value = "Save"/>
+                                                <a class = "btn btn-secondary" href = "/product">Cancel</a>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -36,6 +140,53 @@
                     </div>
                 </section>
             </div>
+            <script>
+                const bomTbody = document.getElementById('product-bom-table');
+                const bomTable = document.getElementById('table-bom');
+
+                if (bomTbody.children.length > 0) {
+                    bomTable.style.display = '';
+                }
+                else {
+                    bomTable.style.display = 'none';
+                }
+
+                document.getElementById('add-new-btn').addEventListener('click', function () {
+                    const rowIndex = bomTbody.children.length;
+
+                    if (rowIndex === 0) {
+                        bomTable.style.display = '';
+                    }
+
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                                            <td>
+                                                <input type="checkbox" class = "btn-check">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="productbomlist[${rowIndex}].name" class = "form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="productbomlist[${rowIndex}].quantity" class = "form-control"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="productbomlist[${rowIndex}].unit" class = "form-control"/>
+                                            </td>
+                                        `;
+                    bomTbody.appendChild(newRow);
+                    console.log(bomTbody);
+                });
+
+                document.getElementById('delete-btn').addEventListener('click', function () {
+                    document.querySelectorAll('.btn-check:checked').forEach(function (checkbox) {
+                        checkbox.closest('tr').remove();
+                    });
+                    console.log(bomTbody);
+                    if (bomTbody.children.length === 0) {
+                        bomTable.style.display = 'none';
+                    }
+                });
+            </script>
         </section>
     </body>
 </html>

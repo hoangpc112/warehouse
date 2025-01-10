@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InboundDetailsServiceImpl implements InboundDetailsService {
 
@@ -15,6 +17,11 @@ public class InboundDetailsServiceImpl implements InboundDetailsService {
 
     public InboundDetailsServiceImpl (InboundDetailsRepository inboundDetailsRepository) {
         this.inboundDetailsRepository = inboundDetailsRepository;
+    }
+
+    @Override
+    public List <InboundDetails> findAll () {
+        return inboundDetailsRepository.findAll();
     }
 
     @Override

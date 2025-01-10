@@ -28,9 +28,8 @@
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
+                                        <div th:replace = "~{fragments/searchForm :: searchForm('inbound')}"></div>
                                         <div th:if = "${inbounds.size() > 0}">
-                                            <div th:replace = "~{fragments/searchForm :: searchForm('inbound')}"></div>
-
                                             <div class = "table-responsive">
                                                 <table class = "table table-hover table-bordered text-center">
                                                     <thead class = "thead-light">
@@ -48,6 +47,12 @@
                                                         <th scope = "col">
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'Status', ${orderBy})}"></div>
                                                         </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'TotalQuantity', ${orderBy})}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'TotalDamaged', ${orderBy})}"></div>
+                                                        </th>
                                                         <th class = "col-1" scope = "col">Actions</th>
                                                     </tr>
                                                     </thead>
@@ -58,6 +63,8 @@
                                                         <td th:text = "${inbound.user.username}"></td>
                                                         <td th:text = "${#temporals.format(inbound.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
                                                         <td th:text = "${inbound.status}"></td>
+                                                        <td th:text = "${inbound.totalQuantity}"></td>
+                                                        <td th:text = "${inbound.totalDamaged}"></td>
                                                         <td>
                                                             <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/inbound/' + ${inbound.id}}" title = "Edit"></a>
                                                             <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/inbound/delete/' + ${inbound.id}}" title = "Delete"></a>

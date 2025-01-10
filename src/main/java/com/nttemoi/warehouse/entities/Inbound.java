@@ -33,8 +33,12 @@ public class Inbound {
 
     private String status;
 
-    @OneToMany (mappedBy = "inbound", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "inbound", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List <InboundDetails> inboundDetails;
+
+    private long totalQuantity;
+    private long totalDamaged;
+    private String description;
 
     @ManyToOne
     @JoinColumn (name = "supplier_id", referencedColumnName = "id")

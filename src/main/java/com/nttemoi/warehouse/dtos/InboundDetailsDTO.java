@@ -16,16 +16,16 @@ public class InboundDetailsDTO {
     private Long id;
     private Long inboundId;
 
-    @NotNull (message = "Product ID is required")
+    @NotNull (message = "Product is required")
     private Long productId;
 
-    @NotNull (message = "Warehouse ID is required")
+    @NotNull (message = "Warehouse is required")
     private Long warehouseId;
 
     @NotNull (message = "Quantity is required")
     @Positive (message = "Quantity must be greater than 0")
-    private int quantity;
+    private Long quantity;
 
     @NotNull (message = "Damaged quantity is required")
-    private int damaged;
+    private Long damaged;
 }

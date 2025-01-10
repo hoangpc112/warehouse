@@ -22,6 +22,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/plugins/**").permitAll()
+                        .requestMatchers("/dist/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .formLogin(form -> form
