@@ -48,7 +48,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public void updatePublishedStatus(Long id, boolean published) {
-
+        supplierRepository.updatePublishedStatus(id, published);
     }
 
     @Override

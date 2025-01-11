@@ -29,4 +29,8 @@ public class UserDTO {
     private String confirmPassword;
 
     private Set<Role> roles = new HashSet<>();
+
+    public boolean validConfirmPassword() {
+        return confirmPassword.equals(password);
+    }
 }

@@ -1,87 +1,73 @@
-<aside class = "main-sidebar sidebar-dark-primary elevation-3" th:fragment = "sidebar">
-    <a class = "brand-link" href = "/">
-        <img alt = "NTT eMOI Logo" class = "brand-image img-circle" src = "/images/NTTeMOILogo.png">
-        <span class = "brand-text">NTT e-MOI</span>
+<aside class="main-sidebar sidebar-dark-primary elevation-3" th:fragment="sidebar">
+    <a class="brand-link" href="/">
+        <img alt="NTT eMOI Logo" class="brand-image img-circle" src="/images/NTTeMOILogo.png">
+        <span class="brand-text">NTT e-MOI</span>
     </a>
     <!-- Sidebar -->
-    <div class = "sidebar">
+    <div class="sidebar">
         <!-- SidebarSearch Form -->
-        <div class = "form-inline">
-            <div class = "input-group" data-widget = "sidebar-search">
-                <input aria-label = "Search" class = "form-control form-control-sidebar" placeholder = "Search" type = "search">
-                <div class = "input-group-append">
-                    <button class = "btn btn-sidebar">
-                        <i class = "fas fa-search fa-fw"></i>
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input aria-label="Search" class="form-control form-control-sidebar" placeholder="Search" type="search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
-        <nav class = "mt-2">
-            <ul class = "nav nav-pills nav-sidebar flex-column" data-accordion = "false" data-widget = "treeview" role = "menu">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-                <li class = "nav-item menu-open">
-                    <a class = "nav-link" href = "#">
-                        <i class = "fas fa-circle nav-icon"></i>
-                        <p>
-                            System
-                            <i class = "right fas fa-angle-left"></i>
-                        </p>
+                <li class="nav-item menu-open">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-gear"></i> &nbsp; <p>System</p>
                     </a>
-                    <ul class = "nav nav-treeview">
-                        <li class = "nav-item">
-                            <a class = "nav-link" href = "/user">
-                                <i class = "far fa-circle nav-icon"></i>
-                                <p>User management</p>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user">
+                                <i class="fa-solid fa-user"></i> &nbsp; <p>User management</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class = "nav-item menu-open">
-                    <a class = "nav-link" href = "#">
-                        <i class = "fas fa-circle nav-icon"></i>
-                        <p>
-                            Category
-                            <i class = "right fas fa-angle-left"></i>
-                        </p>
+                <li class="nav-item menu-open">
+                    <a class="nav-link" href="#">
+                        <i class="fa-solid fa-list"></i> &nbsp; <p>Category</p>
                     </a>
-                    <ul class = "nav nav-treeview">
-                        <li class = "nav-item">
-                            <a class = "nav-link" href = "/warehouse">
-                                <i class = "far fa-circle nav-icon"></i>
-                                <p>Warehouse</p>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/warehouse">
+                                <i class="fa-solid fa-warehouse"></i> &nbsp; <p>Warehouse</p>
                             </a>
                         </li>
-                        <li class = "nav-item">
-                            <a class = "nav-link" href = "/product">
-                                <i class = "far fa-circle nav-icon"></i>
-                                <p>Product</p>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/product">
+                                <i class="fa-solid fa-boxes-packing"></i> &nbsp; <p>Product</p>
                             </a>
                         </li>
-                        <li class = "nav-item">
-                            <a class = "nav-link" href = "/supplier">
-                                <i class = "far fa-circle nav-icon"></i>
-                                <p>Supplier</p>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/supplier">
+                                <i class="fa-solid fa-truck-field"></i> &nbsp; <p>Supplier</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "/inbound">
-                        <i class = "fas fa-circle nav-icon"></i>
-                        <p>Inbound</p>
+                <li class="nav-item">
+                    <a class="nav-link" href="/inbound">
+                        <i class="fa-solid fa-right-to-bracket"></i> &nbsp; <p>Inbound</p>
                     </a>
                 </li>
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "/outbound">
-                        <i class = "fas fa-circle nav-icon"></i>
-                        <p>Outbound</p>
+                <li class="nav-item">
+                    <a class="nav-link" href="/outbound">
+                        <i class="fa-solid fa-right-from-bracket"></i> &nbsp; <p>Outbound</p>
                     </a>
                 </li>
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "/tutorials">
-                        <i class = "fas fa-circle nav-icon"></i>
+                <li class="nav-item">
+                    <a class="nav-link" href="/tutorials">
+                        <i class="fas fa-circle nav-icon"></i>
                         <p>Mẫu bảng, thêm mới, phân trang</p>
                     </a>
                 </li>

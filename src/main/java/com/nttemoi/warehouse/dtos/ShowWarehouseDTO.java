@@ -20,7 +20,7 @@ public class ShowWarehouseDTO {
 
     private long warehouseCapacity;
 
-    
+
     private String warehousePhoneNumber;
 
     private long warehouseNumProduct;
@@ -29,5 +29,14 @@ public class ShowWarehouseDTO {
 
     private boolean warehouseActive;
 
+
+    public boolean isPhoneNumberValid() {
+        for (char ch : warehousePhoneNumber.toCharArray()) {
+            if (!Character.isDigit(ch)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

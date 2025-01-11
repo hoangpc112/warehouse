@@ -25,6 +25,7 @@
         </div>
         <section class="content">
             <div class="container-fluid">
+                <div th:replace="~{fragments/message :: message}"></div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -100,8 +101,12 @@
                                                                 <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'maxQuantity', ${orderBy},'Max quantity')}"></div>
                                                             </th>
                                                             <th scope="col">
+                                                                <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy},NULL)}"></div>
+                                                            </th>
+                                                            <th scope="col">
                                                                 <div th:replace="~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'updatedAt', ${orderBy},'Updated at')}"></div>
                                                             </th>
+
 
                                                         </tr>
                                                         </thead>
@@ -113,6 +118,16 @@
                                                             <td>[[${stockBalance.product.getName()}]]</td>
                                                             <td>[[${stockBalance.totalQuantity}]]</td>
                                                             <td>[[${stockBalance.maxQuantity}]]</td>
+                                                            <td>
+                                                                <a class="btn btn-success fa-regular fa-square-check"
+                                                                   th:href="@{'/warehouse/detail/'+${warehouse.address}+'/'+ ${stockBalance.id} + '/active/false'}"
+                                                                   th:if="${stockBalance.status == true}"
+                                                                   title="Disable this stockBalance"></a>
+                                                                <a class="btn btn-danger fa-regular fa-square"
+                                                                   th:href="@{'/warehouse/detail/'+${warehouse.address}+'/'+ ${stockBalance.id} +'/active/true'}"
+                                                                   th:if="${stockBalance.status == false}"
+                                                                   title="Enable this stockBalance"></a>
+                                                            </td>
                                                             <td>[[${#temporals.format(stockBalance.updatedAt,
                                                                 'dd/MM/yyyy -
                                                                 HH:mm:ss')}]]

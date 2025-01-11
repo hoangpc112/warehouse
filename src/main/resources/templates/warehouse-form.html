@@ -46,6 +46,8 @@
                                         <div class="col-sm-11">
                                             <input class="form-control" id="phoneNumber" min="1" required step="1"
                                                    th:field="*{phoneNumber}" type="text"/>
+                                            <p th:errorclass="text-danger" th:errors="${warehouse.phoneNumber}"
+                                               th:if="${#fields.hasErrors('phoneNumber')}"></p>
                                         </div>
                                     </div>
                                     <div class="form-group row">

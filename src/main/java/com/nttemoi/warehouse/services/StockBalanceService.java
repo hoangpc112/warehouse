@@ -25,4 +25,6 @@ public interface StockBalanceService {
 
     Page<StockBalance> findByWarehouseIdAndSort(Long warehouseId, int page, int size, String order, String orderBy);
 
+    void updateStockBalanceStatus(Long id, boolean status);
+
 }

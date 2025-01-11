@@ -116,13 +116,13 @@ public class UserController {
 
     @PostMapping("/user/new/save")
     public String saveUser(@Valid @ModelAttribute("UserDTO") UserDTO UserDTO, BindingResult bindingResult, Model model) {
-        if (!UserDTO.getPassword().equals(UserDTO.getConfirmPassword())) {
+        if (!UserDTO.validConfirmPassword()) {
             bindingResult.addError(new FieldError("UserDTO", "confirmPassword", "Password and confirm password does not match."));
         }
 
 
-        User User = userService.findByUsername(UserDTO.getUsername());
-        if (User != null) {
+        User checkUser = userService.findByUsername(UserDTO.getUsername());
+        if (checkUser != null) {
             bindingResult.addError(new FieldError("UserDTO", "username", "Username is already in used."));
         }
 

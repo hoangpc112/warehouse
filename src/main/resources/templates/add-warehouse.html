@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Add tutorial</title>
+    <title>Thêm warehouse</title>
 </head>
 <body>
 <section layout:fragment="content">
@@ -37,6 +37,8 @@
                                         <div class="col-sm-11">
                                             <input class="form-control" id="address" maxlength="256" minlength="2"
                                                    required th:field="*{warehouseAddress}" type="text"/>
+                                            <p th:errorclass="text-danger" th:errors="${warehouse.warehouseAddress}"
+                                               th:if="${#fields.hasErrors('warehouseAddress')}"></p>
                                         </div>
                                     </div>
 
@@ -45,6 +47,8 @@
                                         <div class="col-sm-11">
                                             <input class="form-control" id="phoneNumber" maxlength="256" minlength="2"
                                                    th:field="*{warehousePhoneNumber}" type="text"/>
+                                            <p th:errorclass="text-danger" th:errors="${warehouse.warehousePhoneNumber}"
+                                               th:if="${#fields.hasErrors('warehousePhoneNumber')}"></p>
                                         </div>
                                     </div>
                                     <div class="form-group row">

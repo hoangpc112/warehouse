@@ -4,6 +4,8 @@ import com.nttemoi.warehouse.entities.StockBalance;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -22,5 +24,8 @@ public interface StockBalanceRepository extends JpaRepository<StockBalance, Long
 
     StockBalance findStockBalanceByProductIdAndWarehouseId(long productId, long warehouseId);
 
+    @Query("UPDATE StockBalance t SET t.status = :status WHERE t.id = :id")
+    @Modifying
+    void updateStockBalanceStatus(Long id, boolean status);
 
 }

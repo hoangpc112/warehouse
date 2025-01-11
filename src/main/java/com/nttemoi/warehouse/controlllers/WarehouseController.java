@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -70,8 +72,16 @@ public class WarehouseController {
     }
 
     @PostMapping("/save")
-    public String save(EditWarehouseDTO warehouse,
-                       RedirectAttributes redirectAttributes) {
+    public String save(@ModelAttribute("warehouse") EditWarehouseDTO warehouse,
+                       RedirectAttributes redirectAttributes,
+                       BindingResult bindingResult) {
+        if (!warehouse.isPhoneNumberValid()) {
+            bindingResult.addError(new FieldError("warehouse", "phoneNumber", "Phone number is invalid"));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "warehouse-form";
+        }
         try {
             Warehouse updatedWarehouse = warehouseService.findById(warehouse.getId());
             updatedWarehouse.setAddress(warehouse.getAddress());
@@ -110,8 +120,21 @@ public class WarehouseController {
     }
 
     @PostMapping("/new/save")
-    public String saveNew(AddWarehouseDTO warehouse,
-                          RedirectAttributes redirectAttributes) {
+    public String saveNew(@ModelAttribute("warehouse") AddWarehouseDTO warehouse,
+                          RedirectAttributes redirectAttributes,
+                          BindingResult bindingResult) {
+        if (!warehouse.isPhoneNumberValid()) {
+            bindingResult.addError(new FieldError("warehouse", "warehousePhoneNumber", "Phone number is invalid"));
+        }
+        Warehouse checkWarehouse = warehouseService.findByAddress(warehouse.getWarehouseAddress());
+        if (checkWarehouse != null) {
+            bindingResult.addError(new FieldError("warehouse", "warehouseAddress", "Address is already in use"));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "add-warehouse";
+        }
+
         try {
             Warehouse newWarehouse = new Warehouse();
             newWarehouse.setCapacity(warehouse.getWarehouseCapacity());
@@ -141,6 +164,24 @@ public class WarehouseController {
         return "redirect:/warehouse";
     }
 
+    @GetMapping("/detail/{address}/{id}/active/{status}")
+    public String stockBalanceActive(@PathVariable("address") String address,
+                                     @PathVariable("status") boolean active,
+                                     @PathVariable("id") Long id,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            String status = (active ? "active" : "disabled");
+            stockBalanceService.updateStockBalanceStatus(id, active);
+            String message = "The Stock balance id=" + id + " has been " + status;
+            redirectAttributes.addFlashAttribute("message", message);
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+        return "redirect:/warehouse/detail/" + address;
+    }
+
+
     @GetMapping("/detail/{address}")
     public String warehouseDetail(@PathVariable String address,
                                   Model model,
@@ -163,17 +204,7 @@ public class WarehouseController {
                 model.addAttribute("order", order);
                 model.addAttribute("orderBy", orderBy);
             }
-//
-//            Page<StockBalance> stockBalancePage = new PageImpl<>(stockBalanceList);
-//            for (StockBalance stockBalance : stockBalancePage.getContent()) {
-//                System.out.println(stockBalance.getProduct().getName());
-//
-//                System.out.println(1);
-//            }
 
-//            List<StockBalance> stockBalanceList = warehouse.getStockBalances();
-//            System.out.println(stockBalanceList.stream().mapToLong(StockBalance::getTotalQuantity).sum());
-//            System.out.println(1);
             model.addAttribute("currentPage", stockBalancePage.getNumber() + 1);
             model.addAttribute("totalPages", stockBalancePage.getTotalPages());
             model.addAttribute("totalItems", stockBalancePage.getTotalElements());
@@ -192,6 +223,7 @@ public class WarehouseController {
     public String editWarehouse(@PathVariable String address,
                                 Model model,
                                 RedirectAttributes redirectAttributes) {
+
         try {
             Warehouse warehouse = warehouseService.findByAddress(address);
             EditWarehouseDTO editWarehouseDTO = new EditWarehouseDTO();

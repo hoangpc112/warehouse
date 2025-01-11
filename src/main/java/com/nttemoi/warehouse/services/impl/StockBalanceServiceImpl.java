@@ -26,7 +26,7 @@ public class StockBalanceServiceImpl implements StockBalanceService {
 
     @Override
     public Page<StockBalance> findAll(int page, int size) {
-        return stockBalanceRepository.findAll(PageRequest.of(page, size));
+        return stockBalanceRepository.findAll(PageRequest.of(page, size, Sort.by("id")));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class StockBalanceServiceImpl implements StockBalanceService {
 
     @Override
     public Page<StockBalance> findByWarehouseId(Long warehouseId, int page, int size) {
-        return stockBalanceRepository.findStockBalanceByWarehouseId(warehouseId, PageRequest.of(page, size));
+        return stockBalanceRepository.findStockBalanceByWarehouseId(warehouseId, PageRequest.of(page, size, Sort.by("id")));
     }
 
     @Override
@@ -71,6 +71,11 @@ public class StockBalanceServiceImpl implements StockBalanceService {
         } else {
             return stockBalanceRepository.findStockBalanceByWarehouseId(warehouseId, PageRequest.of(page, size, Sort.by(orderBy).descending()));
         }
+    }
+
+    @Override
+    public void updateStockBalanceStatus(Long id, boolean status) {
+        stockBalanceRepository.updateStockBalanceStatus(id, status);
     }
 
     public List<StockBalance> findByWarehouseId(Long warehouseId) {
