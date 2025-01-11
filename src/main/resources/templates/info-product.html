@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Product</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Product</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item active">Product</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <h3 class = "mb-4">Product Information</h3>
+                                        <div class = "row">
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Name:</strong>
+                                                <span class = "h5" th:text = "${product.name}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Unit:</strong>
+                                                <span class = "h5" th:text = "${product.unit}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Weight:</strong>
+                                                <span class = "h5" th:text = "${product.weight}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Size:</strong>
+                                                <span class = "h5" th:text = "${product.size}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Status:</strong>
+                                                <span class = "h5" th:text = "${product.status}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Created At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(product.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Updated At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(product.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Supplier:</strong>
+                                                <span class = "h5" th:text = "${product.supplier.name}"></span>
+                                            </div>
+                                        </div>
+
+                                        <hr class = "border border-3">
+
+                                        <h3>Product BOM</h3>
+                                        <div th:if = "${productBomList != null && !productBomList.isEmpty() && product.id != null}">
+                                            <div th:replace = "~{fragments/searchForm :: searchForm('/product/info/' + ${product.id})}"></div>
+
+                                            <div class = "table-responsive">
+                                                <table class = "table table-hover table-bordered text-center">
+                                                    <thead class = "thead-light">
+                                                    <tr>
+                                                        <th class = "col-1" scope = "col">No.</th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product/info/' + ${product.id}, ${order != '' && order != null ? order : ''}, 'name', ${orderBy}, 'Name')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product/info/' + ${product.id}, ${order != '' && order != null ? order : ''}, 'quantity', ${orderBy}, 'Quantity')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product/info/' + ${product.id}, ${order != '' && order != null ? order : ''}, 'unit', ${orderBy}, 'Unit')}"></div>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each = "productBom, iterStat : ${productBomList}">
+                                                        <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                        <td th:text = "${productBom.name}"></td>
+                                                        <td th:text = "${productBom.quantity}"></td>
+                                                        <td th:text = "${productBom.unit}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <nav th:replace = "~{fragments/pagination :: pagination('/product/info/' + ${product.id})}"></nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

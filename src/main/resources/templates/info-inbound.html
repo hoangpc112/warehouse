@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Inbound</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Inbound</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item active">Inbound</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <h3 class = "mb-4">Inbound Information</h3>
+                                        <div class = "row">
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Total quantity:</strong>
+                                                <span class = "h5" th:text = "${inbound.totalQuantity}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Total damaged:</strong>
+                                                <span class = "h5" th:text = "${inbound.totalDamaged}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Supplier:</strong>
+                                                <span class = "h5" th:text = "${inbound.supplier.name}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">User:</strong>
+                                                <span class = "h5" th:text = "${inbound.user}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Status:</strong>
+                                                <span class = "h5" th:text = "${inbound.status}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Created At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(inbound.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Updated At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(inbound.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Description:</strong>
+                                                <span class = "h5" th:text = "${inbound.description}"></span>
+                                            </div>
+                                        </div>
+
+                                        <hr class = "border border-3">
+
+                                        <h3>Inbound details</h3>
+                                        <div th:if = "${inboundDetails != null && !inboundDetails.isEmpty() && inbound.id != null}">
+                                            <div th:replace = "~{fragments/searchForm :: searchForm('/inbound/info/' + ${inbound.id})}"></div>
+
+                                            <div class = "table-responsive">
+                                                <table class = "table table-hover table-bordered text-center">
+                                                    <thead class = "thead-light">
+                                                    <tr>
+                                                        <th class = "col-1" scope = "col">No.</th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/info/' + ${inbound.id}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy}, 'Product')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/info/' + ${inbound.id}, ${order != '' && order != null ? order : ''}, 'warehouse.address', ${orderBy}, 'Warehouse')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/info/' + ${inbound.id}, ${order != '' && order != null ? order : ''}, 'quantity', ${orderBy}, 'Quantity')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/info/' + ${inbound.id}, ${order != '' && order != null ? order : ''}, 'damaged', ${orderBy}, 'Damaged')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/info/' + ${inbound.id}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy}, 'Status')}"></div>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each = "inboundDetail, iterStat : ${inboundDetails}">
+                                                        <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                        <td th:text = "${inboundDetail.product.name}"></td>
+                                                        <td th:text = "${inboundDetail.warehouse}"></td>
+                                                        <td th:text = "${inboundDetail.quantity}"></td>
+                                                        <td th:text = "${inboundDetail.damaged}"></td>
+                                                        <td th:text = "${inboundDetail.status}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <nav th:replace = "~{fragments/pagination :: pagination('/inbound/info/' + ${inbound.id})}"></nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

@@ -7,19 +7,11 @@
         <link href = "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" rel = "stylesheet">
         <link crossorigin = "anonymous" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity = "sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" referrerpolicy = "no-referrer" rel = "stylesheet"/>
         <link href = "/dist/css/adminlte.min.css" rel = "stylesheet">
-        <style>
-            .nav-treeview {
-                padding-left: 1rem !important;
-            }
-        </style>
     </head>
     <body class = "hold-transition sidebar-mini layout-fixed">
         <header th:replace = "~{fragments/navbar :: navbar}"></header>
         <aside th:replace = "~{fragments/sidebar :: sidebar}"></aside>
         <div class = "wrapper">
-            <div class = "preloader" style = "display: flex; justify-content: center; align-items: center">
-                <img alt = "NTTeMOILogo" height = "50" src = "/images/NTTeMOILogo.png" width = "50">
-            </div>
             <section layout:fragment = "content"></section>
         </div>
 

@@ -65,11 +65,47 @@ public class OutboundController {
         return "show-outbound";
     }
 
+    @GetMapping ("/info/{id}")
+    public String info (@PathVariable ("id") Long id,
+                        Model model,
+                        @RequestParam (required = false) Optional <String> keyword,
+                        @RequestParam (defaultValue = "1") int page,
+                        @RequestParam (defaultValue = "10") int size,
+                        @RequestParam (defaultValue = "asc") String order,
+                        @RequestParam (defaultValue = "id") String orderBy) {
+        Outbound outbound = outboundService.findById(id);
+
+        Page <OutboundDetails> outboundDetailsPage;
+
+        if (keyword.isPresent()) {
+            outboundDetailsPage = outboundDetailsService.findAllByKeyword(id, "%" + keyword.get() + "%", page - 1, size, order, orderBy);
+            model.addAttribute("keyword", keyword.get());
+        }
+        else {
+            outboundDetailsPage = outboundDetailsService.findAll(id, page - 1, size, order, orderBy);
+        }
+
+        if (!orderBy.equals("id")) {
+            model.addAttribute("order", order);
+            model.addAttribute("orderBy", orderBy);
+        }
+
+        model.addAttribute("outboundDetails", outboundDetailsPage.getContent());
+        model.addAttribute("currentPage", outboundDetailsPage.getNumber() + 1);
+        model.addAttribute("totalItems", outboundDetailsPage.getTotalElements());
+        model.addAttribute("totalPages", outboundDetailsPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("outbound", outbound);
+
+        return "info-outbound";
+    }
+
     @GetMapping ("/new")
     public String add (Model model) {
         OutboundDTO outboundDTO = new OutboundDTO();
         model.addAttribute("outboundDTO", outboundDTO);
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("title", "Add new");
         return "add-outbound";
     }
 
@@ -147,6 +183,7 @@ public class OutboundController {
 
             model.addAttribute("outboundDTO", outboundDTO);
             model.addAttribute("users", userService.findAll());
+            model.addAttribute("title", "Edit");
 
             return "add-outbound";
 
@@ -184,10 +221,12 @@ public class OutboundController {
             outboundDetailsDTO.setProductId(outboundDetails.getProduct().getId());
             outboundDetailsDTO.setWarehouseId(outboundDetails.getWarehouse().getId());
             outboundDetailsDTO.setQuantity(outboundDetails.getQuantity());
+            outboundDetailsDTO.setStatus(outboundDetails.getStatus());
 
             model.addAttribute("outboundDetailsDTO", outboundDetailsDTO);
             model.addAttribute("warehouses", warehouseService.findAll());
             model.addAttribute("products", productService.findAll());
+            model.addAttribute("title", "Edit");
 
             return "add-outbound-details";
         } catch (Exception e) {
@@ -205,6 +244,7 @@ public class OutboundController {
         model.addAttribute("outboundDetailsDTO", outboundDetailsDTO);
         model.addAttribute("warehouses", warehouseService.findAll());
         model.addAttribute("products", productService.findAll());
+        model.addAttribute("title", "Add new");
 
         return "add-outbound-details";
     }
@@ -232,6 +272,7 @@ public class OutboundController {
             outboundDetails.setProduct(productService.findById(outboundDetailsDTO.getProductId()));
             outboundDetails.setWarehouse(warehouseService.findById(outboundDetailsDTO.getWarehouseId()));
             outboundDetails.setQuantity(outboundDetailsDTO.getQuantity());
+            outboundDetails.setStatus(outboundDetailsDTO.getStatus());
 
             outbound.getOutboundDetails().add(outboundDetails);
 

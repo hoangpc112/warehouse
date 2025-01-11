@@ -49,14 +49,24 @@ public class SupplierController {
         model.addAttribute("totalItems", supplierPage.getTotalElements());
         model.addAttribute("totalPages", supplierPage.getTotalPages());
         model.addAttribute("pageSize", size);
+        model.addAttribute("filter", "name, phone number");
 
         return "show-supplier";
+    }
+
+    @GetMapping ("/info/{id}")
+    public String info (@PathVariable Long id,
+                        Model model) {
+        Supplier supplier = supplierService.findById(id);
+        model.addAttribute("supplier", supplier);
+        return "info-supplier";
     }
 
     @GetMapping ("/new")
     public String addSupplier (Model model) {
         SupplierDTO supplierDTO = new SupplierDTO();
         model.addAttribute("supplierDTO", supplierDTO);
+        model.addAttribute("title", "Add new");
         return "add-supplier";
     }
 
@@ -108,6 +118,7 @@ public class SupplierController {
         supplierDTO.setProducts(supplier.getProducts());
 
         model.addAttribute("supplierDTO", supplierDTO);
+        model.addAttribute("title", "Edit");
         return "add-supplier";
     }
 

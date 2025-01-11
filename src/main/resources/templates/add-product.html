@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
     <head>
-        <title>Add Product</title>
+        <title>[[${title}]] product</title>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -10,13 +10,13 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Add Product</h1>
+                                <h1 class = "m-0">[[${title}]] product</h1>
                             </div>
                             <div class = "col-sm-6">
                                 <ol class = "breadcrumb float-right">
                                     <li class = "breadcrumb-item"><a href = "/">Home</a></li>
                                     <li class = "breadcrumb-item"><a href = "/product">Product</a></li>
-                                    <li class = "breadcrumb-item active">Add</li>
+                                    <li class = "breadcrumb-item active">[[${title}]]</li>
                                 </ol>
                             </div>
                         </div>
@@ -87,8 +87,8 @@
                                                 <label class = "col-sm-1 col-form-check-label" for = "status">Status</label>
                                                 <div class = "col-sm-11">
                                                     <select class = "form-control" id = "status" required th:field = "*{status}">
-                                                        <option value = "'Active'">Active</option>
-                                                        <option value = "'Inactive'">Inactive</option>
+                                                        <option value = "Active">Active</option>
+                                                        <option value = "Inactive">Inactive</option>
                                                     </select>
                                                 </div>
                                                 <div class = "text-danger" th:errors = "*{status}" th:if = "${#fields.hasErrors('status')}"></div>

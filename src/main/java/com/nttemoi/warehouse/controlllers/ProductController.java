@@ -60,18 +60,19 @@ public class ProductController {
         model.addAttribute("totalItems", productPage.getTotalElements());
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("pageSize", size);
+        model.addAttribute("filter", "name, type");
 
         return "show-product";
     }
 
-    @GetMapping ("/detail/{id}")
-    public String getAllBom (Model model,
-                             @PathVariable Long id,
-                             @RequestParam (required = false) Optional <String> keyword,
-                             @RequestParam (defaultValue = "1") int page,
-                             @RequestParam (defaultValue = "10") int size,
-                             @RequestParam (defaultValue = "asc") String order,
-                             @RequestParam (defaultValue = "id") String orderBy) {
+    @GetMapping ("/info/{id}")
+    public String info (Model model,
+                        @PathVariable Long id,
+                        @RequestParam (required = false) Optional <String> keyword,
+                        @RequestParam (defaultValue = "1") int page,
+                        @RequestParam (defaultValue = "10") int size,
+                        @RequestParam (defaultValue = "asc") String order,
+                        @RequestParam (defaultValue = "id") String orderBy) {
         Page <ProductBom> productBomPage;
 
         if (keyword.isPresent()) {
@@ -87,13 +88,14 @@ public class ProductController {
             model.addAttribute("orderBy", orderBy);
         }
 
+        model.addAttribute("product", productService.findById(id));
         model.addAttribute("productBomList", productBomPage.getContent());
         model.addAttribute("currentPage", productBomPage.getNumber() + 1);
         model.addAttribute("totalItems", productBomPage.getTotalElements());
         model.addAttribute("totalPages", productBomPage.getTotalPages());
         model.addAttribute("pageSize", size);
 
-        return "show-productbom";
+        return "info-product";
     }
 
 
@@ -104,6 +106,7 @@ public class ProductController {
 
         model.addAttribute("suppliers", suppliers);
         model.addAttribute("productDTO", productDTO);
+        model.addAttribute("title", "Add new");
         return "add-product";
     }
 
@@ -172,6 +175,7 @@ public class ProductController {
 
         model.addAttribute("suppliers", suppliers);
         model.addAttribute("productDTO", productDTO);
+        model.addAttribute("title", "Edit");
         return "add-product";
     }
 

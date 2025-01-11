@@ -74,6 +74,7 @@ public class InboundController {
         model.addAttribute("inboundDTO", inboundDTO);
         model.addAttribute("suppliers", supplierService.findAll());
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("title", "Add new");
         return "add-inbound";
     }
 
@@ -110,6 +111,41 @@ public class InboundController {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/inbound/new";
         }
+    }
+
+    @GetMapping ("/info/{id}")
+    public String info (@PathVariable ("id") Long id,
+                        Model model,
+                        @RequestParam (required = false) Optional <String> keyword,
+                        @RequestParam (defaultValue = "1") int page,
+                        @RequestParam (defaultValue = "10") int size,
+                        @RequestParam (defaultValue = "asc") String order,
+                        @RequestParam (defaultValue = "id") String orderBy) {
+        Inbound inbound = inboundService.findById(id);
+
+        Page <InboundDetails> inboundDetailsPage;
+
+        if (keyword.isPresent()) {
+            inboundDetailsPage = inboundDetailsService.findAllByKeyword(id, "%" + keyword.get() + "%", page - 1, size, order, orderBy);
+            model.addAttribute("keyword", keyword.get());
+        }
+        else {
+            inboundDetailsPage = inboundDetailsService.findAll(id, page - 1, size, order, orderBy);
+        }
+
+        if (!orderBy.equals("id")) {
+            model.addAttribute("order", order);
+            model.addAttribute("orderBy", orderBy);
+        }
+
+        model.addAttribute("inboundDetails", inboundDetailsPage.getContent());
+        model.addAttribute("currentPage", inboundDetailsPage.getNumber() + 1);
+        model.addAttribute("totalItems", inboundDetailsPage.getTotalElements());
+        model.addAttribute("totalPages", inboundDetailsPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("inbound", inbound);
+
+        return "info-inbound";
     }
 
     @GetMapping ("/{id}")
@@ -155,6 +191,7 @@ public class InboundController {
             model.addAttribute("inboundDTO", inboundDTO);
             model.addAttribute("suppliers", supplierService.findAll());
             model.addAttribute("users", userService.findAll());
+            model.addAttribute("title", "Edit");
 
             return "add-inbound";
 
@@ -193,10 +230,12 @@ public class InboundController {
             inboundDetailsDTO.setWarehouseId(inboundDetails.getWarehouse().getId());
             inboundDetailsDTO.setQuantity(inboundDetails.getQuantity());
             inboundDetailsDTO.setDamaged(inboundDetails.getDamaged());
+            inboundDetailsDTO.setStatus(inboundDetails.getStatus());
 
             model.addAttribute("inboundDetailsDTO", inboundDetailsDTO);
             model.addAttribute("warehouses", warehouseService.findAll());
             model.addAttribute("products", productService.findAll());
+            model.addAttribute("title", "Edit");
 
             return "add-inbound-details";
         } catch (Exception e) {
@@ -214,6 +253,7 @@ public class InboundController {
         model.addAttribute("inboundDetailsDTO", inboundDetailsDTO);
         model.addAttribute("warehouses", warehouseService.findAll());
         model.addAttribute("products", productService.findAll());
+        model.addAttribute("title", "Add new");
 
         return "add-inbound-details";
     }
@@ -249,6 +289,7 @@ public class InboundController {
             inboundDetails.setWarehouse(warehouseService.findById(inboundDetailsDTO.getWarehouseId()));
             inboundDetails.setQuantity(inboundDetailsDTO.getQuantity());
             inboundDetails.setDamaged(inboundDetailsDTO.getDamaged());
+            inboundDetails.setStatus(inboundDetailsDTO.getStatus());
 
             inbound.getInboundDetails().add(inboundDetails);
 

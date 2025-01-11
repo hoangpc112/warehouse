@@ -28,4 +28,7 @@ public class InboundDetailsDTO {
 
     @NotNull (message = "Damaged quantity is required")
     private Long damaged;
+
+    @NotNull (message = "Status is required")
+    private String status;
 }

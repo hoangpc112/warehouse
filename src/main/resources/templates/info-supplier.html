@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Supplier</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Supplier</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item active">Supplier</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <h3 class = "mb-4">Supplier Information</h3>
+                                        <div class = "row">
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Name:</strong>
+                                                <span class = "h5" th:text = "${supplier.name}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Address:</strong>
+                                                <span class = "h5" th:text = "${supplier.address}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Phone number:</strong>
+                                                <span class = "h5" th:text = "${supplier.phone}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Email:</strong>
+                                                <span class = "h5" th:text = "${supplier.email}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Created At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(supplier.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Updated At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(supplier.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Status:</strong>
+                                                <span class = "h5" th:text = "${supplier.status}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

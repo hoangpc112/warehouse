@@ -25,4 +25,7 @@ public class OutboundDetailsDTO {
     @NotNull (message = "Quantity is required")
     @Positive (message = "Quantity must be greater than 0")
     private Long quantity;
+
+    @NotNull (message = "Status is required")
+    private String status;
 }

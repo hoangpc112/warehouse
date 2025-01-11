@@ -1,5 +1,5 @@
-<a style = "display: block" th:fragment = "sortBtn(url, order, col, orderBy)" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage} + '&size=' + ${pageSize} + '&order=' + ${order == 'desc' || col != orderBy ? 'asc' : 'desc'} + '&orderBy=' + ${col}}">
-    [[${col}]]
+<a style = "display: block" th:fragment = "sortBtn(url, order, col, orderBy,name)" th:href = "@{'/' + ${url} + '?' + ${keyword != null && keyword != '' ? 'keyword=' + keyword + '&' : ''} + 'page=' + ${currentPage} + '&size=' + ${pageSize} + '&order=' + ${order == 'desc' || col != orderBy ? 'asc' : 'desc'} + '&orderBy=' + ${col}}">
+    [[${name?: col}]]
     <i class = "fa-solid fa-up-long" th:if = "${order == 'asc' && col == orderBy}"></i>
     <i class = "fa-solid fa-down-long" th:if = "${order == 'desc' && col == orderBy}"></i>
 </a>

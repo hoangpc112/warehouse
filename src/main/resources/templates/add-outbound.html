@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
-        <title>Add outbound</title>
+        <title>[[${title}]] outbound</title>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -10,13 +10,13 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Add outbound</h1>
+                                <h1 class = "m-0">[[${title}]] outbound</h1>
                             </div>
                             <div class = "col-sm-6">
                                 <ol class = "breadcrumb float-sm-right">
                                     <li class = "breadcrumb-item"><a href = "/">Home</a></li>
                                     <li class = "breadcrumb-item"><a href = "/outbound">Outbound</a></li>
-                                    <li class = "breadcrumb-item active">Add</li>
+                                    <li class = "breadcrumb-item active">[[${title}]]</li>
                                 </ol>
                             </div>
                         </div>
@@ -71,13 +71,16 @@
                                                     <tr>
                                                         <th class = "col-1" scope = "col">No.</th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Product', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy}, 'Product')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Warehouse', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'warehouse.address', ${orderBy}, 'Warehouse')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Quantity', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'quantity', ${orderBy}, 'Quantity')}"></div>
+                                                        </th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound/' + ${outboundDTO.id}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy}, 'Status')}"></div>
                                                         </th>
                                                         <th class = "col-1" scope = "col">Actions</th>
                                                     </tr>
@@ -88,6 +91,7 @@
                                                         <td th:text = "${outboundDetail.product.name}"></td>
                                                         <td th:text = "${outboundDetail.warehouse}"></td>
                                                         <td th:text = "${outboundDetail.quantity}"></td>
+                                                        <td th:text = "${outboundDetail.status}"></td>
                                                         <td>
                                                             <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/outbound/' + ${outboundDTO.id} + '/details/' + ${outboundDetail.id}}" title = "Edit"></a>
                                                             <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/outbound/' + ${outboundDTO.id} + '/details/delete/' + ${outboundDetail.id}}" title = "Delete"></a>

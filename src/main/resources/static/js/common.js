@@ -10,7 +10,3 @@ document.getElementById('confirmDelete').addEventListener('click', function () {
         window.location.href = deleteUrl;
     }
 });
-
-function changePageSize() {
-    $("#searchForm").submit();
-}

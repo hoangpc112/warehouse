@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
-        <title>Add inbound</title>
+        <title>[[${title}]] inbound</title>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -10,13 +10,13 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Add inbound</h1>
+                                <h1 class = "m-0">[[${title}]] inbound</h1>
                             </div>
                             <div class = "col-sm-6">
                                 <ol class = "breadcrumb float-sm-right">
                                     <li class = "breadcrumb-item"><a href = "/">Home</a></li>
                                     <li class = "breadcrumb-item"><a href = "/inbound">Inbound</a></li>
-                                    <li class = "breadcrumb-item active">Add</li>
+                                    <li class = "breadcrumb-item active">[[${title}]]</li>
                                 </ol>
                             </div>
                         </div>
@@ -79,18 +79,21 @@
                                                     <tr>
                                                         <th class = "col-1" scope = "col">No.</th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Product', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy}, 'Product')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Warehouse', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'warehouse.address', ${orderBy}, 'Warehouse')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Quantity', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'quantity', ${orderBy}, 'Quantity')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'Damaged', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'damaged', ${orderBy}, 'Damaged')}"></div>
                                                         </th>
-                                                        <th class = "col-1" scope = "col">Actions</th>
+                                                        <th scope = "col">
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound/' + ${inboundDTO.id}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy}, 'Status')}"></div>
+                                                        </th>
+                                                        <th class = "col-2" scope = "col">Actions</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -100,9 +103,16 @@
                                                         <td th:text = "${inboundDetail.warehouse}"></td>
                                                         <td th:text = "${inboundDetail.quantity}"></td>
                                                         <td th:text = "${inboundDetail.damaged}"></td>
+                                                        <td th:text = "${inboundDetail.status}"></td>
                                                         <td>
-                                                            <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/inbound/' + ${inboundDTO.id} + '/details/' + ${inboundDetail.id}}" title = "Edit"></a>
-                                                            <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/inbound/' + ${inboundDTO.id} + '/details/delete/' + ${inboundDetail.id}}" title = "Delete"></a>
+                                                            <a class = "btn btn-primary" th:href = "@{'/inbound/' + ${inboundDTO.id} + '/details/' + ${inboundDetail.id}}" title = "Edit">
+                                                                <i class = "fa-regular fa-pen-to-square icon-dark"></i>
+                                                                Edit
+                                                            </a>
+                                                            <a class = "btn btn-danger" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/inbound/' + ${inboundDTO.id} + '/details/delete/' + ${inboundDetail.id}}" title = "Delete">
+                                                                <i class = "fa-regular fa-trash-can icon-dark"></i>
+                                                                Delete
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                     </tbody>

@@ -36,24 +36,24 @@
                                                     <tr>
                                                         <th class = "col-1" scope = "col">No.</th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'Name', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'name', ${orderBy}, 'Name')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'Type', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'type', ${orderBy}, 'Type')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'Unit', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'unit', ${orderBy}, 'Unit')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'Weight', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'weight', ${orderBy}, 'Weight')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'Size', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'size', ${orderBy}, 'Size')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'Supplier', ${orderBy})}"></div>
+                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'supplier.name', ${orderBy}, 'Supplier')}"></div>
                                                         </th>
-                                                        <th class = "col-1" scope = "col">Actions</th>
+                                                        <th class = "col-2" scope = "col">Actions</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -66,8 +66,17 @@
                                                         <td th:text = "${product.size}"></td>
                                                         <td th:text = "${product.supplier.name}"></td>
                                                         <td>
-                                                            <a class = "btn btn-primary fa-regular fa-pen-to-square icon-dark" th:href = "@{'/product/' + ${product.id}}" title = "Edit"></a>
-                                                            <a class = "btn btn-danger fa-regular fa-trash-can icon-dark" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/product/delete/' + ${product.id}}" title = "Delete"></a>
+                                                            <a class = "btn btn-primary" th:href = "@{'/product/info/' + ${product.id}}" title = "Detail">
+                                                                <i class = "fa-solid fa-info"></i>
+                                                            </a>
+                                                            <a class = "btn btn-primary" th:href = "@{'/product/' + ${product.id}}" title = "Edit">
+                                                                <i class = "fa-regular fa-pen-to-square icon-dark"></i>
+                                                                Edit
+                                                            </a>
+                                                            <a class = "btn btn-danger" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/product/delete/' + ${product.id}}" title = "Delete">
+                                                                <i class = "fa-regular fa-trash-can icon-dark"></i>
+                                                                Delete
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                     </tbody>
