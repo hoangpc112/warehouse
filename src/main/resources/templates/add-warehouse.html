@@ -13,9 +13,9 @@
                                 <h1 class = "m-0">Add warehouse</h1>
                             </div>
                             <div class = "col-sm-6">
-                                <ol class = "breadcrumb float-sm-right">
+                                <ol class = "breadcrumb float-right">
                                     <li class = "breadcrumb-item"><a href = "/">Home</a></li>
-                                    <li class = "breadcrumb-item"><a href = "/warehouse">Warehouse</a></li>
+                                    <li class = "breadcrumb-item"><a href = "/warehouse">Warehouses</a></li>
                                     <li class = "breadcrumb-item active">Add</li>
                                 </ol>
                             </div>
@@ -28,7 +28,38 @@
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <form enctype = "multipart/form-data" id = "customForm" method = "post" style = "margin: 0 auto" th:action = "@{/warehouse/new/save}" th:object = "${warehouse}">
+                                            <input th:field = "*{warehouseId}" type = "hidden">
+
+                                            <div class = "form-group">
+                                                <label for = "address">Address</label>
+                                                <input class = "form-control" id = "address" maxlength = "256" minlength = "2" required th:field = "*{warehouseAddress}" type = "text"/>
+                                                <p th:errorclass = "text-danger" th:errors = "${warehouse.warehouseAddress}" th:if = "${#fields.hasErrors('warehouseAddress')}"></p>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "phoneNumber">Phone Number</label>
+                                                <input class = "form-control" id = "phoneNumber" maxlength = "256" minlength = "2" th:field = "*{warehousePhoneNumber}" type = "text"/>
+                                                <p th:errorclass = "text-danger" th:errors = "${warehouse.warehousePhoneNumber}" th:if = "${#fields.hasErrors('warehousePhoneNumber')}"></p>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "capacity">Capacity</label>
+                                                <input class = "form-control" id = "capacity" required step = "1" th:field = "*{warehouseCapacity}" type = "number"/>
+                                            </div>
+
+                                            <div class = "form-group">
+                                                <label for = "statusSelect">Status</label>
+                                                <select class = "form-control" id = "statusSelect" required th:field = "*{warehouseActive}">
+                                                    <option value = "true">Active</option>
+                                                    <option value = "false">Inactive</option>
+                                                </select>
+                                            </div>
+
+                                            <div class = "text-center">
+                                                <input class = "btn btn-primary" type = "submit" value = "Save"/>
+                                                <a class = "btn btn-secondary" href = "/warehouse">Cancel</a>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

@@ -1,18 +1,18 @@
 package com.nttemoi.warehouse.services.impl;
 
 import com.nttemoi.warehouse.entities.Outbound;
-import com.nttemoi.warehouse.entities.OutboundDetails;
 import com.nttemoi.warehouse.repositories.OutboundRepository;
 import com.nttemoi.warehouse.services.OutboundService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class OutboundServiceImpl implements OutboundService {
 
     private final OutboundRepository outboundRepository;
@@ -33,18 +33,7 @@ public class OutboundServiceImpl implements OutboundService {
 
     @Override
     public void save (Outbound outbound) {
-        calculateTotalQuantity(outbound);
         outboundRepository.save(outbound);
-    }
-
-    private void calculateTotalQuantity (Outbound outbound) {
-        Optional.ofNullable(outbound.getOutboundDetails())
-                .ifPresent(details -> {
-                    long totalQuantity = details.stream()
-                            .mapToLong(OutboundDetails::getQuantity)
-                            .sum();
-                    outbound.setTotalQuantity(totalQuantity);
-                });
     }
 
     @Override

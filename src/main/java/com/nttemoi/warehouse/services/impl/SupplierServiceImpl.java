@@ -3,6 +3,7 @@ package com.nttemoi.warehouse.services.impl;
 import com.nttemoi.warehouse.entities.Supplier;
 import com.nttemoi.warehouse.repositories.SupplierRepository;
 import com.nttemoi.warehouse.services.SupplierService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;

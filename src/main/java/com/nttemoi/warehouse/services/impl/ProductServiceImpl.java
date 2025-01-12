@@ -3,6 +3,7 @@ package com.nttemoi.warehouse.services.impl;
 import com.nttemoi.warehouse.entities.Product;
 import com.nttemoi.warehouse.repositories.ProductRepository;
 import com.nttemoi.warehouse.services.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;

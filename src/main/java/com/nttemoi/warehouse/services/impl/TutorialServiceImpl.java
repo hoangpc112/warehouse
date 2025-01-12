@@ -3,12 +3,14 @@ package com.nttemoi.warehouse.services.impl;
 import com.nttemoi.warehouse.entities.Tutorial;
 import com.nttemoi.warehouse.repositories.TutorialRepository;
 import com.nttemoi.warehouse.services.TutorialService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class TutorialServiceImpl implements TutorialService {
 
     private final TutorialRepository tutorialRepository;

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Warehouse details</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Warehouse details</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-sm-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item"><a href = "/warehouse">Warehouse</a></li>
+                                    <li class = "breadcrumb-item active">Details</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <h3 class = "mb-4">Warehouse Information</h3>
+                                        <div class = "row">
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Address:</strong>
+                                                <span class = "h5" th:text = "${warehouse.address}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Phone number:</strong>
+                                                <span class = "h5" th:text = "${warehouse.phoneNumber}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Capacity usage:</strong>
+                                                <span class = "h5" th:text = "${warehouse.capacity} + ' / ' + ${warehouse.maxCapacity}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Total users:</strong>
+                                                <span class = "h5" th:text = "${warehouse.users.size()}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Status:</strong>
+                                                <span class = "h5" th:text = "${warehouse.active}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Created At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(warehouse.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class = "col-md-6 mb-3">
+                                                <strong class = "h5">Updated At:</strong>
+                                                <span class = "h5" th:text = "${#temporals.format(warehouse.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                                            </div>
+                                        </div>
+
+                                        <hr class = "border border-3">
+
+                                        <h3>Stock detail</h3>
+                                        <div class = "table-responsive" th:if = "${stockBalancePage.size()>0}">
+                                            <table class = "table table-hover table-bordered">
+                                                <thead class = "thead-light">
+                                                <tr>
+                                                    <th scope = "col">No.</th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy},'name')}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'totalQuantity', ${orderBy},'Total quantity')}"></div>
+
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'maxQuantity', ${orderBy},'Max quantity')}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy},NULL)}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'updatedAt', ${orderBy},'Updated at')}"></div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each = "stockBalance,iterStat : ${stockBalancePage}">
+                                                    <th scope = "row">
+                                                        [[${(currentPage-1)*pageSize+iterStat.count}]]
+                                                    </th>
+                                                    <td>[[${stockBalance.product.getName()}]]</td>
+                                                    <td>[[${stockBalance.totalQuantity}]]</td>
+                                                    <td>[[${stockBalance.maxQuantity}]]</td>
+                                                    <td>
+                                                        <a class = "btn btn-success fa-regular fa-square-check" th:href = "@{'/warehouse/detail/'+${warehouse.address}+'/'+ ${stockBalance.id} + '/active/false'}" th:if = "${stockBalance.status == true}" title = "Disable this stockBalance"></a>
+                                                        <a class = "btn btn-danger fa-regular fa-square" th:href = "@{'/warehouse/detail/'+${warehouse.address}+'/'+ ${stockBalance.id} +'/active/true'}" th:if = "${stockBalance.status == false}" title = "Enable this stockBalance"></a>
+                                                    </td>
+                                                    <td>[[${#temporals.format(stockBalance.updatedAt, 'dd/MM/yyyy HH:mm:ss')}]]
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div th:unless = "${stockBalancePage.size() > 0}">
+                                            <span>No stock found!</span>
+                                        </div>
+                                        <nav th:replace = "~{fragments/pagination :: pagination('warehouse/detail/'+${warehouse.address})}"></nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

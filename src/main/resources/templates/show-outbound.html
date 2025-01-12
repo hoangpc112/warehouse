@@ -41,11 +41,9 @@
                                                         <th scope = "col">
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'createdAt', ${orderBy}, 'Created at')}"></div>
                                                         </th>
+                                                        <th class = "col-2" scope = "col">Total outbound details</th>
                                                         <th scope = "col">
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'status', ${orderBy}, 'Status')}"></div>
-                                                        </th>
-                                                        <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('outbound', ${order != '' && order != null ? order : ''}, 'totalQuantity', ${orderBy}, 'Total quantity')}"></div>
                                                         </th>
                                                         <th class = "col-2" scope = "col">Actions</th>
                                                     </tr>
@@ -55,9 +53,12 @@
                                                         <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
                                                         <td th:text = "${outbound.user.username}"></td>
                                                         <td th:text = "${#temporals.format(outbound.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                                                        <td th:text = "${outbound.outboundDetails.size()}"></td>
                                                         <td th:text = "${outbound.status}"></td>
-                                                        <td th:text = "${outbound.totalQuantity}"></td>
                                                         <td>
+                                                            <a class = "btn btn-primary" th:href = "@{'/outbound/info/' + ${outbound.id}}" title = "Detail">
+                                                                <i class = "fa-solid fa-info"></i>
+                                                            </a>
                                                             <a class = "btn btn-primary" th:href = "@{'/outbound/' + ${outbound.id}}" title = "Edit">
                                                                 <i class = "fa-regular fa-pen-to-square icon-dark"></i>
                                                                 Edit

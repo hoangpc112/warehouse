@@ -62,6 +62,8 @@
                                             </div>
                                         </form>
 
+                                        <hr>
+
                                         <div th:if = "${outboundDetails != null && !outboundDetails.isEmpty() && outboundDTO.id != null}">
                                             <div th:replace = "~{fragments/searchForm :: searchForm('/outbound/' + ${outboundDTO.id})}"></div>
 
@@ -89,7 +91,7 @@
                                                     <tr th:each = "outboundDetail, iterStat : ${outboundDetails}">
                                                         <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
                                                         <td th:text = "${outboundDetail.product.name}"></td>
-                                                        <td th:text = "${outboundDetail.warehouse}"></td>
+                                                        <td th:text = "${outboundDetail.warehouse.address}"></td>
                                                         <td th:text = "${outboundDetail.quantity}"></td>
                                                         <td th:text = "${outboundDetail.status}"></td>
                                                         <td>

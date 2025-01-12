@@ -23,5 +23,8 @@ public class InboundDTO {
     @NotNull (message = "Status is required")
     private String status;
 
+    @NotNull (message = "This is required")
+    private boolean isRefunded;
+
     private String description;
 }

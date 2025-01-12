@@ -63,12 +63,20 @@
                                                 <textarea class = "form-control" id = "description" placeholder = "Enter your description here..." rows = "4" th:field = "*{description}"></textarea>
                                             </div>
 
+                                            <div class = "form-group form-check">
+                                                <input class = "form-check-input" id = "refundSelect" th:field = "*{refunded}" type = "checkbox">
+                                                <label class = "form-check-label" for = "refundSelect">Is refund</label>
+                                                <div class = "text-danger" th:errors = "*{refunded}" th:if = "${#fields.hasErrors('refunded')}"></div>
+                                            </div>
+
                                             <div class = "text-center">
                                                 <a class = "btn btn-primary" th:href = "@{'/inbound/' + ${id} + '/details/new'}" th:if = "${inboundDTO.id != null}">Add new product</a>
                                                 <button class = "btn btn-success" type = "submit">Save</button>
                                                 <a class = "btn btn-danger" href = "/inbound">Cancel</a>
                                             </div>
                                         </form>
+
+                                        <hr>
 
                                         <div th:if = "${inboundDetails != null && !inboundDetails.isEmpty() && inboundDTO.id != null}">
                                             <div th:replace = "~{fragments/searchForm :: searchForm('/inbound/' + ${inboundDTO.id})}"></div>
@@ -100,7 +108,7 @@
                                                     <tr th:each = "inboundDetail, iterStat : ${inboundDetails}">
                                                         <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
                                                         <td th:text = "${inboundDetail.product.name}"></td>
-                                                        <td th:text = "${inboundDetail.warehouse}"></td>
+                                                        <td th:text = "${inboundDetail.warehouse.address}"></td>
                                                         <td th:text = "${inboundDetail.quantity}"></td>
                                                         <td th:text = "${inboundDetail.damaged}"></td>
                                                         <td th:text = "${inboundDetail.status}"></td>

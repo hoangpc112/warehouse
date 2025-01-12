@@ -31,12 +31,8 @@
                                         <h3 class = "mb-4">Outbound Information</h3>
                                         <div class = "row">
                                             <div class = "col-md-6 mb-3">
-                                                <strong class = "h5">Total quantity:</strong>
-                                                <span class = "h5" th:text = "${outbound.totalQuantity}"></span>
-                                            </div>
-                                            <div class = "col-md-6 mb-3">
                                                 <strong class = "h5">User:</strong>
-                                                <span class = "h5" th:text = "${outbound.user}"></span>
+                                                <span class = "h5" th:text = "${outbound.user.username}"></span>
                                             </div>
                                             <div class = "col-md-6 mb-3">
                                                 <strong class = "h5">Status:</strong>
@@ -50,9 +46,10 @@
                                                 <strong class = "h5">Updated At:</strong>
                                                 <span class = "h5" th:text = "${#temporals.format(outbound.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
                                             </div>
-                                            <div class = "col-md-6 mb-3">
+                                            <div class = "ml-2 mb-3">
                                                 <strong class = "h5">Description:</strong>
-                                                <span class = "h5" th:text = "${outbound.description}"></span>
+                                                <span class = "h5" th:if = "${outbound.description != null && !outbound.description.isEmpty()}" th:text = "${outbound.description}"></span>
+                                                <span class = "h5" th:unless = "${outbound.description != null && !outbound.description.isEmpty()}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at corporis, magni necessitatibus nobis quae qui quos totam. Exercitationem maiores quia quisquam rem tenetur? Cumque hic ipsa maxime quod voluptatibus!</span>
                                             </div>
                                         </div>
 
@@ -60,8 +57,6 @@
 
                                         <h3>Outbound details</h3>
                                         <div th:if = "${outboundDetails != null && !outboundDetails.isEmpty() && outbound.id != null}">
-                                            <div th:replace = "~{fragments/searchForm :: searchForm('/outbound/info/' + ${outbound.id})}"></div>
-
                                             <div class = "table-responsive">
                                                 <table class = "table table-hover table-bordered text-center">
                                                     <thead class = "thead-light">
@@ -85,7 +80,7 @@
                                                     <tr th:each = "outboundDetail, iterStat : ${outboundDetails}">
                                                         <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
                                                         <td th:text = "${outboundDetail.product.name}"></td>
-                                                        <td th:text = "${outboundDetail.warehouse}"></td>
+                                                        <td th:text = "${outboundDetail.warehouse.address}"></td>
                                                         <td th:text = "${outboundDetail.quantity}"></td>
                                                         <td th:text = "${outboundDetail.status}"></td>
                                                     </tr>

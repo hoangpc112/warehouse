@@ -31,7 +31,6 @@ public class Outbound {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private long totalQuantity;
     private String status;
     private String description;
 

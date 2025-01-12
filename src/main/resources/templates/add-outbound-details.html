@@ -45,7 +45,7 @@
                                                 <label for = "warehouseSelect">Warehouse</label>
                                                 <select class = "form-control" id = "warehouseSelect" required th:field = "*{warehouseId}">
                                                     <option selected value = "">Select a warehouse</option>
-                                                    <option th:each = "warehouse : ${warehouses}" th:text = "${warehouse}" th:value = "${warehouse.id}"></option>
+                                                    <option th:each = "warehouse : ${warehouses}" th:text = "${warehouse.address}" th:value = "${warehouse.id}"></option>
                                                 </select>
                                                 <div th:errors = "*{warehouseId}" th:if = "${#fields.hasErrors('warehouseId')}"></div>
                                             </div>

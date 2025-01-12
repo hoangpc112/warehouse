@@ -33,11 +33,11 @@ public class Inbound {
 
     private String status;
 
+    private boolean isRefunded;
+
     @OneToMany (mappedBy = "inbound", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List <InboundDetails> inboundDetails;
 
-    private long totalQuantity;
-    private long totalDamaged;
     private String description;
 
     @ManyToOne

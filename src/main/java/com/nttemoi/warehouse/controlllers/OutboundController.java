@@ -197,6 +197,8 @@ public class OutboundController {
     public String delete (@PathVariable ("id") Long id,
                           RedirectAttributes redirectAttributes) {
         try {
+            Outbound outbound = outboundService.findById(id);
+            outbound.getOutboundDetails().forEach(outboundDetails -> outboundDetailsService.deleteById(outboundDetails.getId()));
             outboundService.deleteById(id);
             redirectAttributes.addFlashAttribute("message", "Outbound has been deleted successfully!");
         } catch (Exception e) {
@@ -276,10 +278,12 @@ public class OutboundController {
 
             outbound.getOutboundDetails().add(outboundDetails);
 
+            outboundDetailsService.save(outboundDetails);
             outboundService.save(outbound);
             redirectAttributes.addFlashAttribute("message", "Outbound details saved successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/outbound/" + id + "/details/new";
         }
 
         return "redirect:/outbound/" + id;
@@ -291,6 +295,7 @@ public class OutboundController {
                                  RedirectAttributes redirectAttributes) {
         try {
             outboundDetailsService.deleteById(detailsId);
+            outboundService.save(outboundService.findById(id));
             redirectAttributes.addFlashAttribute("message", "Outbound details deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());

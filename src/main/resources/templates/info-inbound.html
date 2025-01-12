@@ -31,20 +31,12 @@
                                         <h3 class = "mb-4">Inbound Information</h3>
                                         <div class = "row">
                                             <div class = "col-md-6 mb-3">
-                                                <strong class = "h5">Total quantity:</strong>
-                                                <span class = "h5" th:text = "${inbound.totalQuantity}"></span>
-                                            </div>
-                                            <div class = "col-md-6 mb-3">
-                                                <strong class = "h5">Total damaged:</strong>
-                                                <span class = "h5" th:text = "${inbound.totalDamaged}"></span>
-                                            </div>
-                                            <div class = "col-md-6 mb-3">
                                                 <strong class = "h5">Supplier:</strong>
                                                 <span class = "h5" th:text = "${inbound.supplier.name}"></span>
                                             </div>
                                             <div class = "col-md-6 mb-3">
                                                 <strong class = "h5">User:</strong>
-                                                <span class = "h5" th:text = "${inbound.user}"></span>
+                                                <span class = "h5" th:text = "${inbound.user.username}"></span>
                                             </div>
                                             <div class = "col-md-6 mb-3">
                                                 <strong class = "h5">Status:</strong>
@@ -58,9 +50,10 @@
                                                 <strong class = "h5">Updated At:</strong>
                                                 <span class = "h5" th:text = "${#temporals.format(inbound.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
                                             </div>
-                                            <div class = "col-md-6 mb-3">
+                                            <div class = "ml-2 mb-3">
                                                 <strong class = "h5">Description:</strong>
-                                                <span class = "h5" th:text = "${inbound.description}"></span>
+                                                <span class = "h5" th:if = "${inbound.description != null && !inbound.description.isEmpty()}" th:text = "${inbound.description}"></span>
+                                                <span class = "h5" th:unless = "${inbound.description != null && !inbound.description.isEmpty()}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at corporis, magni necessitatibus nobis quae qui quos totam. Exercitationem maiores quia quisquam rem tenetur? Cumque hic ipsa maxime quod voluptatibus!</span>
                                             </div>
                                         </div>
 
@@ -68,8 +61,6 @@
 
                                         <h3>Inbound details</h3>
                                         <div th:if = "${inboundDetails != null && !inboundDetails.isEmpty() && inbound.id != null}">
-                                            <div th:replace = "~{fragments/searchForm :: searchForm('/inbound/info/' + ${inbound.id})}"></div>
-
                                             <div class = "table-responsive">
                                                 <table class = "table table-hover table-bordered text-center">
                                                     <thead class = "thead-light">
@@ -96,7 +87,7 @@
                                                     <tr th:each = "inboundDetail, iterStat : ${inboundDetails}">
                                                         <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
                                                         <td th:text = "${inboundDetail.product.name}"></td>
-                                                        <td th:text = "${inboundDetail.warehouse}"></td>
+                                                        <td th:text = "${inboundDetail.warehouse.address}"></td>
                                                         <td th:text = "${inboundDetail.quantity}"></td>
                                                         <td th:text = "${inboundDetail.damaged}"></td>
                                                         <td th:text = "${inboundDetail.status}"></td>

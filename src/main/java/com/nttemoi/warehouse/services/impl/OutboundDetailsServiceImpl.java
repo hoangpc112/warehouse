@@ -1,22 +1,28 @@
 package com.nttemoi.warehouse.services.impl;
 
 import com.nttemoi.warehouse.entities.OutboundDetails;
+import com.nttemoi.warehouse.entities.StockBalance;
 import com.nttemoi.warehouse.repositories.OutboundDetailsRepository;
 import com.nttemoi.warehouse.services.OutboundDetailsService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class OutboundDetailsServiceImpl implements OutboundDetailsService {
 
     private final OutboundDetailsRepository outboundDetailsRepository;
+    private final StockBalanceServiceImpl stockBalanceServiceImpl;
 
-    public OutboundDetailsServiceImpl (OutboundDetailsRepository outboundDetailsRepository) {
+    public OutboundDetailsServiceImpl (OutboundDetailsRepository outboundDetailsRepository, StockBalanceServiceImpl stockBalanceServiceImpl) {
         this.outboundDetailsRepository = outboundDetailsRepository;
+        this.stockBalanceServiceImpl = stockBalanceServiceImpl;
     }
 
     @Override
@@ -31,12 +37,24 @@ public class OutboundDetailsServiceImpl implements OutboundDetailsService {
 
     @Override
     public void save (OutboundDetails outboundDetails) {
+        StockBalance stockBalance = Optional.ofNullable(stockBalanceServiceImpl.findByProductIdAndWarehouseId(outboundDetails.getProduct().getId(), outboundDetails.getWarehouse().getId()))
+                .orElseThrow(() -> new RuntimeException(outboundDetails.getProduct().getName() + " is not available in warehouse: " + outboundDetails.getWarehouse().getAddress()));
+        if (stockBalance.getTotalQuantity() < outboundDetails.getQuantity()) {
+            throw new RuntimeException("Stock is not enough");
+        }
+        stockBalance.setTotalQuantity(stockBalance.getTotalQuantity() - outboundDetails.getQuantity());
+        stockBalanceServiceImpl.save(stockBalance, false);
         outboundDetailsRepository.save(outboundDetails);
     }
 
     @Override
     public void deleteById (Long id) {
-        outboundDetailsRepository.delete(findById(id));
+        OutboundDetails outboundDetails = findById(id);
+        StockBalance stockBalance = stockBalanceServiceImpl.findByProductIdAndWarehouseId(outboundDetails.getProduct().getId(), outboundDetails.getWarehouse().getId());
+        stockBalance.setTotalQuantity(stockBalance.getTotalQuantity() + outboundDetails.getQuantity());
+        stockBalanceServiceImpl.save(stockBalance, false);
+        stockBalanceServiceImpl.updateWarehouseCapacity(outboundDetails.getWarehouse(), stockBalance);
+        outboundDetailsRepository.delete(outboundDetails);
     }
 
     @Override

@@ -44,14 +44,9 @@
                                                         <th scope = "col">
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'createdAt', ${orderBy}, 'Created at')}"></div>
                                                         </th>
+                                                        <th class = "col-2" scope = "col">Total inbound details</th>
                                                         <th scope = "col">
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'status', ${orderBy}, 'Status')}"></div>
-                                                        </th>
-                                                        <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'totalQuantity', ${orderBy}, 'Total quantity')}"></div>
-                                                        </th>
-                                                        <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('inbound', ${order != '' && order != null ? order : ''}, 'totalDamaged', ${orderBy}, 'Total damaged')}"></div>
                                                         </th>
                                                         <th class = "col-2" scope = "col">Actions</th>
                                                     </tr>
@@ -62,11 +57,10 @@
                                                         <td th:text = "${inbound.supplier.name}"></td>
                                                         <td th:text = "${inbound.user.username}"></td>
                                                         <td th:text = "${#temporals.format(inbound.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                                                        <td th:text = "${inbound.inboundDetails.size()}"></td>
                                                         <td th:text = "${inbound.status}"></td>
-                                                        <td th:text = "${inbound.totalQuantity}"></td>
-                                                        <td th:text = "${inbound.totalDamaged}"></td>
                                                         <td>
-                                                            <a class = "btn btn-primary" th:href = "@{'/product/info/' + ${product.id}}" title = "Detail">
+                                                            <a class = "btn btn-primary" th:href = "@{'/inbound/info/' + ${inbound.id}}" title = "Detail">
                                                                 <i class = "fa-solid fa-info"></i>
                                                             </a>
                                                             <a class = "btn btn-primary" th:href = "@{'/inbound/' + ${inbound.id}}" title = "Edit">

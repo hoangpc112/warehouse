@@ -101,6 +101,7 @@ public class InboundController {
             inbound.setUser(userService.findById(inboundDTO.getUserId()));
             inbound.setStatus(inboundDTO.getStatus());
             inbound.setDescription(inboundDTO.getDescription());
+            inbound.setRefunded(inboundDTO.isRefunded());
 
             inboundService.save(inbound);
             redirectAttributes.addFlashAttribute("message", "Inbound has been saved successfully!");
@@ -176,6 +177,7 @@ public class InboundController {
             inboundDTO.setUserId(inbound.getUser().getId());
             inboundDTO.setStatus(inbound.getStatus());
             inboundDTO.setDescription(inbound.getDescription());
+            inboundDTO.setRefunded(inbound.isRefunded());
 
             if (!orderBy.equals("id")) {
                 model.addAttribute("order", order);
@@ -205,6 +207,8 @@ public class InboundController {
     public String delete (@PathVariable ("id") Long id,
                           RedirectAttributes redirectAttributes) {
         try {
+            Inbound inbound = inboundService.findById(id);
+            inbound.getInboundDetails().forEach(inboundDetails -> inboundDetailsService.deleteById(inboundDetails.getId()));
             inboundService.deleteById(id);
             redirectAttributes.addFlashAttribute("message", "Inbound has been deleted successfully!");
         } catch (Exception e) {
@@ -293,6 +297,7 @@ public class InboundController {
 
             inbound.getInboundDetails().add(inboundDetails);
 
+            inboundDetailsService.save(inboundDetails);
             inboundService.save(inbound);
             redirectAttributes.addFlashAttribute("message", "Inbound details saved successfully");
         } catch (Exception e) {
@@ -308,6 +313,7 @@ public class InboundController {
                                  RedirectAttributes redirectAttributes) {
         try {
             inboundDetailsService.deleteById(detailsId);
+            inboundService.save(inboundService.findById(id));
             redirectAttributes.addFlashAttribute("message", "Inbound details deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());

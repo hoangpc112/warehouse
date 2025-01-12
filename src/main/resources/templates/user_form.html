@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Edit user</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Edit user</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-sm-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item"><a href = "/user">User</a></li>
+                                    <li class = "breadcrumb-item active">Edit user</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <form enctype = "multipart/form-data" id = "customForm" method = "post" style = "margin: 0 auto" th:action = "@{/user/save}" th:object = "${user}">
+                                            <input th:field = "*{id}" type = "hidden">
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "username">Username</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "username" maxlength = "128" minlength = "2" required th:field = "*{username}" type = "text"/>
+                                                </div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "phoneNumber">Phone number</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "phoneNumber" min = "1" required step = "1" th:field = "*{phoneNumber}" type = "text"/>
+                                                </div>
+                                            </div>
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "email">Email</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "email" maxlength = "128" minlength = "2" th:field = "*{email}" type = "email"/>
+                                                </div>
+                                            </div>
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "address">Address</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "address" maxlength = "128" minlength = "2" th:field = "*{address}" type = "text"/>
+                                                </div>
+                                            </div>
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "warehouse">Warehouse</label>
+                                                <div class = "col-sm-11">
+                                                    <select class = "form-control" id = "warehouse" name = "warehouseId">
+                                                        <option disabled selected th:if = "${user.warehouse==null}" value = "">
+                                                            Choose a Warehouse
+                                                        </option>
+                                                        <option th:if = "${user.warehouse!=null}" th:text = "*{warehouse.address}" th:value = "*{warehouse.id}"></option>
+                                                        <option th:each = "theWarehouse : ${warehouses}"
+
+                                                                th:text = "${theWarehouse.address}" th:value = "${theWarehouse.id}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "roles">Roles</label>
+                                                <div class = "col-sm-11" style = "align-content: center">
+                                                    <th:block th:each = "role: ${userRoleList}">
+                                                        <input class = "m-2" id = "roles" th:field = "*{roles}" th:text = "${role.name}" th:value = "${role.id}" type = "checkbox"/>
+                                                    </th:block>
+                                                </div>
+                                            </div>
+                                            <!--                                    <div class="form-group row">-->
+                                            <!--                                        <label class="col-4 col-form-label">Roles: </label>-->
+                                            <!--                                        <div class="col-8">-->
+                                            <!--                                            <th:block th:each="role: ${userRoleList}">-->
+                                            <!--                                                <input class="m-2" th:field="*{roles}"-->
+                                            <!--                                                       th:text="${role.name}" th:value="${role.id}" type="checkbox"/>-->
+                                            <!--                                            </th:block>-->
+                                            <!--                                        </div>-->
+                                            <!--                                    </div>-->
+
+
+                                            <!--                                    <div class = "form-group row">-->
+                                            <!--                                        <label class = "col-sm-1 form-check-label" for = "published">Published</label>-->
+                                            <!--                                        <div class = "col-sm-11">-->
+                                            <!--                                            <input id = "published" th:field = "*{published}" type = "checkbox"/>-->
+                                            <!--                                        </div>-->
+                                            <!--                                    </div>-->
+
+                                            <div class = "text-center">
+                                                <input class = "btn btn-primary" type = "submit" value = "Save      "/>
+                                                <a class = "btn btn-secondary" href = "/user">Cancel</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

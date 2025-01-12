@@ -10,7 +10,7 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">Warehouse</h1>
+                                <h1 class = "m-0">Warehouse - [[${totalItems}]] results</h1>
                             </div>
                             <div class = "col-sm-6">
                                 <ol class = "breadcrumb float-sm-right">
@@ -23,16 +23,73 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <div th:replace = "~{fragments/searchForm :: searchForm('warehouse')}"></div>
+
+                                        <div class = "table-responsive" th:if = "${warehouses.size()>0}">
+                                            <table class = "table table-hover table-bordered text-center">
+                                                <thead class = "thead-light">
+                                                <tr>
+                                                    <th class = "col-1" scope = "col">No.</th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse', ${order != '' && order != null ? order : ''}, 'Address', ${orderBy},'Address')}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse', ${order != '' && order != null ? order : ''}, 'PhoneNumber', ${orderBy},'Phone number')}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse', ${order != '' && order != null ? order : ''}, 'Capacity', ${orderBy}, 'Capacity usage')}"></div>
+                                                    </th>
+                                                    <th scope = "col">Number of User</th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse', ${order != '' && order != null ? order : ''}, 'Active', ${orderBy},NULL)}"></div>
+                                                    </th>
+                                                    <th class = "col-2" scope = "col">Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each = "warehouse,iterStat : ${warehouses}">
+                                                    <th scope = "row"> [[${(currentPage-1)*pageSize+iterStat.count}]]</th>
+                                                    <td>[[${warehouse.address}]]</td>
+                                                    <td>[[${warehouse.phoneNumber}]]</td>
+                                                    <td>[[${warehouse.capacity}]]/[[${warehouse.maxCapacity}]]</td>
+                                                    <td>[[${warehouse.users.size()}]]</td>
+                                                    <td>
+                                                        <a class = "btn btn-success fa-regular fa-square-check" th:href = "@{'/warehouse/' + ${warehouse.id} + '/active/false'}" th:if = "${warehouse.active == true}" title = "Disable this warehouse"></a>
+                                                        <a class = "btn btn-danger fa-regular fa-square" th:href = "@{'/warehouse/' + ${warehouse.id} + '/active/true'}" th:if = "${warehouse.active == false}" title = "Enable this warehouse"></a>
+                                                    </td>
+                                                    <td>
+                                                        <a class = "btn btn-primary" th:href = "@{'/warehouse/detail/' + ${warehouse.address}}" title = "More details">
+                                                            <i class = "fa-solid fa-info"></i>
+                                                        </a>
+                                                        <a class = "btn btn-primary" th:href = "@{'/warehouse/'+${warehouse.address}}" title = "Edit this warehouse">
+                                                            <i class = "fa-regular fa-pen-to-square icon-dark"></i>
+                                                            Edit
+                                                        </a>
+                                                        <a class = "btn btn-danger" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/warehouse/delete/'+${warehouse.id}}" title = "Delete this user">
+                                                            <i class = "fa-regular fa-trash-can icon-dark"></i>
+                                                            Delete
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div th:unless = "${warehouses.size() > 0}">
+                                            <span>No warehouses found!</span>
+                                        </div>
+                                        <nav th:replace = "~{fragments/pagination :: pagination('warehouse')}"></nav>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div th:replace = "~{fragments/deleteModal :: deleteModal }"></div>
                     </div>
+                    <script src = "/js/common.js"></script>
                 </section>
             </div>
         </section>

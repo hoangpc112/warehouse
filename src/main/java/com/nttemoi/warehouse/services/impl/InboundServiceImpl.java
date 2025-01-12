@@ -1,18 +1,18 @@
 package com.nttemoi.warehouse.services.impl;
 
 import com.nttemoi.warehouse.entities.Inbound;
-import com.nttemoi.warehouse.entities.InboundDetails;
 import com.nttemoi.warehouse.repositories.InboundRepository;
 import com.nttemoi.warehouse.services.InboundService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class InboundServiceImpl implements InboundService {
 
     private final InboundRepository inboundRepository;
@@ -33,22 +33,7 @@ public class InboundServiceImpl implements InboundService {
 
     @Override
     public void save (Inbound inbound) {
-        calculateTotalQuantity(inbound);
         inboundRepository.save(inbound);
-    }
-
-    private void calculateTotalQuantity (Inbound inbound) {
-        Optional.ofNullable(inbound.getInboundDetails())
-                .ifPresent(details -> {
-                    long totalQuantity = details.stream()
-                            .mapToLong(InboundDetails::getQuantity)
-                            .sum();
-                    long totalDamaged = details.stream()
-                            .mapToLong(InboundDetails::getDamaged)
-                            .sum();
-                    inbound.setTotalQuantity(totalQuantity);
-                    inbound.setTotalDamaged(totalDamaged);
-                });
     }
 
     @Override

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "https://www.thymeleaf.org">
+    <head>
+        <title>Edit warehouse</title>
+    </head>
+    <body>
+        <section layout:fragment = "content">
+            <div class = "content-wrapper">
+                <div class = "content-header">
+                    <div class = "container-fluid">
+                        <div class = "row mb-2">
+                            <div class = "col-sm-6">
+                                <h1 class = "m-0">Edit warehouse</h1>
+                            </div>
+                            <div class = "col-sm-6">
+                                <ol class = "breadcrumb float-sm-right">
+                                    <li class = "breadcrumb-item"><a href = "/">Home</a></li>
+                                    <li class = "breadcrumb-item"><a href = "/warehouse">Warehouse</a></li>
+                                    <li class = "breadcrumb-item active">Edit warehouse</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class = "content">
+                    <div class = "container-fluid">
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <form enctype = "multipart/form-data" id = "customForm" method = "post" style = "margin: 0 auto" th:action = "@{/warehouse/save}" th:object = "${warehouse}">
+                                            <input th:field = "*{id}" type = "hidden">
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "address">Address</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "address" maxlength = "128" minlength = "2" required th:field = "*{address}" type = "text"/>
+                                                </div>
+                                            </div>
+
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "phoneNumber">Phone number</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "phoneNumber" min = "1" required step = "1" th:field = "*{phoneNumber}" type = "text"/>
+                                                    <p th:errorclass = "text-danger" th:errors = "${warehouse.phoneNumber}" th:if = "${#fields.hasErrors('phoneNumber')}"></p>
+                                                </div>
+                                            </div>
+                                            <div class = "form-group row">
+                                                <label class = "col-sm-1 col-form-label" for = "capacity">Capacity</label>
+                                                <div class = "col-sm-11">
+                                                    <input class = "form-control" id = "capacity" required step = "1" th:field = "*{capacity}" type = "number"/>
+                                                </div>
+                                            </div>
+
+                                            <div class = "text-center">
+                                                <input class = "btn btn-primary" type = "submit" value = "Save"/>
+                                                <a class = "btn btn-secondary" href = "/warehouse">Cancel</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </body>
+</html>

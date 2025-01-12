@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang = "en" layout:decorate = "~{layout}" xmlns = "http://www.w3.org/1999/xhtml" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th = "http://www.thymeleaf.org">
     <head>
-        <title>User</title>
+        <title>User management</title>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -10,7 +10,7 @@
                     <div class = "container-fluid">
                         <div class = "row mb-2">
                             <div class = "col-sm-6">
-                                <h1 class = "m-0">User</h1>
+                                <h1 class = "m-0">User - [[${totalItems}]] results</h1>
                             </div>
                             <div class = "col-sm-6">
                                 <ol class = "breadcrumb float-sm-right">
@@ -23,18 +23,80 @@
                 </div>
                 <section class = "content">
                     <div class = "container-fluid">
+                        <div th:replace = "~{fragments/message :: message}"></div>
                         <div class = "row">
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <div th:replace = "~{fragments/searchForm :: searchForm('user')}"></div>
+
+                                        <div class = "table-responsive" th:if = "${users.size()>0}">
+                                            <table class = "table table-hover table-bordered text-center">
+                                                <thead class = "thead-light">
+                                                <tr>
+                                                    <th class = "col-1" scope = "col">No.</th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('user', ${order != '' && order != null ? order : ''}, 'Username', ${orderBy},NULL)}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('user', ${order != '' && order != null ? order : ''}, 'phoneNumber', ${orderBy},'Phone Number')}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('user', ${order != '' && order != null ? order : ''}, 'Email', ${orderBy},NULL)}"></div>
+
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('user', ${order != '' && order != null ? order : ''}, 'Address', ${orderBy},NULL)}"></div>
+                                                    </th>
+                                                    <th scope = "col">
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('user', ${order != '' && order != null ? order : ''}, 'Active', ${orderBy},NULL)}"></div>
+                                                    </th>
+                                                    <th class = "col-2" scope = "col">Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each = "user,iterStat : ${users}">
+                                                    <th scope = "row"> [[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
+                                                    <td>[[${user.username}]]</td>
+                                                    <td>[[${user.phoneNumber}]]</td>
+                                                    <td>[[${user.email}]]</td>
+                                                    <td>[[${user.address}]]</td>
+                                                    <!--                                            <td>[[${#temporals.format(user.createdAt, 'dd/MM/yyyy - HH:mm:ss')}]]</td>-->
+                                                    <!--                                            <td>[[${#temporals.format(user.updatedAt, 'dd/MM/yyyy - HH:mm:ss')}]]</td>-->
+                                                    <td>
+                                                        <a class = "btn btn-success fa-regular fa-square-check" th:href = "@{'/user/' + ${user.id} + '/active/false'}" th:if = "${user.active == true}" title = "Disable this user"></a>
+                                                        <a class = "btn btn-danger fa-regular fa-square" th:href = "@{'/user/' + ${user.id} + '/active/true'}" th:if = "${user.active == false}" title = "Enable this user"></a>
+                                                    </td>
+                                                    <td>
+                                                        <a class = "btn btn-primary" th:href = "@{'/user/detail/' + ${user.username}}" title = "More details">
+                                                            <i class = "fa-solid fa-info"></i>
+                                                        </a>
+                                                        <a class = "btn btn-primary" th:href = "@{'/user/'+${user.username}}" title = "Edit this user">
+                                                            <i class = "fa-regular fa-pen-to-square icon-dark"></i>
+                                                            Edit
+                                                        </a>
+                                                        <a class = "btn btn-danger" data-bs-target = "#deleteModal" data-bs-toggle = "modal" onclick = "openDeleteModal(event, this.href)" th:href = "@{'/user/delete/'+${user.id}}" title = "Delete this user">
+                                                            <i class = "fa-regular fa-trash-can icon-dark"></i>
+                                                            Delete
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div th:unless = "${users.size() > 0}">
+                                            <span>No users found!</span>
+                                        </div>
+                                        <nav th:replace = "~{fragments/pagination :: pagination('user')}"></nav>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div th:replace = "~{fragments/deleteModal :: deleteModal }"></div>
                 </section>
             </div>
+            <script src = "/js/common.js"></script>
         </section>
     </body>
 </html>
