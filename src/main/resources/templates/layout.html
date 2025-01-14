@@ -9,10 +9,11 @@
         <link href = "/dist/css/adminlte.min.css" rel = "stylesheet">
     </head>
     <body class = "hold-transition sidebar-mini layout-fixed">
-        <header th:replace = "~{fragments/navbar :: navbar}"></header>
-        <aside th:replace = "~{fragments/sidebar :: sidebar}"></aside>
         <div class = "wrapper">
+            <header th:replace = "~{fragments/navbar :: navbar}"></header>
+            <aside th:replace = "~{fragments/sidebar :: sidebar}"></aside>
             <section layout:fragment = "content"></section>
+            <footer th:replace = "~{fragments/footer :: footer}"></footer>
         </div>
 
         <script src = "/plugins/jquery/jquery.min.js"></script>

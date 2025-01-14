@@ -2,6 +2,7 @@ package com.nttemoi.warehouse.controlllers;
 
 import com.nttemoi.warehouse.entities.DateInfo;
 import com.nttemoi.warehouse.entities.Prediction;
+import com.nttemoi.warehouse.entities.Product;
 import com.nttemoi.warehouse.services.impl.ProductServiceImpl;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -56,7 +57,9 @@ public class HomeController {
     @PostMapping ("/receive")
     public ResponseEntity <List <Prediction>> receive (@RequestBody List <Prediction> json) {
         json.forEach(prediction -> {
-            prediction.setProductName(productService.findById((long) prediction.getProductId()).getName());
+            Product product = productService.findById((long) prediction.getProductId());
+            prediction.setProductName(product.getName());
+            prediction.setProductCategory(product.getType());
         });
         return ResponseEntity.ok(json);
     }

@@ -20,17 +20,17 @@ public class SecurityConfiguration {
     public DefaultSecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        //                        .requestMatchers("/").permitAll()
-                        //                        .requestMatchers("/api/**").permitAll()
-                        //                        .requestMatchers("/login").permitAll()
-                        //                        .requestMatchers("/logout").permitAll()
-                        //                        .requestMatchers("/css/**").permitAll()
-                        //                        .requestMatchers("/js/**").permitAll()
-                        //                        .requestMatchers("/images/**").permitAll()
-                        //                        .requestMatchers("/plugins/**").permitAll()
-                        //                        .requestMatchers("/dist/**").permitAll()
-                        //                        .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(
+                                "/login",
+                                "/logout",
+                                "/dist/**",
+                                "/images/**",
+                                "/js/**",
+                                "/plugins/**",
+                                "/send",
+                                "/receive"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(form -> form

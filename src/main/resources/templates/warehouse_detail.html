@@ -70,17 +70,16 @@
                                                 <tr>
                                                     <th scope = "col">No.</th>
                                                     <th scope = "col">
-                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy},'name')}"></div>
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'product.name', ${orderBy},'Name')}"></div>
                                                     </th>
                                                     <th scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'totalQuantity', ${orderBy},'Total quantity')}"></div>
-
                                                     </th>
                                                     <th scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'maxQuantity', ${orderBy},'Max quantity')}"></div>
                                                     </th>
                                                     <th scope = "col">
-                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy},NULL)}"></div>
+                                                        <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'status', ${orderBy},'Status')}"></div>
                                                     </th>
                                                     <th scope = "col">
                                                         <div th:replace = "~{fragments/sortBtn :: sortBtn('warehouse/detail/'+${warehouse.address}, ${order != '' && order != null ? order : ''}, 'updatedAt', ${orderBy},'Updated at')}"></div>

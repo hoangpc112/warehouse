@@ -19,4 +19,5 @@ public class Prediction {
     private double avgMonthly;
 
     private String productName;
+    private String productCategory;
 }
