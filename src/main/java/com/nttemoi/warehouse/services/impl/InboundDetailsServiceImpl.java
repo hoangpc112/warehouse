@@ -41,10 +41,11 @@ public class InboundDetailsServiceImpl implements InboundDetailsService {
         Optional <StockBalance> optionalStockBalance = Optional.ofNullable(stockBalanceServiceImpl.findByProductIdAndWarehouseId(inboundDetails.getProduct().getId(), inboundDetails.getWarehouse().getId()));
         if (optionalStockBalance.isPresent()) {
             stockBalance = optionalStockBalance.get();
+            stockBalance.setMaxQuantity(Math.max(inboundDetails.getQuantity(), stockBalance.getMaxQuantity()));
             stockBalance.setTotalQuantity(stockBalance.getTotalQuantity() + inboundDetails.getQuantity());
         }
         else {
-            stockBalance.setMaxQuantity(Math.max(inboundDetails.getQuantity(), stockBalance.getMaxQuantity()));
+            stockBalance.setMaxQuantity(inboundDetails.getQuantity());
             stockBalance.setProduct(inboundDetails.getProduct());
             stockBalance.setWarehouse(inboundDetails.getWarehouse());
             stockBalance.setTotalQuantity(inboundDetails.getQuantity());

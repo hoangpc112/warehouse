@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SupplierService {
     List <Supplier> findAll ();
-    
+
     Supplier findById (Long id);
 
     void save (Supplier supplier);
@@ -17,4 +17,6 @@ public interface SupplierService {
     Page <Supplier> findAll (int page, int size, String order, String orderBy);
 
     Page <Supplier> findAllByKeyword (String keyword, int page, int size, String order, String orderBy);
+
+    Supplier findByName (String name);
 }

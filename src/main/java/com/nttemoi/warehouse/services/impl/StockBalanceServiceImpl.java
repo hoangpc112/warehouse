@@ -78,6 +78,11 @@ public class StockBalanceServiceImpl implements StockBalanceService {
     }
 
     @Override
+    public List <StockBalance> findAllByWarehouseId (Long warehouseId) {
+        return stockBalanceRepository.findStockBalanceByWarehouseId(warehouseId);
+    }
+
+    @Override
     public Page <StockBalance> findByWarehouseId (Long warehouseId, int page, int size) {
         return stockBalanceRepository.findStockBalanceByWarehouseId(warehouseId, PageRequest.of(page, size, Sort.by("id")));
     }

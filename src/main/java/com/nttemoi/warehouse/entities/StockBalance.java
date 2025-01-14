@@ -15,7 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 
 @Entity
-@Table (name = "stock_balance")
+@Table (name = "stock_balance", uniqueConstraints = {
+        @UniqueConstraint (columnNames = { "product_id", "warehouse_id" })
+})
 public class StockBalance {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)

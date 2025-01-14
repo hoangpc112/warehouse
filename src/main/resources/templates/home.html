@@ -2,6 +2,8 @@
 <html lang = "en" layout:decorate = "~{layout}" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
         <title>Home</title>
+        <script src = "https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src = "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     </head>
     <body>
         <section layout:fragment = "content">
@@ -29,7 +31,123 @@
                             <div class = "col-12">
                                 <div class = "card">
                                     <div class = "card-body">
-                                        code here
+                                        <form id = "dataForm">
+                                            <div class = "form-row">
+                                                <div class = "form-group col-md-6">
+                                                    <label for = "month">Month</label>
+                                                    <input class = "form-control form-control-sm" id = "month" name = "month" placeholder = "Enter month here" required type = "number">
+                                                </div>
+                                                <div class = "form-group col-md-6">
+                                                    <label for = "year">Year</label>
+                                                    <input class = "form-control form-control-sm" id = "year" name = "year" placeholder = "Enter year here" required type = "number">
+                                                </div>
+                                            </div>
+                                            <button class = "btn btn-primary btn-block" type = "submit">Predict</button>
+                                        </form>
+
+                                        <div id = "split" style = "display: none">
+                                            <hr class = "border">
+                                            <h2>Top Monthly Sales</h2>
+                                        </div>
+
+                                        <div id = "chartContainer" style = "display: none; height: 600px;">
+                                            <canvas id = "myChart"></canvas>
+                                        </div>
+
+                                        <script>
+                                            window.addEventListener('load', function () {
+                                                const now = new Date();
+                                                const monthInput = document.getElementById('month');
+                                                const yearInput = document.getElementById('year');
+
+                                                monthInput.value = now.getMonth() + 1;
+                                                yearInput.value = now.getFullYear();
+                                            });
+
+                                            document.getElementById('dataForm').addEventListener('submit', function (event) {
+                                                event.preventDefault();
+                                                const month = document.getElementById('month').value;
+                                                const year = document.getElementById('year').value;
+
+                                                fetch(`/send?month=${month}&year=${year}`)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        document.getElementById('chartContainer').style.display = 'block';
+                                                        document.getElementById('split').style.display = 'block';
+
+                                                        // Sort and limit data to top 20 entries or less
+                                                        data.sort((a, b) => b.Predict - a.Predict);
+                                                        const limitedData = data.slice(0, 20);
+
+                                                        const labels = limitedData.map(item => `${item.productName}`);
+                                                        const predictValues = limitedData.map(item => item.Predict);
+                                                        const avgQuantityValues = limitedData.map(item => item.avg_monthly);
+
+                                                        updateChart(labels, predictValues, avgQuantityValues);
+                                                    })
+                                                    .catch(error => console.error('Error fetching data:', error));
+                                            });
+
+                                            function updateChart(labels, predictValues, avgQuantityValues) {
+                                                const ctx = document.getElementById('myChart').getContext('2d');
+
+                                                if (window.myChart instanceof Chart) {
+                                                    window.myChart.destroy();
+                                                }
+
+                                                window.myChart = new Chart(ctx, {
+                                                    type: 'bar',
+                                                    data: {
+                                                        labels: labels,
+                                                        datasets: [
+                                                            {
+                                                                label: 'Prediction Values',
+                                                                data: predictValues,
+                                                                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                                borderWidth: 1
+                                                            },
+                                                            {
+                                                                label: 'Average Quantity',
+                                                                data: avgQuantityValues,
+                                                                backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                                                                borderColor: 'rgba(153, 102, 255, 1)',
+                                                                borderWidth: 1
+                                                            }
+                                                        ]
+                                                    },
+                                                    options: {
+                                                        responsive: true,
+                                                        maintainAspectRatio: false,
+                                                        plugins: {
+                                                            legend: {display: true},
+                                                            tooltip: {
+                                                                callbacks: {
+                                                                    label: function (context) {
+                                                                        return `${context.dataset.label}: ${context.raw}`;
+                                                                    }
+                                                                }
+                                                            },
+                                                            datalabels: {
+                                                                anchor: 'end',
+                                                                align: 'top',
+                                                                formatter: Math.round,
+                                                                color: 'black',
+                                                                font: {
+                                                                    weight: 'bold'
+                                                                }
+                                                            }
+                                                        },
+                                                        scales: {
+                                                            y: {
+                                                                beginAtZero: true
+                                                            }
+                                                        }
+                                                    },
+                                                    plugins: [ChartDataLabels] // Add the datalabels plugin
+                                                });
+                                            }
+                                        </script>
                                     </div>
                                 </div>
                             </div>

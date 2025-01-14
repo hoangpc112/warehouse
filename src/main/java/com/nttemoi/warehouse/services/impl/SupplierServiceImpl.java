@@ -50,4 +50,9 @@ public class SupplierServiceImpl implements SupplierService {
     public Page <Supplier> findAllByKeyword (String keyword, int page, int size, String order, String orderBy) {
         return supplierRepository.findByNameLikeOrPhoneLike(keyword, keyword, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
     }
+
+    @Override
+    public Supplier findByName (String name) {
+        return supplierRepository.findByName(name).orElse(null);
+    }
 }

@@ -42,9 +42,6 @@
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'type', ${orderBy}, 'Type')}"></div>
                                                         </th>
                                                         <th scope = "col">
-                                                            <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'unit', ${orderBy}, 'Unit')}"></div>
-                                                        </th>
-                                                        <th scope = "col">
                                                             <div th:replace = "~{fragments/sortBtn :: sortBtn('product', ${order != '' && order != null ? order : ''}, 'weight', ${orderBy}, 'Weight')}"></div>
                                                         </th>
                                                         <th scope = "col">
@@ -61,7 +58,6 @@
                                                         <th scope = "row">[[${(currentPage - 1) * pageSize + iterStat.count}]]</th>
                                                         <td th:text = "${product.name}"></td>
                                                         <td th:text = "${product.type}"></td>
-                                                        <td th:text = "${product.unit}"></td>
                                                         <td th:text = "${product.weight}"></td>
                                                         <td th:text = "${product.size}"></td>
                                                         <td th:text = "${product.supplier.name}"></td>

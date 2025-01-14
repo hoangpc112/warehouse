@@ -20,6 +20,7 @@ public interface StockBalanceService {
 
     Page <StockBalance> findByProductId (Long productId, int page, int size);
 
+    List <StockBalance> findAllByWarehouseId (Long warehouseId);
 
     Page <StockBalance> findByWarehouseId (Long warehouseId, int page, int size);
 

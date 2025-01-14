@@ -66,6 +66,7 @@ public class WarehouseController {
             model.addAttribute("totalPages", warehousePage.getTotalPages());
             model.addAttribute("totalItems", warehousePage.getTotalElements());
             model.addAttribute("pageSize", size);
+            model.addAttribute("filter", "address");
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -216,6 +217,7 @@ public class WarehouseController {
             model.addAttribute("pageSize", size);
             model.addAttribute("stockBalancePage", stockBalancePage.getContent());
             model.addAttribute("warehouse", warehouse);
+            model.addAttribute("filter", "address");
         } catch (Exception e) {
             Warehouse warehouse = warehouseService.findByAddress(address);
             model.addAttribute("warehouse", warehouse);

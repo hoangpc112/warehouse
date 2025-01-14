@@ -69,6 +69,7 @@ public class UserController {
             model.addAttribute("totalPages", userPage.getTotalPages());
             model.addAttribute("totalItems", userPage.getTotalElements());
             model.addAttribute("pageSize", size);
+            model.addAttribute("filter", "username");
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }

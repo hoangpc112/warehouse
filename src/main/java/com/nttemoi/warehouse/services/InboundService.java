@@ -1,6 +1,8 @@
 package com.nttemoi.warehouse.services;
 
 import com.nttemoi.warehouse.entities.Inbound;
+import com.nttemoi.warehouse.entities.Supplier;
+import com.nttemoi.warehouse.entities.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -16,5 +18,5 @@ public interface InboundService {
 
     Page <Inbound> findAll (int page, int size, String order, String orderBy);
 
-    Page <Inbound> findAllByKeyword (String keyword, int page, int size, String order, String orderBy);
+    Page <Inbound> findAllByKeyword (Supplier supplier, User user, int page, int size, String order, String orderBy);
 }

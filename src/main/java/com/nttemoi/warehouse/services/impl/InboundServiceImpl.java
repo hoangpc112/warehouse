@@ -1,6 +1,8 @@
 package com.nttemoi.warehouse.services.impl;
 
 import com.nttemoi.warehouse.entities.Inbound;
+import com.nttemoi.warehouse.entities.Supplier;
+import com.nttemoi.warehouse.entities.User;
 import com.nttemoi.warehouse.repositories.InboundRepository;
 import com.nttemoi.warehouse.services.InboundService;
 import jakarta.transaction.Transactional;
@@ -46,9 +48,8 @@ public class InboundServiceImpl implements InboundService {
         return inboundRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
     }
 
-
     @Override
-    public Page <Inbound> findAllByKeyword (String keyword, int page, int size, String order, String orderBy) {
-        return null;
+    public Page <Inbound> findAllByKeyword (Supplier supplier, User user, int page, int size, String order, String orderBy) {
+        return inboundRepository.findAllBySupplierOrUser(supplier, user, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
     }
 }

@@ -22,6 +22,8 @@ public interface StockBalanceRepository extends JpaRepository <StockBalance, Lon
 
     List <StockBalance> findStockBalanceByWarehouseId (long warehouseId);
 
+    List <StockBalance> findAllByWarehouseId (long warehouseId);
+
     StockBalance findStockBalanceByProductIdAndWarehouseId (long productId, long warehouseId);
 
     @Query ("UPDATE StockBalance t SET t.status = :status WHERE t.id = :id")

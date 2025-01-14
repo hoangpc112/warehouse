@@ -24,13 +24,15 @@ public class OutboundController {
     private final UserServiceImpl userService;
     private final WarehouseServiceImpl warehouseService;
     private final ProductServiceImpl productService;
+    private final StockBalanceServiceImpl stockBalanceService;
 
-    public OutboundController (OutboundServiceImpl outboundService, UserServiceImpl userService, WarehouseServiceImpl warehouseService, OutboundDetailsServiceImpl outboundDetailsService, ProductServiceImpl productService) {
+    public OutboundController (OutboundServiceImpl outboundService, UserServiceImpl userService, WarehouseServiceImpl warehouseService, OutboundDetailsServiceImpl outboundDetailsService, ProductServiceImpl productService, StockBalanceServiceImpl stockBalanceService) {
         this.outboundService = outboundService;
         this.userService = userService;
         this.warehouseService = warehouseService;
         this.outboundDetailsService = outboundDetailsService;
         this.productService = productService;
+        this.stockBalanceService = stockBalanceService;
     }
 
     @GetMapping
@@ -44,7 +46,7 @@ public class OutboundController {
         Page <Outbound> outboundPage;
 
         if (keyword.isPresent()) {
-            outboundPage = outboundService.findAllByKeyword("%" + keyword.get() + "%", page - 1, size, order, orderBy);
+            outboundPage = outboundService.findAllByUser(userService.findByUsername(keyword.get()), page - 1, size, order, orderBy);
             model.addAttribute("keyword", keyword.get());
         }
         else {
@@ -61,6 +63,7 @@ public class OutboundController {
         model.addAttribute("totalItems", outboundPage.getTotalElements());
         model.addAttribute("totalPages", outboundPage.getTotalPages());
         model.addAttribute("pageSize", size);
+        model.addAttribute("filter", "username");
 
         return "show-outbound";
     }
@@ -239,13 +242,20 @@ public class OutboundController {
 
     @GetMapping ("/{id}/details/new")
     public String addDetails (@PathVariable ("id") Long id,
-                              Model model) {
+                              Model model,
+                              @RequestParam (required = false) Optional <Long> warehouseId) {
         OutboundDetailsDTO outboundDetailsDTO = new OutboundDetailsDTO();
         outboundDetailsDTO.setOutboundId(id);
 
         model.addAttribute("outboundDetailsDTO", outboundDetailsDTO);
         model.addAttribute("warehouses", warehouseService.findAll());
-        model.addAttribute("products", productService.findAll());
+        if (warehouseId.isPresent()) {
+            model.addAttribute("stockBalance", stockBalanceService.findAllByWarehouseId(warehouseId.get()));
+            outboundDetailsDTO.setWarehouseId(warehouseId.get());
+        }
+        else {
+            model.addAttribute("products", productService.findAll());
+        }
         model.addAttribute("title", "Add new");
 
         return "add-outbound-details";
@@ -257,9 +267,13 @@ public class OutboundController {
                                BindingResult bindingResult,
                                Model model,
                                RedirectAttributes redirectAttributes) {
+        //        if (outboundDetailsDTO.getProductId() != null) {
+        //            model.addAttribute("warehouses", warehouseService.findAll());
+        //            model.addAttribute("products", stockBalanceService.);
+        //        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("warehouses", warehouseService.findAll());
-            model.addAttribute("products", productService.findAll());
             return "add-outbound-details";
         }
 

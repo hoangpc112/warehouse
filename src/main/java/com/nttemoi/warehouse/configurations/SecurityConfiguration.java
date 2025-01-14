@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,18 +18,21 @@ public class SecurityConfiguration {
 
     @Bean
     public DefaultSecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/logout").permitAll()
-                        .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/js/**").permitAll()
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/plugins/**").permitAll()
-                        .requestMatchers("/dist/**").permitAll()
-                        .anyRequest()
-                        .authenticated())
+        return http
+                .authorizeHttpRequests(auth -> auth
+                        //                        .requestMatchers("/").permitAll()
+                        //                        .requestMatchers("/api/**").permitAll()
+                        //                        .requestMatchers("/login").permitAll()
+                        //                        .requestMatchers("/logout").permitAll()
+                        //                        .requestMatchers("/css/**").permitAll()
+                        //                        .requestMatchers("/js/**").permitAll()
+                        //                        .requestMatchers("/images/**").permitAll()
+                        //                        .requestMatchers("/plugins/**").permitAll()
+                        //                        .requestMatchers("/dist/**").permitAll()
+                        //                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+                )
+                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true))

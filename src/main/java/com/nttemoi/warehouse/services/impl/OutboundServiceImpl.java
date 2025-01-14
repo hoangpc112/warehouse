@@ -1,6 +1,7 @@
 package com.nttemoi.warehouse.services.impl;
 
 import com.nttemoi.warehouse.entities.Outbound;
+import com.nttemoi.warehouse.entities.User;
 import com.nttemoi.warehouse.repositories.OutboundRepository;
 import com.nttemoi.warehouse.services.OutboundService;
 import jakarta.transaction.Transactional;
@@ -48,7 +49,7 @@ public class OutboundServiceImpl implements OutboundService {
 
 
     @Override
-    public Page <Outbound> findAllByKeyword (String keyword, int page, int size, String order, String orderBy) {
-        return null;
+    public Page <Outbound> findAllByUser (User user, int page, int size, String order, String orderBy) {
+        return outboundRepository.findAllByUser(user, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), orderBy)));
     }
 }

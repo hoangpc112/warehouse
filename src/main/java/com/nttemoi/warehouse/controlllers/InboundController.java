@@ -47,7 +47,7 @@ public class InboundController {
         Page <Inbound> inboundPage;
 
         if (keyword.isPresent()) {
-            inboundPage = inboundService.findAllByKeyword("%" + keyword.get() + "%", page - 1, size, order, orderBy);
+            inboundPage = inboundService.findAllByKeyword(supplierService.findByName(keyword.get()), userService.findByUsername(keyword.get()), page - 1, size, order, orderBy);
             model.addAttribute("keyword", keyword.get());
         }
         else {
@@ -64,6 +64,7 @@ public class InboundController {
         model.addAttribute("totalItems", inboundPage.getTotalElements());
         model.addAttribute("totalPages", inboundPage.getTotalPages());
         model.addAttribute("pageSize", size);
+        model.addAttribute("filter", "supplier's name, username");
 
         return "show-inbound";
     }

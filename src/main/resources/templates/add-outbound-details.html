@@ -32,15 +32,9 @@
                                     <div class = "card-body">
                                         <form method = "post" th:action = "@{'/outbound/' + ${outboundDetailsDTO.outboundId} + '/details/save'}" th:object = "${outboundDetailsDTO}">
                                             <input th:field = "*{id}" type = "hidden">
+                                            <input id = "outboundId" th:value = "${outboundDetailsDTO.outboundId}" type = "hidden">
+
                                             <input th:field = "*{outboundId}" type = "hidden">
-                                            <div class = "form-group">
-                                                <label for = "productSelect">Product</label>
-                                                <select class = "form-control" id = "productSelect" required th:field = "*{productId}">
-                                                    <option selected value = "">Select a product</option>
-                                                    <option th:each = "product : ${products}" th:text = "${product.name}" th:value = "${product.id}"></option>
-                                                </select>
-                                                <div th:errors = "*{productId}" th:if = "${#fields.hasErrors('productId')}"></div>
-                                            </div>
                                             <div class = "form-group">
                                                 <label for = "warehouseSelect">Warehouse</label>
                                                 <select class = "form-control" id = "warehouseSelect" required th:field = "*{warehouseId}">
@@ -48,6 +42,14 @@
                                                     <option th:each = "warehouse : ${warehouses}" th:text = "${warehouse.address}" th:value = "${warehouse.id}"></option>
                                                 </select>
                                                 <div th:errors = "*{warehouseId}" th:if = "${#fields.hasErrors('warehouseId')}"></div>
+                                            </div>
+                                            <div class = "form-group">
+                                                <label for = "productSelect">Product</label>
+                                                <select class = "form-control" id = "productSelect" required th:disabled = "${outboundDetailsDTO.warehouseId == null}" th:field = "*{productId}">
+                                                    <option selected value = "">Select a product</option>
+                                                    <option th:each = "stock : ${stockBalance}" th:if = "${outboundDetailsDTO.warehouseId != null}" th:text = "${stock.product.name}" th:value = "${stock.product.id}"></option>
+                                                </select>
+                                                <div th:errors = "*{productId}" th:if = "${#fields.hasErrors('productId')}"></div>
                                             </div>
                                             <div class = "form-group">
                                                 <label for = "quantity">Quantity</label>
@@ -74,6 +76,16 @@
                     </div>
                 </section>
             </div>
+            <script>
+                console.log(document.getElementById('outboundId').value);
+                document.getElementById('warehouseSelect').addEventListener('change', function () {
+                    var outboundId = document.getElementById('outboundId').value;
+                    var selectedValue = '/outbound/' + outboundId + '/details/new?warehouseId=' + this.value;
+                    if (selectedValue !== '/outbound/' + outboundId + '/details/new?warehouseId=') {
+                        window.location.href = selectedValue;
+                    }
+                });
+            </script>
         </section>
     </body>
 </html>
